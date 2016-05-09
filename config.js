@@ -9,7 +9,10 @@ module.exports = {
     redis: {
         host: 'hoellenfuchs.fuechschen.org',
         db: 1,
-        password: 'Tnb8kQ0PPQqcCEP5Y9f7RusF42FhNZIdQE16bgjT6ACOYDndd7Z70vQWWNbc'
+        password: 'Tnb8kQ0PPQqcCEP5Y9f7RusF42FhNZIdQE16bgjT6ACOYDndd7Z70vQWWNbc',
+        pubsub: {
+            prefix: 'foxbot_'
+        }
     },
     db: {
         database: 'foxbot',

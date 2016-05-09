@@ -1,62 +1,85 @@
-config = require('./config.js');
-flatten = require('flat');
-utils = require('./lib/utils.js');
-_ = require('underscore');
-S = require('string');
-moment = require('moment');
-//noinspection JSAnnotator
-path = require('path');
-chalk = require('chalk');
-story = require('storyboard').mainStory;
-var Redis = require('ioredis');
-var Sequelize = require('sequelize');
-var mailgun = require('mailgun-js');
-validator = require('validator');
-request = require('request');
-discordjs = require('discord.js');
-os = require('os');
-pxlxml = require('pixl-xml');
-mg = mailgun(config.mailgun);
-starttime = null;
-redis = new Redis(config.redis);
-sequelize = new Sequelize(config.db.database, config.db.username, config.db.password, config.db.options);
-models = {
-    Server: sequelize.import(path.join(__dirname, 'models', 'Server')),
-    User: sequelize.import(path.join(__dirname, 'models', 'User')),
-    Game: sequelize.import(path.join(__dirname, 'models', 'Game')),
-    CustomCommand: sequelize.import(path.join(__dirname, 'models', 'CustomCommand')),
-    ServerRole: sequelize.import(path.join(__dirname, 'models', 'ServerRole')),
-    TwitchChannel: sequelize.import(path.join(__dirname, 'models', 'TwitchChannel')),
-    TwitchWatcher: sequelize.import(path.join(__dirname, 'models', 'TwitchWatcher')),
-    ChatReaction: sequelize.import(path.join(__dirname, 'models', 'ChatReaction'))
-};
+var config = require('./config.js');
+var story = require('storyboard').mainStory;
+var S = require('string');
 
-models.Server.belongsTo(models.User, {as: 'Owner'});
-models.User.hasMany(models.Server, {as: 'OwnedServers'});
-models.User.hasMany(models.ServerRole);
-models.Server.hasMany(models.ServerRole);
-models.ServerRole.belongsTo(models.Server);
-models.ServerRole.belongsTo(models.User);
-models.Server.hasMany(models.CustomCommand);
-models.CustomCommand.belongsTo(models.Server);
-models.Server.hasMany(models.TwitchWatcher);
-models.TwitchWatcher.belongsTo(models.Server);
-models.TwitchWatcher.belongsTo(models.TwitchChannel);
-models.TwitchChannel.hasMany(models.TwitchWatcher);
-models.ChatReaction.belongsTo(models.Server);
-models.Server.hasMany(models.ChatReaction);
+var discordBot = require('./lib/init_client');
+var cmds = require('./lib/commands.js');
+var utils = require('./lib/utils');
+var cache = require('./lib/cache');
+var db = require('./lib/sql_db');
 
-sequelize.sync().then(function () {
-    workers.checkTwitchChannels();
-    utils.initRedis();
+config.languages.all.forEach(function (lang) {
+    utils.language.loadLangFile(lang);
 });
 
-discordBot = new discordjs.Client({autoReconnect: true, compress: true, forceFetchUsers: true, maxCachedMessages: 50});
-cmds = require('./lib/commands.js');
-workers = require('./lib/workers.js');
 
 discordBot.loginWithToken(config.login.token).then(function () {
     story.info('meta', 'Login successfull');
 }).catch(function (err) {
     story.error('meta', 'Error while logging in.', {attach: err});
+});
+
+discordBot.on('ready', function () {
+
+});
+
+discordBot.on('message', function (msg) {
+    if (!msg.channel.isPrivate) {
+        cache.getServer(msg.channel.server.id, function (server) {
+            if (typeof server.isCommand(msg.content) === 'string') {
+                var prefix = server.isCommand(msg.content);
+                var str = S(msg.content);
+                var cmd = str.chompLeft(prefix).s.split(' ')[0];
+                if (cmds[cmd] !== undefined) {
+                    msg.server = server;
+                    cmds[cmd].handler(msg);
+                }
+            }
+        });
+    }
+});
+
+discordBot.on('serverCreated', function (server) {
+    db.models.Server.findOrCreate({
+        where: {sid: server.id},
+        defaults: {
+            sid: server.id,
+            name: server.name,
+            region: server.region,
+            icon: server.iconURL
+        }
+    }).spread(function (srv, created) {
+        if (created) {
+            //todo send welcome
+            db.models.User.findOrCreate({
+                where: {uid: server.owner.id}, defaults: {
+                    uid: server.owner.id,
+                    username: server.owner.username,
+                    avatar: server.owner.avatarURL
+                }
+            }).spread(function (user) {
+                srv.setOwner(user);
+            });
+        } else {
+            srv.update({
+                sid: server.id,
+                name: server.name,
+                region: server.region,
+                icon: server.iconURL
+            });
+            srv.getOwner().then(function (owner) {
+                if (owner.uid !== server.owner.id) {
+                    db.models.User.findOrCreate({
+                        where: {uid: server.owner.id}, defaults: {
+                            uid: server.owner.id,
+                            username: server.owner.username,
+                            avatar: server.owner.avatarURL
+                        }
+                    }).spread(function (user) {
+                        srv.setOwner(user);
+                    });
+                }
+            });
+        }
+    });
 });
