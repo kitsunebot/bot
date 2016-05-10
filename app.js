@@ -7,6 +7,7 @@ var cmds = require('./lib/commands.js');
 var utils = require('./lib/utils');
 var cache = require('./lib/cache');
 var db = require('./lib/sql_db');
+var redis = require('./lib/redis_db');
 
 config.languages.all.forEach(function (lang) {
     utils.language.loadLangFile(lang);
@@ -29,14 +30,73 @@ discordBot.on('message', function (msg) {
             if (typeof server.isCommand(msg.content) === 'string') {
                 var prefix = server.isCommand(msg.content);
                 var str = S(msg.content);
+                //noinspection JSDuplicatedDeclaration
                 var cmd = str.chompLeft(prefix).s.split(' ')[0];
                 if (cmds[cmd] !== undefined) {
-                    msg.server = server;
-                    cmds[cmd].handler(msg);
+                    //if(server.getPermissionLevel(msg.author.uid) >= cmds[cmd].min_perm){
+                        msg.server = server;
+                        msg.cleanContent = str.chompLeft(prefix).s;
+                        if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
+                        else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
+                    //}
+                }
+            } else if (typeof server.isCustomText(msg.content) === 'string') {
+                var cprefix = server.isCustomText(msg.content);
+                var cstr = S(msg.content);
+                //noinspection JSDuplicatedDeclaration
+                var cmd = cstr.chompLeft(cprefix).s;
+                redis.hexists('customcommands:global', cmd).then(function (hex) {
+                    if (hex === 1) {
+                        redis.hget('customcommands:global', cmd).then(function (content) {
+                            redis.hget('customcommands:global:types', cmd).then(function (type) {
+                                sendCustomText(content, type);
+                            });
+                        });
+                    } else {
+                        redis.hexists('customcommands:server:' + server.id, cmd).then(function (lex) {
+                            if (lex === 1) {
+                                redis.hget('customcommands:server:' + server.id, cmd).then(function (content) {
+                                    redis.hget('customcommands:server:' + server.id + ':types', cmd).then(function (type) {
+                                        sendCustomText(content, type);
+                                    });
+                                });
+                            }
+                        });
+                    }
+                });
+
+                function sendCustomText(content, type) {
+                    if (type === 'file') discordBot.sendFile(msg, content);
+                    else if (type === 'text') discordBot.sendMessage(msg, content);
+                    else if (type === 'reply') discordBot.reply(msg, content);
                 }
             }
         });
+        redis.set('stats:messages:time:servers:' + msg.channel.server.id + ':' + msg.id, 1).then(function () {
+            redis.expire('stats:messages:time:servers:' + msg.channel.server.id + ':' + msg.id, 60);
+        });
+    } else {
+        var str = S(msg.content);
+        if(typeof determinePrefix() === 'string'){
+            var prefix = determinePrefix();
+            var cmd = str.chompLeft(prefix).s.split(' ')[0];
+            if (cmds[cmd] !== undefined) {
+                msg.cleanContent = str.chompLeft(prefix).s;
+                if (cmds[cmd].handlers.dm !== undefined) cmds[cmd].handlers.dm(msg);
+                else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
+            }
+        }
+        
+        function determinePrefix(){
+            if(str.startsWith('!fb '))return '!fb ';
+            else if(str.startsWith('!')) return '!';
+            else if(str.startsWith('/')) return '/';
+            else return false;
+        }
     }
+    redis.set('stats:messages:time:all:' + msg.id, 1).then(function () {
+        redis.expire('stats:messages:time:all:' + msg.id, 60);
+    });
 });
 
 discordBot.on('serverCreated', function (server) {
