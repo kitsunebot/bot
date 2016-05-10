@@ -8,6 +8,7 @@ var utils = require('./lib/utils');
 var cache = require('./lib/cache');
 var db = require('./lib/sql_db');
 var redis = require('./lib/redis_db');
+var cronjobs = null;
 
 config.languages.all.forEach(function (lang) {
     utils.language.loadLangFile(lang);
@@ -21,7 +22,7 @@ discordBot.loginWithToken(config.login.token).then(function () {
 });
 
 discordBot.on('ready', function () {
-
+    cronjobs = require('./lib/cronjobs');
 });
 
 discordBot.on('message', function (msg) {
@@ -34,10 +35,10 @@ discordBot.on('message', function (msg) {
                 var cmd = str.chompLeft(prefix).s.split(' ')[0];
                 if (cmds[cmd] !== undefined) {
                     //if(server.getPermissionLevel(msg.author.uid) >= cmds[cmd].min_perm){
-                        msg.server = server;
-                        msg.cleanContent = str.chompLeft(prefix).s;
-                        if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
-                        else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
+                    msg.server = server;
+                    msg.cleanContent = str.chompLeft(prefix).s;
+                    if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
+                    else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
                     //}
                 }
             } else if (typeof server.isCustomText(msg.content) === 'string') {
@@ -77,7 +78,7 @@ discordBot.on('message', function (msg) {
         });
     } else {
         var str = S(msg.content);
-        if(typeof determinePrefix() === 'string'){
+        if (typeof determinePrefix() === 'string') {
             var prefix = determinePrefix();
             var cmd = str.chompLeft(prefix).s.split(' ')[0];
             if (cmds[cmd] !== undefined) {
@@ -86,11 +87,11 @@ discordBot.on('message', function (msg) {
                 else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
             }
         }
-        
-        function determinePrefix(){
-            if(str.startsWith('!fb '))return '!fb ';
-            else if(str.startsWith('!')) return '!';
-            else if(str.startsWith('/')) return '/';
+
+        function determinePrefix() {
+            if (str.startsWith('!fb '))return '!fb ';
+            else if (str.startsWith('!')) return '!';
+            else if (str.startsWith('/')) return '/';
             else return false;
         }
     }
@@ -142,4 +143,37 @@ discordBot.on('serverCreated', function (server) {
             });
         }
     });
+});
+
+discordBot.on('serverUpdated', function (oldServer, newServer) {
+    db.models.Server.update({
+        sid: newServer.id,
+        name: newServer.name,
+        region: newServer.region,
+        icon: newServer.iconURL
+    }, {where: {sid: newServer.id}});
+});
+
+discordBot.on('userBanned', function (user, server) {
+    cache.getServer(server.sid, function (srv) {
+        srv.modlog(user, 'banned');
+    });
+});
+
+discordBot.on('userUnbanned', function (user, server) {
+    cache.getServer(server.sid, function (srv) {
+        srv.modlog(user, 'unbanned');
+    });
+});
+
+discordBot.on('debug', function (debug) {
+    story.debug('discord.js', debug);
+});
+
+discordBot.on('warn', function (warn) {
+    story.warn('discord.js', warn);
+});
+
+discordBot.on('error', function (error) {
+    story.error('discord.js', error);
 });
