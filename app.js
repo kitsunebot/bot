@@ -22,7 +22,7 @@ discordBot.loginWithToken(config.login.token).then(function () {
 });
 
 discordBot.on('ready', function () {
-   // cronjobs = require('./lib/cronjobs');
+    cronjobs = require('./lib/cronjobs');
 });
 
 discordBot.on('message', function (msg) {
