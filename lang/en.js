@@ -63,6 +63,10 @@ module.exports = {
     },
     prefix: {
         enabled: 'Enabled prefix "&{prefix}"',
-        disabled: 'Disabled prefix "&{prefix}"'
+        disabled: 'Disabled prefix "&{prefix}"',
+        custom: {
+            set: 'Set custom prefix to "&{prefix}".',
+            disable: 'Custom prefix disabled.'
+        }
     }
 };
