@@ -3,7 +3,7 @@ var story = require('storyboard').mainStory;
 var S = require('string');
 
 var discordBot = require('./lib/init_client');
-var cmds = require('./lib/commands.js');
+var cmds = require('./lib/commands');
 var utils = require('./lib/utils');
 var cache = require('./lib/cache');
 var db = require('./lib/sql_db');
@@ -34,15 +34,15 @@ discordBot.on('message', function (msg) {
                 //noinspection JSDuplicatedDeclaration
                 var cmd = str.chompLeft(prefix).s.split(' ')[0];
                 if (cmds[cmd] !== undefined) {
-                    //if(server.getPermissionLevel(msg.author.uid) >= cmds[cmd].min_perm){
+                    if(server.getPermissionLevel(msg.author.id) >= cmds[cmd].min_perm){
                     msg.server = server;
                     msg.cleanContent = str.chompLeft(prefix).s;
                     if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
                     else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
-                    //}
+                    }
                 }
-            } else if (typeof server.isCustomText(msg.content) === 'string') {
-                var cprefix = server.isCustomText(msg.content);
+            } else if (typeof server.isCustomCommand(msg.content) === 'string') {
+                var cprefix = server.isCustomCommand(msg.content);
                 var cstr = S(msg.content);
                 //noinspection JSDuplicatedDeclaration
                 var cmd = cstr.chompLeft(cprefix).s;
@@ -50,7 +50,7 @@ discordBot.on('message', function (msg) {
                     if (hex === 1) {
                         redis.hget('customcommands:global', cmd).then(function (content) {
                             redis.hget('customcommands:global:types', cmd).then(function (type) {
-                                sendCustomText(content, type);
+                                sendCustomCommand(content, type);
                             });
                         });
                     } else {
@@ -58,7 +58,7 @@ discordBot.on('message', function (msg) {
                             if (lex === 1) {
                                 redis.hget('customcommands:server:' + server.id, cmd).then(function (content) {
                                     redis.hget('customcommands:server:' + server.id + ':types', cmd).then(function (type) {
-                                        sendCustomText(content, type);
+                                        sendCustomCommand(content, type);
                                     });
                                 });
                             }
@@ -66,7 +66,7 @@ discordBot.on('message', function (msg) {
                     }
                 });
 
-                function sendCustomText(content, type) {
+                function sendCustomCommand(content, type) {
                     if (type === 'file') discordBot.sendFile(msg, content);
                     else if (type === 'text') discordBot.sendMessage(msg, content);
                     else if (type === 'reply') discordBot.reply(msg, content);
@@ -155,13 +155,13 @@ discordBot.on('serverUpdated', function (oldServer, newServer) {
 });
 
 discordBot.on('userBanned', function (user, server) {
-    cache.getServer(server.sid, function (srv) {
+    cache.getServer(server.id, function (srv) {
         srv.modlog(user, 'banned');
     });
 });
 
 discordBot.on('userUnbanned', function (user, server) {
-    cache.getServer(server.sid, function (srv) {
+    cache.getServer(server.id, function (srv) {
         srv.modlog(user, 'unbanned');
     });
 });

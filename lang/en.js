@@ -58,6 +58,7 @@ module.exports = {
         unbanned: 'Unbanned: &{username}',
         banunsetrole: '&{username}, who was &{rname} on your server &{sname} has been banned. I therefore removed his role on this server. You will have to grant the role to them again.',
         enabled: 'ModLog enabled. Bans and Unbans will now be reported to this channel.',
+        is_enabled: 'ModLog has alredy been enabled for this server. Use "!fb modlog set" to overwrite the current setting.',
         disabled: 'ModLog disabled.'
     }
 };
