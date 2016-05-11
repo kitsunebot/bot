@@ -47,6 +47,8 @@ jspm_packages
 
 .idea
 
+config.js
+
 # Sensitive or high-churn files:
 .idea/dataSources.ids
 .idea/dataSources.xml
