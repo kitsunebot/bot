@@ -34,12 +34,12 @@ discordBot.on('message', function (msg) {
                 //noinspection JSDuplicatedDeclaration
                 var cmd = str.chompLeft(prefix).s.split(' ')[0];
                 if (cmds[cmd] !== undefined) {
-                    if(server.getPermissionLevel(msg.author.id) >= cmds[cmd].min_perm){
-                    msg.server = server;
-                    msg.cleanContent = str.chompLeft(prefix).s;
-                    if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
-                    else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
-                    }
+                    if (server.getPermissionLevel(msg.author.id) >= cmds[cmd].min_perm) {
+                        msg.server = server;
+                        msg.cleanContent = str.chompLeft(prefix).s;
+                        if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
+                        else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
+                    } else utils.messages.sendReply(msg, 'not_allowed');
                 }
             } else if (typeof server.isCustomCommand(msg.content) === 'string') {
                 var cprefix = server.isCustomCommand(msg.content);
@@ -82,9 +82,13 @@ discordBot.on('message', function (msg) {
             var prefix = determinePrefix();
             var cmd = str.chompLeft(prefix).s.split(' ')[0];
             if (cmds[cmd] !== undefined) {
-                msg.cleanContent = str.chompLeft(prefix).s;
-                if (cmds[cmd].handlers.dm !== undefined) cmds[cmd].handlers.dm(msg);
-                else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
+                utils.users.getGlobalPermLvl(msg.author.id, function (perm) {
+                    if (perm >= cmds[cmd].min_perm) {
+                        msg.cleanContent = str.chompLeft(prefix).s;
+                        if (cmds[cmd].handlers.dm !== undefined) cmds[cmd].handlers.dm(msg);
+                        else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
+                    } else utils.messages.sendReply(msg, 'not_allowed');
+                });
             }
         }
 

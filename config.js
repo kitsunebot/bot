@@ -2,6 +2,11 @@ module.exports = {
     login: {
         token: 'MTYwMDEzNzk0NTExMjkwMzY4.CewK0w.AsBX6YYRIIIGfC92W_4gi33ewW4'
     },
+    options: {
+        pm2: {
+            process: 'foxbot'
+        }
+    },
     mailgun: {
         apiKey: '', //todo
         domain: ''
@@ -30,6 +35,5 @@ module.exports = {
     },
     apiKeys: {
         twitch: '3j6j7bnu3ftoy6y2qp8z71xm8y621z0'
-    },
-    stats_randomness: 5
+    }
 };
