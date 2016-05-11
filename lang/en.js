@@ -60,5 +60,9 @@ module.exports = {
         enabled: 'ModLog enabled. Bans and Unbans will now be reported to this channel.',
         is_enabled: 'ModLog has alredy been enabled for this server. Use "!fb modlog set" to overwrite the current setting.',
         disabled: 'ModLog disabled.'
+    },
+    prefix: {
+        enabled: 'Enabled prefix "&{prefix}"',
+        disabled: 'Disabled prefix "&{prefix}"'
     }
 };
