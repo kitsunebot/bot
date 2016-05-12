@@ -9,7 +9,7 @@ var cache = require('./lib/cache');
 var db = require('./lib/sql_db');
 var redis = require('./lib/redis_db');
 var cronjobs = null;
-var web = null;
+var web = require('./web/index');
 
 config.languages.all.forEach(function (lang) {
     utils.language.loadLangFile(lang);
@@ -23,8 +23,8 @@ discordBot.loginWithToken(config.login.token).then(function () {
 });
 
 discordBot.on('ready', function () {
+    story.info('discord.js', 'Client ready to use');
     cronjobs = require('./lib/cronjobs');
-    web = require('./web/index');
 });
 
 discordBot.on('message', function (msg) {

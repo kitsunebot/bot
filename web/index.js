@@ -9,7 +9,7 @@ app.get('/*', function (req, res) {
     res.send('Under construction');
 });
 
-https.listen(config.web.port, function (err) {
+http.listen(config.web.port, function (err) {
     if (!err)  story.info('web', 'Listening on webport');
     else story.error('web', 'Error in init', {attach: err});
 });
