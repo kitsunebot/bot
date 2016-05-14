@@ -74,5 +74,8 @@ module.exports = {
             set: 'Set custom prefix to "&{prefix}".',
             disable: 'Custom prefix disabled.'
         }
+    },
+    musicplayer: {
+        not_joinable: 'Error while joining voicechannel. Please retry!'
     }
 };
