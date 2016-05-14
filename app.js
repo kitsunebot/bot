@@ -28,77 +28,94 @@ discordBot.on('ready', function () {
 });
 
 discordBot.on('message', function (msg) {
-    if (!msg.channel.isPrivate) {
-        cache.getServer(msg.channel.server.id, function (server) {
-            if (typeof server.isCommand(msg.content) === 'string') {
-                var prefix = server.isCommand(msg.content);
-                var str = S(msg.content);
-                //noinspection JSDuplicatedDeclaration
-                var cmd = str.chompLeft(prefix).s.split(' ')[0];
-                if (cmds[cmd] !== undefined) {
-                    if (server.getPermissionLevel(msg.author.id) >= cmds[cmd].min_perm) {
-                        msg.server = server;
-                        msg.cleanContent = str.chompLeft(prefix).s;
-                        if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
-                        else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
-                    } else utils.messages.sendReply(msg, 'not_allowed');
-                }
-            } else if (typeof server.isCustomCommand(msg.content) === 'string') {
-                var cprefix = server.isCustomCommand(msg.content);
-                var cstr = S(msg.content);
-                //noinspection JSDuplicatedDeclaration
-                var cmd = cstr.chompLeft(cprefix).s;
-                redis.hexists('customcommands:global', cmd).then(function (hex) {
-                    if (hex === 1) {
-                        redis.hget('customcommands:global', cmd).then(function (content) {
-                            redis.hget('customcommands:global:types', cmd).then(function (type) {
-                                sendCustomCommand(content, type);
-                            });
-                        });
-                    } else {
-                        redis.hexists('customcommands:server:' + server.id, cmd).then(function (lex) {
-                            if (lex === 1) {
-                                redis.hget('customcommands:server:' + server.id, cmd).then(function (content) {
-                                    redis.hget('customcommands:server:' + server.id + ':types', cmd).then(function (type) {
-                                        sendCustomCommand(content, type);
-                                    });
-                                });
+    if (!msg.author.equals(discordBot.user)) {
+        if (!msg.channel.isPrivate) {
+            cache.getServer(msg.channel.server.id, function (server) {
+                server.isSpam(msg, function (isSpam) {
+                    if (isSpam === false) {
+                        if (typeof server.isCommand(msg.content) === 'string') {
+                            var prefix = server.isCommand(msg.content);
+                            var str = S(msg.content);
+                            //noinspection JSDuplicatedDeclaration
+                            var cmd = str.chompLeft(prefix).s.split(' ')[0];
+                            if (cmds[cmd] !== undefined) {
+                                if (server.getPermissionLevel(msg.author.id) >= cmds[cmd].min_perm) {
+                                    msg.server = server;
+                                    msg.cleanContent = str.chompLeft(prefix).s;
+                                    if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
+                                    else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
+                                } else utils.messages.sendReply(msg, 'not_allowed');
                             }
-                        });
+                        } else if (typeof server.isCustomCommand(msg.content) === 'string') {
+                            var cprefix = server.isCustomCommand(msg.content);
+                            var cstr = S(msg.content);
+                            //noinspection JSDuplicatedDeclaration
+                            var cmd = cstr.chompLeft(cprefix).s;
+                            redis.hexists('customcommands:global', cmd).then(function (hex) {
+                                if (hex === 1) {
+                                    redis.hget('customcommands:global', cmd).then(function (content) {
+                                        redis.hget('customcommands:global:types', cmd).then(function (type) {
+                                            sendCustomCommand(content, type);
+                                        });
+                                    });
+                                } else {
+                                    redis.hexists('customcommands:server:' + server.id, cmd).then(function (lex) {
+                                        if (lex === 1) {
+                                            redis.hget('customcommands:server:' + server.id, cmd).then(function (content) {
+                                                redis.hget('customcommands:server:' + server.id + ':types', cmd).then(function (type) {
+                                                    sendCustomCommand(content, type);
+                                                });
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+
+                            function sendCustomCommand(content, type) {
+                                if (type === 'file') discordBot.sendFile(msg, content);
+                                else if (type === 'text') discordBot.sendMessage(msg, content);
+                                else if (type === 'reply') discordBot.reply(msg, content);
+                            }
+                        }
+                    } else {
+                        if (isSpam === 'repeatingMessages') {
+                            msg.delete();
+                            utils.messages.sendMessage(msg.channel, {
+                                key: 'automod.repeatingMessages',
+                                replacer: {mention: msg.author.mention()}
+                            });
+                        } else if(isSpam === 'overScore') {
+                            msg.delete();
+                            utils.messages
+                        }
                     }
                 });
-
-                function sendCustomCommand(content, type) {
-                    if (type === 'file') discordBot.sendFile(msg, content);
-                    else if (type === 'text') discordBot.sendMessage(msg, content);
-                    else if (type === 'reply') discordBot.reply(msg, content);
+            });
+            redis.set('stats:messages:time:servers:' + msg.channel.server.id + ':' + msg.id + ':' + msg.author.id, 1).then(function () {
+                redis.expire('stats:messages:time:servers:' + msg.channel.server.id + ':' + msg.id, 60);
+            });
+        } else {
+            var str = S(msg.content);
+            if (typeof determinePrefix() === 'string') {
+                var prefix = determinePrefix();
+                var cmd = str.chompLeft(prefix).s.split(' ')[0];
+                if (cmds[cmd] !== undefined) {
+                    utils.users.getGlobalPermLvl(msg.author.id, function (perm) {
+                        if (perm >= cmds[cmd].min_perm) {
+                            msg.cleanContent = str.chompLeft(prefix).s;
+                            if (cmds[cmd].handlers.dm !== undefined) cmds[cmd].handlers.dm(msg);
+                            else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
+                        } else utils.messages.sendReply(msg, 'not_allowed');
+                    });
                 }
             }
-        });
-        redis.set('stats:messages:time:servers:' + msg.channel.server.id + ':' + msg.id, 1).then(function () {
-            redis.expire('stats:messages:time:servers:' + msg.channel.server.id + ':' + msg.id, 60);
-        });
-    } else {
-        var str = S(msg.content);
-        if (typeof determinePrefix() === 'string') {
-            var prefix = determinePrefix();
-            var cmd = str.chompLeft(prefix).s.split(' ')[0];
-            if (cmds[cmd] !== undefined) {
-                utils.users.getGlobalPermLvl(msg.author.id, function (perm) {
-                    if (perm >= cmds[cmd].min_perm) {
-                        msg.cleanContent = str.chompLeft(prefix).s;
-                        if (cmds[cmd].handlers.dm !== undefined) cmds[cmd].handlers.dm(msg);
-                        else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
-                    } else utils.messages.sendReply(msg, 'not_allowed');
-                });
-            }
-        }
 
-        function determinePrefix() {
-            if (str.startsWith('!fb '))return '!fb ';
-            else if (str.startsWith('!')) return '!';
-            else if (str.startsWith('/')) return '/';
-            else return false;
+            function determinePrefix() {
+                if (str.startsWith('!fb '))return '!fb ';
+                else if (str.startsWith('!')) return '!';
+                else if (str.startsWith('/')) return '/';
+                else return false;
+            }
         }
     }
     redis.set('stats:messages:time:all:' + msg.id, 1).then(function () {
@@ -182,4 +199,30 @@ discordBot.on('warn', function (warn) {
 
 discordBot.on('error', function (error) {
     story.error('discord.js', error);
+});
+
+discordBot.on('channelDeleted', function (channel) {
+    story.debug('meta', 'channel deleted');
+    db.models.TwitchWatcher.findAll({where: {server_channel: channel.id}}).then(function (watchers) {
+        if (watchers.length > 0) watchers.forEach(function (watcher) {
+            watcher.destroy();
+        });
+    });
+
+    db.models.Server.find({where: {mod_log: channel.id}}).then(function (server) {
+        if (server !== undefined && server !== null) {
+            cache.getServer(server.sid, function (srv) {
+                srv.setModLog(null);
+                srv.sendToOwner({key: 'modlog.channel_deleted', replacer: {server: server.name}});
+            });
+        }
+    });
+});
+
+discordBot.on('presence', function (oldUser, newUser) {
+    db.models.User.update({
+        username: newUser.username,
+        status: newUser.status,
+        avatar: newUser.avatarURL
+    }, {where: {uid: newUser.id}})
 });

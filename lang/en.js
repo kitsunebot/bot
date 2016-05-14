@@ -1,6 +1,6 @@
 module.exports = {
     ping: 'Pong!',
-    info: 'I am mainained and hosted by Fuechschen. You can find my page here: https://fuechschen.org/foxbot. Any complaints about me? Email foxbot@fuechschen.org',
+    info: 'I am mainained and hosted by Fuechschen. You can find my page here: https://foxbot.fuechschen.org. Any complaints about me? Email foxbot@fuechschen.org',
     not_allowed: 'You are not allowed to do this.',
     missing_argument: 'You are missing something.',
     unknown_error: 'An unknown error occured while executing your command.',
@@ -31,7 +31,10 @@ module.exports = {
     },
     automod: {
         enabled: 'AutoMod enabled.',
-        disabled: 'AutoMod disabled.'
+        disabled: 'AutoMod disabled.',
+        muterole_set: 'MuteRole was set to "&{r_name}" (ID: &{r_id})',
+        muteSpam: '&{mention} was muted for spamming',
+        repeatingMessages: '&{meantion}, seems like you are repeating yourself. Can you please stop that?'
     },
     restart: {
         execute: 'Restart triggerd.',
@@ -42,7 +45,7 @@ module.exports = {
         staff: '```Uptime: started &{uptime}\nServers: &{servers}\nManaged Users: &{users}\nMessages per minute: &{mpm}\nMemory: &{mem}\nSystem Load: &{sysload}```'
     },
     serverstats: {
-        user: '```Users: &{users}\nChannels: &{channels}\nMessages per minute: &{mpm}```'
+        user: '```ServerID: &{sid}\nUsers: &{users}\nChannels: &{channels}\nMessages per minute: &{mpm}```'
     },
     twitchWatcher: {
         wentonline: '&{ch_name} just went online on twitch: \nTitle: &{str_title}\nGame: &{str_game}\nLink: &{ch_link}',
@@ -59,7 +62,10 @@ module.exports = {
         banunsetrole: '&{username}, who was &{rname} on your server &{sname} has been banned. I therefore removed his role on this server. You will have to grant the role to them again.',
         enabled: 'ModLog enabled. Bans and Unbans will now be reported to this channel.',
         is_enabled: 'ModLog has alredy been enabled for this server. Use "!fb modlog set" to overwrite the current setting.',
-        disabled: 'ModLog disabled.'
+        disabled: 'ModLog disabled.',
+        channel_deleted: 'Your ModLog-Channel on "&{server}" has been deleted. The function was therefore disabled. Use "!fb modlog" on your server to reenable it.',
+        muted: '&{username} was muted by &{mod}',
+        unmuted: '&{username} was unmuted by &{mod}'
     },
     prefix: {
         enabled: 'Enabled prefix "&{prefix}"',

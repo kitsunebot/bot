@@ -5,6 +5,8 @@ var story = require('storyboard').mainStory;
 
 var config = require('../config');
 
+//app.use('/api', require('./api/index'));
+
 app.get('/*', function (req, res) {
     res.send('Under construction');
 });
