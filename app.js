@@ -86,7 +86,7 @@ discordBot.on('message', function (msg) {
                             });
                         } else if(isSpam === 'overScore') {
                             msg.delete();
-                            utils.messages
+                            //todo mute
                         }
                     }
                 });

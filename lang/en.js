@@ -1,6 +1,7 @@
 module.exports = {
     ping: 'Pong!',
     info: 'I am mainained and hosted by Fuechschen. You can find my page here: https://foxbot.fuechschen.org. Any complaints about me? Email foxbot@fuechschen.org',
+    welcome: 'Hello, I\'m FoxBot and i was just added to this server',
     not_allowed: 'You are not allowed to do this.',
     missing_argument: 'You are missing something.',
     unknown_error: 'An unknown error occured while executing your command.',
@@ -75,7 +76,28 @@ module.exports = {
             disable: 'Custom prefix disabled.'
         }
     },
-    musicplayer: {
-        not_joinable: 'Error while joining voicechannel. Please retry!'
+    commandslist: {
+        _text: 'These are my Commands: \n(Please note: I have more than one prefix including a custom prefix per server. All my commands are always usable with `!fb ` as prefix, however, i also supprt `!` and `/` as command prefix if they are activated on your server.)\n(Sorry if the list is a bit slow, it\'s loooong)',
+        _template: '`&{cmd_main}` &{cmd_alias}:\nPossible arguments: `&{args}`\nDescription: &{desc}\n _tempend_',
+        _list_sent: 'I\'ve sent you a DM with all my commands.',
+        ping: 'Pong!',
+        info: 'Provides basic information about the bot.',
+        invite: 'Gives the invitelink for the bot.',
+        prefix: 'Enables/disables a prefix or sets a custom one.',
+        language: 'Sets a language for yourself or for the server.',
+        whoami: 'Gives information about yourself.',
+        whois: 'Gives information about the mentioned user.',
+        serverstats: 'Gives some statistics over the server.',
+        stats: 'Gives some bot statistics.',
+        cat: 'Gives a cat picture.',
+        smile: 'Gives a smile.',
+        wtf: 'Gives a wtf.',
+        modlog: 'Enables/Disables ModLog.',
+        restart: 'Restarts the bot.',
+        twitchwatcher: 'Adds/Removes/Lists Watchers for Twitch-Channels. These will inform you, when a streamer goes live.',
+        automod: 'Enables/Disables AutoMod or sets the muterole.',
+        mute: 'Mutes the mentioned user. Muterole has to be set.',
+        unmute: 'Unmutes the mentioned user. Muterole has to be set.',
+        commands: 'Gives this commands list.'
     }
 };
