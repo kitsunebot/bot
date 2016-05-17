@@ -28,9 +28,10 @@ discordBot.on('ready', function () {
 });
 
 discordBot.on('message', function (msg) {
-    if (!msg.author.equals(discordBot.user)) {
+    if (!msg.author.equals(discordBot.user) && !msg.author.bot) {
         if (!msg.channel.isPrivate) {
             cache.getServer(msg.channel.server.id, function (server) {
+                msg.server = server;
                 server.isSpam(msg, function (isSpam) {
                     if (isSpam === false) {
                         if (typeof server.isCommand(msg.content) === 'string') {
@@ -40,7 +41,6 @@ discordBot.on('message', function (msg) {
                             var cmd = str.chompLeft(prefix).s.split(' ')[0];
                             if (cmds[cmd] !== undefined) {
                                 if (server.getPermissionLevel(msg.author.id) >= cmds[cmd].min_perm) {
-                                    msg.server = server;
                                     msg.cleanContent = str.chompLeft(prefix).s;
                                     if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
                                     else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
@@ -84,9 +84,14 @@ discordBot.on('message', function (msg) {
                                 key: 'automod.repeatingMessages',
                                 replacer: {mention: msg.author.mention()}
                             });
-                        } else if(isSpam === 'overScore') {
+                        } else if (isSpam === 'overScore') {
                             msg.delete();
-                            //todo mute
+                            server.setMuted(mag.author, true);
+                            utils.messages.sendMessage(msg.channel, {
+                                key: 'automod.muteSpam',
+                                replacer: {mention: msg.author.mention()}
+                            });
+                            server.sendToModLog({key: 'automod.muteSpam', replacer: {mention: msg.author.mention()}});
                         }
                     }
                 });
@@ -124,6 +129,14 @@ discordBot.on('message', function (msg) {
 });
 
 discordBot.on('serverCreated', function (server) {
+    server.members.forEach(function (member) {
+        db.models.User.upsert({
+            uid: member.id,
+            username: member.username,
+            avatar: member.avatarURL,
+            status: member.status
+        });
+    });
     db.models.Server.findOrCreate({
         where: {sid: server.id},
         defaults: {
@@ -220,9 +233,10 @@ discordBot.on('channelDeleted', function (channel) {
 });
 
 discordBot.on('presence', function (oldUser, newUser) {
-    db.models.User.update({
+    db.models.User.upsert({
+        uid: newUser.id,
         username: newUser.username,
         status: newUser.status,
         avatar: newUser.avatarURL
-    }, {where: {uid: newUser.id}})
+    });
 });

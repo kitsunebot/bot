@@ -98,6 +98,16 @@ module.exports = {
         automod: 'Enables/Disables AutoMod or sets the muterole.',
         mute: 'Mutes the mentioned user. Muterole has to be set.',
         unmute: 'Unmutes the mentioned user. Muterole has to be set.',
-        commands: 'Gives this commands list.'
+        commands: 'Gives this commands list.',
+        waifu: 'Gives you a picture of your waifu.',
+        addwaifu: 'Adds a waifu to my list.',
+        listwaifu: 'Lists all stored waifus.',
+        setwaifu: 'Sets your personal waifu.'
+    },
+    waifu: {
+        your_waifu: 'Your waifu is &{name} (&{origin})',
+        list_see_dm: 'I\'ve sent you the list in a DM.',
+        list: 'Here are all stored waifus. Add yours with `!fb addwaifu (name) | (source) | (picture link)`. \n```&{waifus}```',
+        set: 'Set &{user}\'s waifu to "&{waifu}" (&{source})'
     }
 };
