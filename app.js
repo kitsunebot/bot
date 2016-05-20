@@ -40,11 +40,15 @@ discordBot.on('message', function (msg) {
                             //noinspection JSDuplicatedDeclaration
                             var cmd = str.chompLeft(prefix).s.split(' ')[0];
                             if (cmds[cmd] !== undefined) {
-                                if (server.getPermissionLevel(msg.author.id) >= cmds[cmd].min_perm) {
-                                    msg.cleanContent = str.chompLeft(prefix).s;
-                                    if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
-                                    else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
-                                } else utils.messages.sendReply(msg, 'not_allowed');
+                                server.isCommandEnabled(cmds[cmd], function (isEnabled) {
+                                   if(isEnabled){
+                                       if (server.getPermissionLevel(msg.author.id) >= cmds[cmd].min_perm) {
+                                           msg.cleanContent = str.chompLeft(prefix).s;
+                                           if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
+                                           else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
+                                       } else utils.messages.sendReply(msg, 'not_allowed');
+                                   } 
+                                });
                             }
                         } else if (typeof server.isCustomCommand(msg.content) === 'string') {
                             var cprefix = server.isCustomCommand(msg.content);

@@ -27,8 +27,9 @@ module.exports = {
         reload: 'Now reloading games.'
     },
     invite: {
-        default: 'With the latest api chenges, I\'m cannot join an invite anymore. Use this link to add me to your server: https://discordapp.com/oauth2/authorize?access_type=online&client_id=168751105558183936&scope=bot&permissions=3148800',
-        leave: 'Ok, sorry to hear that. Just PM me or join my discord if you want me back.'
+        default: 'Use this link to add me to your server: https://discordapp.com/oauth2/authorize?access_type=online&client_id=168751105558183936&scope=bot&permissions=473033732',
+        leave: 'Ok, sorry to hear that. Just PM me or join my discord if you want me back.',
+        check_dm: 'Check your DMs for more information.'
     },
     automod: {
         enabled: 'AutoMod enabled.',
@@ -103,7 +104,11 @@ module.exports = {
         addwaifu: 'Adds a waifu to my list.',
         listwaifu: 'Lists all stored waifus.',
         setwaifu: 'Sets your personal waifu.',
-        purge: 'Deletes all messages from the specified user in the channel or deletes the specified amount of messages in the channel. Needs \'Manage Messages\'-Permission.'
+        purge: 'Deletes all messages from the specified user in the channel or deletes the specified amount of messages in the channel. Needs \'Manage Messages\'-Permission.',
+        disablecommand: 'Disables the specified commands for the server.'
+    },
+    commands: {
+        disabled: 'The following commands have been disabled for this server: "&{disabled}" \nThe following commands could not be found: "&{not_found}" \nThe following commands aren\'t allowed to be disabled: "&{not_allowed}"' 
     },
     waifu: {
         your_waifu: 'Your waifu is &{name} (&{origin})',
