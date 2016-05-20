@@ -108,6 +108,7 @@ module.exports = {
         disablecommand: 'Disables the specified commands for the server.'
     },
     commands: {
+        enabled: 'The following commands have been enabled for this server: "&{enabled}" \nThe following commands could not be found: "&{not_found}"',
         disabled: 'The following commands have been disabled for this server: "&{disabled}" \nThe following commands could not be found: "&{not_found}" \nThe following commands aren\'t allowed to be disabled: "&{not_allowed}"' 
     },
     waifu: {
