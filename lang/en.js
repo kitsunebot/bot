@@ -102,7 +102,8 @@ module.exports = {
         waifu: 'Gives you a picture of your waifu.',
         addwaifu: 'Adds a waifu to my list.',
         listwaifu: 'Lists all stored waifus.',
-        setwaifu: 'Sets your personal waifu.'
+        setwaifu: 'Sets your personal waifu.',
+        purge: 'Deletes all messages from the specified user in the channel or deletes the specified amount of messages in the channel. Needs \'Manage Messages\'-Permission.'
     },
     waifu: {
         your_waifu: 'Your waifu is &{name} (&{origin})',
