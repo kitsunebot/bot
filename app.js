@@ -47,6 +47,7 @@ discordBot.on('message', function (msg) {
                                            if (cmds[cmd].handlers.server !== undefined) cmds[cmd].handlers.server(msg);
                                            else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
                                        } else utils.messages.sendReply(msg, 'not_allowed');
+                                       story.info('command', msg.author.username + '[' + msg.author.id + '] used command ' +  cmds[cmd].main_cmd + ' in channel ' + msg.channel.name + '[' + msg.channel.id + '] on server ' + msg.channel.server.name + '[' + msg.channel.server.id +'] (' + msg.content + ')');
                                    } 
                                 });
                             }
@@ -100,8 +101,8 @@ discordBot.on('message', function (msg) {
                     }
                 });
             });
-            redis.set('stats:messages:time:servers:' + msg.channel.server.id + ':' + msg.id + ':' + msg.author.id, 1).then(function () {
-                redis.expire('stats:messages:time:servers:' + msg.channel.server.id + ':' + msg.id, 60);
+            redis.set('stats:messages:time:servers:' + msg.channel.server.id + ':' + msg.id + ':' + msg.author.id, msg.content).then(function () {
+                redis.expire('stats:messages:time:servers:' + msg.channel.server.id + ':' + msg.id + ':' + msg.author.id, 60);
             });
         } else {
             var str = S(msg.content);
@@ -115,6 +116,7 @@ discordBot.on('message', function (msg) {
                             if (cmds[cmd].handlers.dm !== undefined) cmds[cmd].handlers.dm(msg);
                             else if (cmds[cmd].handlers.default !== undefined) cmds[cmd].handlers.default(msg);
                         } else utils.messages.sendReply(msg, 'not_allowed');
+                        story.info('command', msg.author.username + '[' + msg.author.id + '] used command ' +  cmds[cmd].main_cmd + ' in a Direct Message (' + msg.content + ')');
                     });
                 }
             }

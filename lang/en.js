@@ -1,6 +1,7 @@
 module.exports = {
     ping: 'Pong!',
-    info: 'I am mainained and hosted by Fuechschen. You can find my page here: https://foxbot.fuechschen.org. Any complaints about me? Email foxbot@fuechschen.org',
+    defaultMessageFormat: '[&{username}] &{msg}',
+    info: 'I am maintained and hosted by Fuechschen. You can find my page here: https://foxbot.fuechschen.org. If you are searching my commandlist, use "!fb commands"',
     welcome: 'Hello, I\'m FoxBot and i was just added to this server',
     not_allowed: 'You are not allowed to do this.',
     missing_argument: 'You are missing something.',
