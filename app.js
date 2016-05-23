@@ -246,3 +246,12 @@ discordBot.on('presence', function (oldUser, newUser) {
         avatar: newUser.avatarURL
     });
 });
+
+discordBot.on('serverNewMember', function (server, user) {
+    db.models.User.upsert({
+        uid: user.id,
+        username: user.username,
+        status: user.status,
+        avatar: user.avatarURL
+    });
+});
