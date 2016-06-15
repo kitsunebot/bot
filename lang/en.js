@@ -117,5 +117,11 @@ module.exports = {
         list_see_dm: 'I\'ve sent you the list in a DM.',
         list: 'Here are all stored waifus. Add yours with `!fb addwaifu (name) | (source) | (picture link)`. \n```&{waifus}```',
         set: 'Set &{user}\'s waifu to "&{waifu}" (&{source})'
+    },
+    voice: {
+        error: 'The bots connection errored. If this problem persists, please contact the owner (`!fb info`).',
+        user_not_connected: 'You are not connected to a VoiceChannel on this server. Connect first, then use the command.',
+        maxConn: 'I hit the limit in terms of voice connections. Please try again later.',
+        no_connection: 'I\'m not connected to any voicechannel on your server.'
     }
 };
