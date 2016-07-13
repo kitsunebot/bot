@@ -2,21 +2,24 @@ var Sequelize = require('sequelize');
 var config = require('../config');
 var path = require('path');
 var story = require('storyboard').mainStory;
+var Cron = require('cron').CronJob;
 
 if (config.db.options.logging === true) config.db.options.logging = (toLog)=> {
     //story.debug('SQL', toLog);
 };
 
 var sequelize = new Sequelize(config.db.database, config.db.username, config.db.password, config.db.options);
+var messageDB = new Sequelize(config.db.database, config.db.username, config.db.password, config.db.options);
 var models = {
     Guild: sequelize.import(path.join(__dirname, 'models', 'Guild')),
     User: sequelize.import(path.join(__dirname, 'models', 'User')),
     GuildRole: sequelize.import(path.join(__dirname, 'models', 'GuildRole')),
-    Prefix: sequelize.import(path.join(__dirname,'models','Prefix')),
+    Prefix: sequelize.import(path.join(__dirname, 'models', 'Prefix')),
     //TwitchChannel: sequelize.import(path.join(__dirname, 'models', 'TwitchChannel')),
     //TwitchWatcher: sequelize.import(path.join(__dirname, 'models', 'TwitchWatcher')),
     Character: sequelize.import(path.join(__dirname, 'models', 'Character')),
-    CharacterPicture: sequelize.import(path.join(__dirname, 'models', 'CharacterPicture'))
+    CharacterPicture: sequelize.import(path.join(__dirname, 'models', 'CharacterPicture')),
+    Message: messageDB.import(path.join(__dirname, 'models', 'Message'))
 };
 
 models.Guild.belongsTo(models.User, {as: 'Owner'});
@@ -27,8 +30,8 @@ models.Guild.hasMany(models.GuildRole);
 models.GuildRole.belongsTo(models.Guild);
 models.GuildRole.belongsTo(models.User);
 
-models.Guild.belongsToMany(models.Prefix,{through:'GuildPrefixes'});
-models.Prefix.belongsToMany(models.Guild,{through:'GuildPrefixes'});
+models.Guild.belongsToMany(models.Prefix, {through: 'GuildPrefixes'});
+models.Prefix.belongsToMany(models.Guild, {through: 'GuildPrefixes'});
 
 //models.Guild.hasMany(models.TwitchWatcher);
 //models.TwitchWatcher.belongsTo(models.Guild);
@@ -42,5 +45,14 @@ models.Character.hasMany(models.CharacterPicture);
 models.CharacterPicture.belongsTo(models.Character);
 
 sequelize.sync();
+messageDB.sync();
 
-module.exports = {models: models, sequelize: sequelize};
+var messageCron = new Cron('0 0 0,6,12,18 * * *', function () {
+    models.Message.findAll({where: {created_at: {$lt: moment().subtract(1, 'week').toDate()}}}).then(function (msgs) {
+        return Promise.all(msgs.map((msg)=> {
+            return msg.destroy()
+        }));
+    });
+}, null, true);
+
+module.exports = {models: models, sequelize: sequelize, messageDB: messageDB};

@@ -31,7 +31,7 @@ class Guild {
                 };
                 require('../lib/cache').setGuildLanguage(that.id, that.language);
                 Promise.all([that.calculatePrefixes(Promise.resolve(guild)).then((pr)=> {
-                    //eris.registerGuildPrefix(that.id, pr);
+                    eris.registerGuildPrefix(that.id, pr);
                     return Promise.resolve()
                 }), guild.getGuildRoles().then((roles)=> {
                     return Promise.all(roles.map((role)=> {
@@ -41,7 +41,7 @@ class Guild {
                             that.roles[user.uid] = roles[index].level;
                         });
                         return guild.getOwner();
-                    }).then((owner)=>{
+                    }).then((owner)=> {
                         that.roles[owner.uid] = 6;
                         return db.models.User.findAll({where: {custom_role: {$gt: 0}}});
                     }).then(users=> {
@@ -68,7 +68,11 @@ class Guild {
         return lang.resolve(this.language, key);
     }
 
-    // setLanguage
+    setLanguage(lang) {
+        this.language = lang;
+        require('../lib/cache').setGuildLanguage(this.id, this.language);
+        return this.updateDbInstance({language: lang});
+    }
 
     addPrefix(prefix) {
         var that = this;
@@ -125,7 +129,7 @@ class Guild {
             that.prefixes = prefixes.map((prefix)=> {
                 return prefix.prefix
             });
-            //if (register) eris.registerGuildPrefix(that.id, that.prefixes);
+            if (register) eris.registerGuildPrefix(that.id, that.prefixes);
             return Promise.resolve(that.prefixes);
         })
     }
@@ -150,7 +154,7 @@ class Guild {
                 };
                 cache.setGuildLanguage(that.id, that.language);
                 return Promise.all([that.calculatePrefixes(Promise.resolve(guild)).then((pr)=> {
-                    //eris.registerGuildPrefix(that.id, pr);
+                    eris.registerGuildPrefix(that.id, pr);
                     console.log(1);
                     return Promise.resolve()
                 }), guild.getGuildRoles().then((roles)=> {
