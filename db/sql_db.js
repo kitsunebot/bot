@@ -3,6 +3,7 @@ var config = require('../config');
 var path = require('path');
 var story = require('storyboard').mainStory;
 var Cron = require('cron').CronJob;
+var utils = require('../lib/utils');
 
 if (config.db.options.logging === true) config.db.options.logging = (toLog)=> {
     //story.debug('SQL', toLog);
@@ -15,8 +16,8 @@ var models = {
     User: sequelize.import(path.join(__dirname, 'models', 'User')),
     GuildRole: sequelize.import(path.join(__dirname, 'models', 'GuildRole')),
     Prefix: sequelize.import(path.join(__dirname, 'models', 'Prefix')),
-    //TwitchChannel: sequelize.import(path.join(__dirname, 'models', 'TwitchChannel')),
-    //TwitchWatcher: sequelize.import(path.join(__dirname, 'models', 'TwitchWatcher')),
+    TwitchChannel: sequelize.import(path.join(__dirname, 'models', 'TwitchChannel')),
+    TwitchWatcher: sequelize.import(path.join(__dirname, 'models', 'TwitchWatcher')),
     Character: sequelize.import(path.join(__dirname, 'models', 'Character')),
     CharacterPicture: sequelize.import(path.join(__dirname, 'models', 'CharacterPicture')),
     Message: messageDB.import(path.join(__dirname, 'models', 'Message'))
@@ -33,10 +34,10 @@ models.GuildRole.belongsTo(models.User);
 models.Guild.belongsToMany(models.Prefix, {through: 'GuildPrefixes'});
 models.Prefix.belongsToMany(models.Guild, {through: 'GuildPrefixes'});
 
-//models.Guild.hasMany(models.TwitchWatcher);
-//models.TwitchWatcher.belongsTo(models.Guild);
-//models.TwitchWatcher.belongsTo(models.TwitchChannel);
-//models.TwitchChannel.hasMany(models.TwitchWatcher);
+models.Guild.hasMany(models.TwitchWatcher);
+models.TwitchWatcher.belongsTo(models.Guild);
+models.TwitchWatcher.belongsTo(models.TwitchChannel);
+models.TwitchChannel.hasMany(models.TwitchWatcher);
 
 models.User.belongsTo(models.Character, {as: 'Waifu'});
 //models.Character.hasMany(models.User, {as: 'Waifu'});
@@ -48,7 +49,7 @@ sequelize.sync();
 messageDB.sync();
 
 var messageCron = new Cron('0 0 0,6,12,18 * * *', function () {
-    models.Message.findAll({where: {created_at: {$lt: moment().subtract(1, 'weeks').toDate()}}}).then(function (msgs) {
+    models.Message.findAll({where: {created_at: {$lt: moment().subtract(3, 'days').toDate()}}}).then(function (msgs) {
         return Promise.all(msgs.map((msg)=> {
             return msg.destroy()
         }));

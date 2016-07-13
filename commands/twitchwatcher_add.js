@@ -1,10 +1,12 @@
+var db = require('../db/sql_db');
 var lang = require('../lib/lang');
 
 module.exports = {
-    label: 'help',
-    enabled: true,
+    label: 'add',
+    enabled: false,
+    isSubcommand: true,
     generator: (msg, args)=> {
-        return lang.computeResponse(msg, 'help');
+
     },
     options: {
         caseInsensitive: true,

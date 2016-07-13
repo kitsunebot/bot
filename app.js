@@ -1,9 +1,14 @@
 var config = require('./config.js');
-var story = require('storyboard').mainStory;
+var storyboard = require('storyboard');
 var fs = require('fs');
 var path = require('path');
 
 var eris = require('./lib/client');
+var pubsub = require('./db/redis_pubsub');
+var lang = require('./lib/lang');
+
+storyboard.addListener(require('storyboard/lib/listeners/console').default);
+var story = storyboard.mainStory;
 
 fs.readdir('./eventhandlers', (err, files)=> {
     if (err) {
@@ -51,6 +56,19 @@ fs.readdir('./commands', (err, files)=> {
             }
         });
         eris.connect();
-        eris.editGame('DEBUG MODE');
+        eris.editGame({name:'DEBUG MODE'});
     }
+});
+
+pubsub.on('twitchAnnounce', (data)=> {
+    data.channels.filter((channel)=> {
+        return eris.channelGuildMap[channel] !== undefined
+    }).forEach((chid)=> {
+        eris.createMessage(chid, lang.computeLangString(eris.channelGuildMap[chid], 'twitch.announce', false, {
+            ch_name: data.ch_name,
+            str_title: data.str_title,
+            str_game: data.str_game,
+            ch_link: data.ch_link
+        }));
+    });
 });

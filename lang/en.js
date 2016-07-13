@@ -22,6 +22,12 @@ module.exports = {
         },
         stats:{
             default: 'Here are my current stats:\n```Uptime: started &{uptime}\nGuilds: &{guild_count}\nChannels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```'
+        },
+        twitch:{
+            default: 'Usage: `!fb watcher add [channel]` to add a watcher, `!fb wather remove [channel]` to remove a watcher.\nCurrent watchers for this channel: &{watchers}',
+            default_format: '`&{ch_name}`',
+            default_separator: ',',
+            announce: '&{ch_name} just went online on twitch: \nTitle: &{str_title}\nGame: &{str_game}\nLink: &{ch_link}'
         }
     }
 };
