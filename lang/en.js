@@ -19,6 +19,9 @@ module.exports = {
         },
         nick:{
             default: 'Nickname was changed.'
+        },
+        stats:{
+            default: 'Here are my current stats:\n```Uptime: started &{uptime}\nGuilds: &{guild_count}\nChannels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```'
         }
     }
 };
