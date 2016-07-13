@@ -1,0 +1,180 @@
+var Promise = require('bluebird');
+var moment = require('moment');
+
+var eris = require('../lib/client');
+var db = require('../db/sql_db');
+var pubsub = require('../db/redis_pubsub');
+var lang = require('../lib/lang');
+var cache = require('../lib/cache');
+
+class Guild {
+    constructor(gid, cb) {
+        this.erisGuild = eris.guilds.find((g)=> {
+            return g.id === gid
+        });
+        var that = this;
+        that.id = gid;
+        that.avability = !this.erisGuild.unavailable;
+        that.lastAccessed = moment();
+        db.models.Guild.find({where: {gid: gid}}).then(function (guild) {
+            if (guild !== null && guild !== undefined) {
+                that.name = guild.name;
+                that.prefixes = [];
+                that.language = guild.language;
+                that.automod = guild.automod;
+                that.mod_log = guild.mod_log;
+                that.mute_role = guild.mute_role;
+                that.roles = {};
+                that.customCommands = {
+                    enabled: guild.customtext_enabled,
+                    prefix: guild.customtext_prefix
+                };
+                require('../lib/cache').setGuildLanguage(that.id, that.language);
+                Promise.all([that.calculatePrefixes(Promise.resolve(guild)).then((pr)=> {
+                    //eris.registerGuildPrefix(that.id, pr);
+                    return Promise.resolve()
+                }), guild.getGuildRoles().then((roles)=> {
+                    return Promise.all(roles.map((role)=> {
+                        return role.getUser();
+                    })).then(function (users) {
+                        users.forEach((user, index)=> {
+                            that.roles[user.uid] = roles[index].level;
+                        });
+                        return guild.getOwner();
+                    }).then((owner)=>{
+                        that.roles[owner.uid] = 6;
+                        return db.models.User.findAll({where: {custom_role: {$gt: 0}}});
+                    }).then(users=> {
+                        users.forEach((user)=> {
+                            if (that.roles[user.uid] < user.custom_role || that.roles[user.uid] === undefined) that.roles[user.uid] = user.custom_role;
+                        });
+                        return Promise.resolve();
+                    });
+                })]).then(()=> {
+                    cb(null)
+                });
+
+                pubsub.on('guildUpdate', (data)=> {
+                    if (data.gid === that.id) {
+                        that.updateValues(data.updates);
+                    }
+                });
+            } else cb(new Error('guild not found'));
+        });
+    }
+
+    getLangString(key) {
+        this.accessed();
+        return lang.resolve(this.language, key);
+    }
+
+    // setLanguage
+
+    addPrefix(prefix) {
+        var that = this;
+        return db.models.Prefix.findOrCreate({where: {prefix: prefix}, defaults: {prefix: prefix}}).spread((prefix)=> {
+            return prefix.addGuild(that.id);
+        });
+    }
+
+    removePrefix(prefix) {
+        var that = this;
+        return db.models.Prefix.find({where: {prefix: prefix}}).then((prefix)=> {
+            return prefix.removeGuild(that.id);
+        });
+    }
+
+    getRole(uid) {
+        return this.roles[uid] || 0;
+    }
+
+    getDbInstance() {
+        this.accessed();
+        return db.models.Guild.find({where: {gid: this.id}});
+    }
+
+    updateDbInstance(updates) {
+        this.accessed();
+        return this.getDbInstance().then((guild)=> {
+            return guild.update(updates);
+        })
+    }
+
+    updateValues(updates) {
+        this.accessed();
+        if (updates !== undefined) {
+            for (var i in updates) {
+                if (typeof updates[i] !== 'object' || Array.isArray(updates[i])) {
+                    this[i] = updates[i];
+                } else {
+                    for (var o in updates[i]) {
+                        this[i][o] = updates[i][o];
+                    }
+                }
+            }
+            this.writeToDb();
+        } else this.updateFromDb();
+    }
+
+    calculatePrefixes(guild, register) {
+        var that = this;
+        guild = guild || this.getDbInstance();
+        return guild.then((guild)=> {
+            return guild.getPrefixes();
+        }).then((prefixes)=> {
+            that.prefixes = prefixes.map((prefix)=> {
+                return prefix.prefix
+            });
+            //if (register) eris.registerGuildPrefix(that.id, that.prefixes);
+            return Promise.resolve(that.prefixes);
+        })
+    }
+
+    writeToDb() {
+        return this.updateDbInstance({name: this.name, avability: this.avability, region: this.region});
+    }
+
+    updateFromDb() {
+        var that = this;
+        return db.models.Guild.find({where: {gid: that.id}}).then(function (guild) {
+            if (guild !== null && guild !== undefined) {
+                that.name = guild.name;
+                that.language = guild.language;
+                that.automod = guild.automod;
+                that.mod_log = guild.mod_log;
+                that.mute_role = guild.mute_role;
+                that.roles = {};
+                that.customCommands = {
+                    enabled: guild.customtext_enabled,
+                    prefix: guild.customtext_prefix
+                };
+                cache.setGuildLanguage(that.id, that.language);
+                return Promise.all([that.calculatePrefixes(Promise.resolve(guild)).then((pr)=> {
+                    //eris.registerGuildPrefix(that.id, pr);
+                    console.log(1);
+                    return Promise.resolve()
+                }), guild.getGuildRoles().then((roles)=> {
+                    return Promise.all(roles.map((role)=> {
+                        console.log(1.5);
+                        return role.getUser();
+                    })).then(function (users) {
+                        users.forEach((user, index)=> {
+                            that.roles[user.uid] = roles[index].level;
+                        });
+                        console.log(2);
+                        return Promise.resolve();
+                    });
+                })]).then(()=> {
+                    return Promise.resolve(that);
+                });
+            } else return Promise.reject('not found');
+        });
+    }
+
+    accessed() {
+        this.lastAccessed = moment();
+    }
+
+}
+
+module.exports = Guild;
