@@ -48,7 +48,7 @@ sequelize.sync();
 messageDB.sync();
 
 var messageCron = new Cron('0 0 0,6,12,18 * * *', function () {
-    models.Message.findAll({where: {created_at: {$lt: moment().subtract(1, 'week').toDate()}}}).then(function (msgs) {
+    models.Message.findAll({where: {created_at: {$lt: moment().subtract(1, 'weeks').toDate()}}}).then(function (msgs) {
         return Promise.all(msgs.map((msg)=> {
             return msg.destroy()
         }));
