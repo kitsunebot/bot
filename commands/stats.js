@@ -36,5 +36,6 @@ module.exports = {
     options: {
         caseInsensitive: true,
         deleteCommand: true
-    }
+    },
+    subcommands:[require('./stats_server')]
 };

@@ -5,10 +5,12 @@ var cache = require('../lib/cache');
 module.exports = {
     label: 'nick',
     enabled: true,
+    isSubcommand: false,
     generator: (msg, args)=> {
         cache.getGuild(msg.channel.guild.id).then(function (guild) {
             if (guild.getRole(msg.author.id) > 2) {
-                eris.editNickname(msg.channel.guild.id, args.join(' ').trim()).then(()=> {
+                var nick = (args.join(' ').trim() !== 'reset' ? args.join(' ').trim() : eris.user.username);
+                eris.editNickname(msg.channel.guild.id, nick).then(()=> {
                     eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'nick.default'));
                 });
             } else eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'no_permission', {
@@ -22,5 +24,6 @@ module.exports = {
         caseInsensitive: true,
         deleteCommand: true,
         serverOnly: true
-    }
+    },
+    subcommands: [require('./nick_global')]
 };

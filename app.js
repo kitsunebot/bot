@@ -56,7 +56,7 @@ fs.readdir('./commands', (err, files)=> {
             }
         });
         eris.connect();
-        eris.editGame({name:'DEBUG MODE'});
+        eris.editGame({name: 'DEBUG MODE'});
     }
 });
 
@@ -71,4 +71,31 @@ pubsub.on('twitchAnnounce', (data)=> {
             ch_link: data.ch_link
         }));
     });
+});
+
+pubsub.on('nicknameChange', (nick)=> {
+    eris.guilds.map((g)=> {
+        return g
+    }).forEach((g, index)=> {
+        setTimeout(()=> {
+            eris.editNickname(g.id, nick)
+        }, index * 10000);
+    });
+});
+
+pubsub.on('restart', (timeout)=> {
+    timeout = timeout || 0;
+    setTimeout(()=> {
+        if (process.env.autorestart === 'true') process.exit(1);
+        else {
+            try {
+                var pm2 = require('pm2');
+                pm2.connect((err)=> {
+                    if (!err)pm2.restart(process.enc.pm_id)
+                });
+            } catch (e) {
+                pubsub.sendEvent('restartFail', e.message);
+            }
+        }
+    }, timeout)
 });

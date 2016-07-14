@@ -6,19 +6,19 @@ module.exports = {
         no_permission:'You don\'t have permission to do this. [Needed: &{required} | Current: &{have}]',
         username: '[&{username}]',
         waifu: {
-            default: 'Your waifu is &{name} (&{origin})',
+            default: 'Your waifu is &{name} (&{origin})\n&{pic_link}',
             list: {
-                default: 'Here are all stored waifus. Add yours with `!fb waifu add (name) | (source) | (picture link)`. \n```&{waifus}```',
-                format: '&{name} (&{source})[&{id}]',
-                separator :' | '
+                default: 'Here are all stored waifus. Add yours with `!fb waifu add (name) | (source) | (picture link)`. \nYou can find a full list under https://foxbot.fuechschen.org/charaters/waifus'
             },
+                
             set:{
                 not_found: 'I haven\'t found any entry for `&{query}`',
                 default: 'Waifu set to &{w_name}[&{w_id}]'
             }
         },
         nick:{
-            default: 'Nickname was changed.'
+            default: 'Nickname was changed.',
+            global: 'Nickname was globally changed.'
         },
         stats:{
             default: 'Here are my current stats:\n```Uptime: started &{uptime}\nGuilds: &{guild_count}\nChannels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```'
