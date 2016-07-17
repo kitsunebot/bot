@@ -20,7 +20,7 @@ fs.readFile('./list.txt', 'utf8', function (err, file) {
                     id: shortid.generate(),
                     name: waifu.name,
                     source: waifu.source,
-                    type: 'waifu'
+                    type: 'husbando'
                 }).then((waifu)=> {
                     waifu.createCharacterPicture({link: link});
                     console.log(waifu.name);

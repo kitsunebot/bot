@@ -13,23 +13,23 @@ module.exports = {
     generator: (msg, args)=> {
         db.models.Message.count({where: {created_at: {$gt: moment().subtract(1, 'minutes').toDate()}}}).then(function (count) {
             eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'stats.default', {
-                uptime: started.fromNow(),
-                mpm: count,
+                uptime: started.fromNow() || lang.computeResponse(msg, 'stats.error', {}, true),
+                mpm: count || lang.computeResponse(msg, 'stats.error', {}, true),
                 channel_count: eris.privateChannels.map((c)=> {
                     return c
-                }).length + function() {
+                }).length + function () {
                     var i = 0;
                     for (var o in eris.channelGuildMap) {
                         if (eris.channelGuildMap[o])i = i + 1
                     }
                     return i;
-                }(),
+                }() || lang.computeResponse(msg, 'stats.error', {}, true),
                 guild_count: eris.guilds.map((g)=> {
                     return g
-                }).length,
+                }).length || lang.computeResponse(msg, 'stats.error', {}, true),
                 user_count: eris.users.map((u=> {
                     return u
-                })).length
+                })).length || lang.computeResponse(msg, 'stats.error', {}, true)
             }));
         });
     },
@@ -37,5 +37,5 @@ module.exports = {
         caseInsensitive: true,
         deleteCommand: true
     },
-    subcommands:[require('./stats_server')]
+    subcommands: [require('./stats_server')]
 };

@@ -40,6 +40,7 @@ models.TwitchWatcher.belongsTo(models.TwitchChannel);
 models.TwitchChannel.hasMany(models.TwitchWatcher);
 
 models.User.belongsTo(models.Character, {as: 'Waifu'});
+models.User.belongsTo(models.Character, {as: 'Husbando'});
 //models.Character.hasMany(models.User, {as: 'Waifu'});
 
 models.Character.hasMany(models.CharacterPicture);
