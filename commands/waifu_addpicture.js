@@ -19,7 +19,10 @@ module.exports = {
             Promise.resolve().then(()=> {
                 if (args.length === 2) {
                     if (!validator.isURL(args[0]) && validator.isURL(args[1])) {
-                        return Promise.resolve(args[0]);
+                        return db.models.Character.find({where: {id: args[0], type: 'waifu'}}).then(waifu=> {
+                            if (waifu !== null && waifu !== undefined)return Promise.resolve(waifu);
+                            else return Promise.reject();
+                        });
                     } else {
                         return Promise.reject();
                     }
@@ -35,7 +38,7 @@ module.exports = {
                 return utils.uploadFile(args[args.length - 1]).then((url)=> {
                     return cch.getGlobalUserPerm(msg.author.id).then((perm)=> {
                         return waifu.createCharacterPicture({link: url, verified: (perm > 5)}).then(()=> {
-                            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'waifu.createPicture'));
+                            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'waifu.createPicture.default'));
                         });
                     });
                 });

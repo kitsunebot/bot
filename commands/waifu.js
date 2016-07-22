@@ -30,23 +30,11 @@ module.exports = {
             }
         }).then((waifu)=> {
             waifu.getCharacterPictures({where: {verified: true}, limit: 1, order: 'RAND()'}).spread((pic)=> {
-                //request.get(pic.link, {encoding: null}, function (err, resp, data) {
-                //var file;
-                /*if (err || resp.statusCode !== 200) {
-                 story.warn('Error loading picture', {attach: {err: err, statusCode: resp.statusCode}});
-                 file = undefined;
-                 } else {
-                 file = {
-                 file: data,
-                 name: waifu.name + waifu.source + '.' + pic.link.split('.')[pic.link.split('.').length - 1]
-                 }
-                 }*/
                 eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'waifu.default', {
                     name: waifu.name,
                     origin: waifu.source,
                     pic_link: pic.link
                 }));
-                //});
             });
         });
         return null;
@@ -55,5 +43,5 @@ module.exports = {
         caseInsensitive: true,
         deleteCommand: true
     },
-    subcommands: [require('./waifu_list'), require('./waifu_set'), require('./waifu_search'), require('./waifu_addpicture')]
+    subcommands: [require('./waifu_list'), require('./waifu_set'), require('./waifu_search'), require('./waifu_addpicture'), require('./waifu_id')]
 };

@@ -35,7 +35,7 @@ module.exports = {
                 return utils.uploadFile(args[args.length - 1]).then((url)=> {
                     return cch.getGlobalUserPerm(msg.author.id).then((perm)=> {
                         return husbando.createCharacterPicture({link: url, verified: (perm > 5)}).then(()=> {
-                            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'husbando.createPicture'));
+                            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'husbando.createPicture.default'));
                         });
                     });
                 });

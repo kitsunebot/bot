@@ -29,23 +29,11 @@ module.exports = {
             }
         }).then((husbando)=> {
             husbando.getCharacterPictures({where: {verified: true}, limit: 1, order: 'RAND()'}).spread((pic)=> {
-                /*request.get(pic.link, {encoding: null}, function (err, resp, data) {
-                 var file;
-                 if (err || resp.statusCode !== 200) {
-                 story.warn('Error loading picture', {attach: {err: err, statusCode: resp.statusCode}});
-                 file = undefined;
-                 } else {
-                 file = {
-                 file: data,
-                 name: husbando.name + husbando.source + '.' + pic.link.split('.')[pic.link.split('.').length - 1]
-                 }
-                 }*/
                 eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'husbando.default', {
                     name: husbando.name,
                     origin: husbando.source,
                     pic_link: pic.link
                 }), file);
-                //});
             });
         });
         return null;
@@ -54,5 +42,5 @@ module.exports = {
         caseInsensitive: true,
         deleteCommand: true
     },
-    subcommands: [require('./husbando_list'), require('./husbando_set'), require('./husbando_search'), require('./husbando_addpicture')]
+    subcommands: [require('./husbando_list'), require('./husbando_set'), require('./husbando_search'), require('./husbando_addpicture'),require('./husbando_id')]
 };

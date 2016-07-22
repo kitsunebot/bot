@@ -22,6 +22,10 @@ module.exports = {
             search: {
                 default: 'I have found the following waifus in my database: ```&{waifus}```',
                 format: '&{waifu} [&{id}]'
+            },
+            id: {
+                default: 'Your waifu has the id "&{id}"',
+                no_waifu: 'You don\'t have a registered waifu.'
             }
         },
         husbando: {
@@ -40,6 +44,10 @@ module.exports = {
             search: {
                 default: 'I have found the following husbandos in my database: ```&{husbandos}```',
                 format: '&{husbando} [&{id}]'
+            },
+            id: {
+                default: 'Your husbando has the id "&{id}"',
+                no_waifu: 'You don\'t have a registered husbando.'
             }
         },
         nick: {
