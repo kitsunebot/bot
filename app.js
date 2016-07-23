@@ -73,6 +73,19 @@ pubsub.on('twitchAnnounce', (data)=> {
     });
 });
 
+pubsub.on('proxerAnnounce', (data)=> {
+    data.channels.filter((channel)=> {
+        return eris.channelGuildMap[channel] !== undefined
+    }).forEach((chid)=> {
+        eris.createMessage(chid, lang.computeLangString(eris.channelGuildMap[chid], 'proxer.announce', false, {
+            anime_title: data.title,
+            nr: data.nr,
+            link: data.link,
+            metions: ''
+        }));
+    });
+});
+
 pubsub.on('nicknameChange', (nick)=> {
     eris.guilds.map((g)=> {
         return g

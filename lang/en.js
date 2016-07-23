@@ -64,6 +64,9 @@ module.exports = {
             default_separator: ',',
             announce: '&{ch_name} just went online on twitch: \nTitle: &{str_title}\nGame: &{str_game}\nLink: &{ch_link}'
         },
+        proxer: {
+            announce: '&{anime_title} Episode &{nr} is now available on &{link}\n&{mentions}'
+        },
         prefix: {
             list: 'These prefixes are available on this guild: &{prefixes}',
             add: 'Prefix was added.',
