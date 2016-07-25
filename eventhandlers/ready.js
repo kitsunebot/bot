@@ -21,8 +21,10 @@ module.exports = {
                     if (!created) {
                         return guild.update({name: guild.name, region: guild.region})
                     } else {
-                        return db.models.Prefix.findAll({where:{$or:[{prefix:'!fb'},{prefix:'!fb '}]}}).then((prefixes)=>{
-                            return Promise.all(prefixes.map((prefix)=>{return prefix.addGuild(guild.uid)})).then(()=>{
+                        return db.models.Prefix.findAll({where: {$or: [{prefix: '!fb'}, {prefix: '!fb '}]}}).then((prefixes)=> {
+                            return Promise.all(prefixes.map((prefix)=> {
+                                return prefix.addGuild(guild.uid)
+                            })).then(()=> {
                                 return Promise.resolve(guild);
                             });
                         });
@@ -37,12 +39,21 @@ module.exports = {
                     }).spread((user)=> {
                         return guild.setOwner(user);
                     }).then(()=> {
-                        return cache.getGuild(eguild.id);
+                        cache.getGuild(eguild.id);
+                        return Promise.resolve(guild);
                     });
-                })
+                }).then((guild)=> {
+                    var perm = eguild.members.find((member)=> {
+                        return member.user.id === eris.user.id
+                    }).permission;
+                    return guild.update({
+                        permission: JSON.stringify([perm.json, {allow: perm.allow, deny: perm.deny}])
+                    });
+                });
             }));
         }).then(()=> {
             story.info('SQL', 'Database initialized');
+            eris.editGame({name: 'DEBUG MODE'});
         }).catch((err)=> {
             story.error('SQL', 'Error while initializing SQL DB', {attach: err});
         })

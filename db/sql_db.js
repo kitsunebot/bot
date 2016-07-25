@@ -4,6 +4,7 @@ var path = require('path');
 var story = require('storyboard').mainStory;
 var Cron = require('cron').CronJob;
 var utils = require('../lib/utils');
+var moment = require('moment');
 
 if (config.db.options.logging === true) config.db.options.logging = (toLog)=> {
     //story.debug('SQL', toLog);
@@ -20,7 +21,9 @@ var models = {
     TwitchWatcher: sequelize.import(path.join(__dirname, 'models', 'TwitchWatcher')),
     Character: sequelize.import(path.join(__dirname, 'models', 'Character')),
     CharacterPicture: sequelize.import(path.join(__dirname, 'models', 'CharacterPicture')),
-    Message: messageDB.import(path.join(__dirname, 'models', 'Message'))
+    Message: messageDB.import(path.join(__dirname, 'models', 'Message')),
+    ProxerAnime: sequelize.import(path.join(__dirname, 'models', 'ProxerAnime')),
+    ProxerWatcher: sequelize.import(path.join(__dirname, 'models', 'ProxerWatcher'))
 };
 
 models.Guild.belongsTo(models.User, {as: 'Owner'});
@@ -39,6 +42,11 @@ models.TwitchWatcher.belongsTo(models.Guild);
 models.TwitchWatcher.belongsTo(models.TwitchChannel);
 models.TwitchChannel.hasMany(models.TwitchWatcher);
 
+models.ProxerWatcher.belongsTo(models.ProxerAnime);
+models.ProxerAnime.hasMany(models.ProxerWatcher);
+models.Guild.hasMany(models.ProxerWatcher);
+models.ProxerWatcher.belongsTo(models.Guild);
+
 models.User.belongsTo(models.Character, {as: 'Waifu'});
 models.User.belongsTo(models.Character, {as: 'Husbando'});
 //models.Character.hasMany(models.User, {as: 'Waifu'});
@@ -50,7 +58,7 @@ sequelize.sync();
 messageDB.sync();
 
 var messageCron = new Cron('0 0 0,6,12,18 * * *', function () {
-    models.Message.findAll({where: {created_at: {$lt: moment().subtract(3, 'days').toDate()}}}).then(function (msgs) {
+    models.Message.findAll({where: {created_at: {$lt: moment().subtract(3, 'days').unix()}}}).then(function (msgs) {
         return Promise.all(msgs.map((msg)=> {
             return msg.destroy()
         }));

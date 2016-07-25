@@ -7,7 +7,7 @@ module.exports = function (sequelize, Sequelize) {
         cid: {type: Sequelize.STRING(32), allowNull: false},
         edited: {type: Sequelize.BOOLEAN, defaultValue: false},
         deleted: {type: Sequelize.BOOLEAN, defaultValue: false},
-        created_at: {type:Sequelize.DATE}
+        timestamp: {type: Sequelize.INTEGER, allowNull: false, defaultValue: 0}
     }, {
         underscored: true,
         tableName: 'messages'

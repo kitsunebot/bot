@@ -56,7 +56,6 @@ fs.readdir('./commands', (err, files)=> {
             }
         });
         eris.connect();
-        eris.editGame({name: 'DEBUG MODE'});
     }
 });
 
@@ -81,7 +80,7 @@ pubsub.on('proxerAnnounce', (data)=> {
             anime_title: data.title,
             nr: data.nr,
             link: data.link,
-            metions: ''
+            mentions: ''
         }));
     });
 });
