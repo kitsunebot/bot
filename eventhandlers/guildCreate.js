@@ -36,6 +36,20 @@ module.exports = {
             }
         }).then((dbguild)=> {
             return dbguild.setOwner(guild.ownerID);
+        }).then((dbguild)=>{
+            return Promise.all(guild.channels.map(channel=> {
+                return db.models.Channel.findOrCreate({
+                    where: {cid: channel.id},
+                    defaults: {
+                        cid: channel.id,
+                        name: channel.name,
+                        description: channel.topic,
+                        type: channel.type
+                    }
+                }).spread(channel=> {
+                    return channel.setGuild(dbguild)
+                });
+            }));
         }).then(()=> {
             return cache.getGuild(guild.id);
         }).then(()=> {

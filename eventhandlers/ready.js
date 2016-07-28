@@ -49,6 +49,20 @@ module.exports = {
                     return guild.update({
                         permission: JSON.stringify([perm.json, {allow: perm.allow, deny: perm.deny}])
                     });
+                }).then(guild=> {
+                    return Promise.all(eguild.channels.map(channel=> {
+                        return db.models.Channel.findOrCreate({
+                            where: {cid: channel.id},
+                            defaults: {
+                                cid: channel.id,
+                                name: channel.name,
+                                description: channel.topic,
+                                type: channel.type
+                            }
+                        }).spread(channel=> {
+                            return channel.setGuild(guild)
+                        });
+                    }));
                 });
             }));
         }).then(()=> {

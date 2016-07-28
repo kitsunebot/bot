@@ -72,6 +72,10 @@ module.exports = {
             add: 'Prefix was added.',
             remove: 'Prefix was removed.',
             no_remove: 'This prefix can\'t be disabled'
+        },
+        chatlog:{
+            default: 'To create a chatlog, please use `!fb chatlog create`.',
+            create: 'A chatlog has been created! You can view it here: https://foxbot.fuechschen.org/chatlogs/&{cl_id}'
         }
     }
 };
