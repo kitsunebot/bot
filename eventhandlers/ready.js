@@ -16,10 +16,10 @@ module.exports = {
             return Promise.all(eris.guilds.map((eguild) => {
                 return db.models.Guild.findOrCreate({
                     where: {gid: eguild.id},
-                    defaults: {gid: eguild.id, name: eguild.name, region: eguild.region}
+                    defaults: {gid: eguild.id, name: eguild.name, region: eguild.region, shard_id: eguild.shard.id}
                 }).spread((guild, created) => {
                     if (!created) {
-                        return guild.update({name: guild.name, region: guild.region})
+                        return guild.update({name: geuild.name, region: eguild.region, shard_id: eguild.shard.id})
                     } else {
                         return db.models.Prefix.findAll({where: {$or: [{prefix: '!fb'}, {prefix: '!fb '}]}}).then((prefixes)=> {
                             return Promise.all(prefixes.map((prefix)=> {

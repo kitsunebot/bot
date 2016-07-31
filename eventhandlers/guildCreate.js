@@ -15,7 +15,8 @@ module.exports = {
                 gid: guild.id,
                 name: guild.name,
                 region: guild.region,
-                avability: true
+                avability: true,
+                shard_id: guild.shard.id
             }
         }).spread((dbguild, created)=> {
             if (created) {
@@ -31,12 +32,13 @@ module.exports = {
                     gid: guild.id,
                     name: guild.name,
                     region: guild.region,
-                    avability: true
+                    avability: true,
+                    shard_id:guild.shard.id
                 })
             }
         }).then((dbguild)=> {
             return dbguild.setOwner(guild.ownerID);
-        }).then((dbguild)=>{
+        }).then((dbguild)=> {
             return Promise.all(guild.channels.map(channel=> {
                 return db.models.Channel.findOrCreate({
                     where: {cid: channel.id},

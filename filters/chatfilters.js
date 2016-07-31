@@ -13,7 +13,7 @@ function loadChatfilters() {
     fs.readdir(path.resolve(__dirname, 'chatfilters'), (err, files)=> {
         if (err) {
             story.fatal('ChatFilters', 'Cannot load chatfilters', {attach: err});
-            chatfilters.push(Promise.resolve());
+            chatfilters.push(Promise.resolve);
         } else {
             if (files.length === 0) chatfilters.push(Promise.resolve);
             else {
