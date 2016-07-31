@@ -5,6 +5,7 @@ var path = require('path');
 
 var eris = require('./lib/client');
 var pubsub = require('./lib/db');
+var db = require('./lib/db');
 var lang = require('./lib/lang');
 
 storyboard.addListener(require('storyboard/lib/listeners/console').default);
@@ -110,4 +111,16 @@ pubsub.on('restart', (timeout)=> {
             }
         }
     }, timeout)
+});
+
+pubsub.on('checkGuilds', ()=> {
+    for (var e in eris.guilds) {
+        db.models.Guild.update({online: true}, {where: {gid: eris.guilds[e].id}});
+    }
+});
+
+pubsub.on('checkUsers', ()=> {
+    for (var e in eris.users) {
+        db.models.Guild.update({online: true}, {where: {gid: eris.users[e].id}});
+    }
 });

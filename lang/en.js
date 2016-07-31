@@ -6,6 +6,9 @@ module.exports = {
         error: 'The command ended in an unknown error. If it persists, please open an issue on github: https://github.com/Fuechschen/discordbot/issues',
         no_permission: 'You don\'t have permission to do this. [Needed: &{required} | Current: &{have}]',
         username: '[&{username}]',
+        commands:{
+            default:'You can find all my commands here: https://foxbot.fuechschen.org/commands'
+        },
         waifu: {
             default: 'Your waifu is &{name} (&{origin})\n&{pic_link}',
             format: '&{name} (&{origin})',
