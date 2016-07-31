@@ -19,7 +19,7 @@ module.exports = {
                     defaults: {gid: eguild.id, name: eguild.name, region: eguild.region, shard_id: eguild.shard.id}
                 }).spread((guild, created) => {
                     if (!created) {
-                        return guild.update({name: geuild.name, region: eguild.region, shard_id: eguild.shard.id})
+                        return guild.update({name: eguild.name, region: eguild.region, shard_id: eguild.shard.id})
                     } else {
                         return db.models.Prefix.findAll({where: {$or: [{prefix: '!fb'}, {prefix: '!fb '}]}}).then((prefixes)=> {
                             return Promise.all(prefixes.map((prefix)=> {
