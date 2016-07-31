@@ -1,5 +1,5 @@
 var lang = require('../lib/lang');
-var db = require('../db/sql_db');
+var db = require('../lib/db');
 var eris = require('../lib/client');
 
 var Promise = require('bluebird');

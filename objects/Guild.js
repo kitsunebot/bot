@@ -2,8 +2,8 @@ var Promise = require('bluebird');
 var moment = require('moment');
 
 var eris = require('../lib/client');
-var db = require('../db/sql_db');
-var pubsub = require('../db/redis_pubsub');
+var db = require('../lib/db');
+var pubsub = require('../lib/db');
 var lang = require('../lib/lang');
 var cache = require('../lib/cache');
 
@@ -89,7 +89,7 @@ class Guild {
         this.accessed();
         var that = this;
         return db.models.Prefix.find({where: {prefix: prefix}}).then((prefix)=> {
-            if(prefix.allowDisable) return prefix.removeGuild(that.id).then(()=> {
+            if (prefix.allowDisable) return prefix.removeGuild(that.id).then(()=> {
                 that.updateFromDb();
                 return Promise.resolve(true);
             });

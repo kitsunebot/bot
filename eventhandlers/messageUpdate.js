@@ -1,4 +1,4 @@
-var db = require('../db/sql_db');
+var db = require('../lib/db');
 
 module.exports = {
     event: 'messageUpdate',

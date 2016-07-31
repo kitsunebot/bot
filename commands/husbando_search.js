@@ -1,6 +1,6 @@
 var S = require('string');
 
-var db = require('../db/sql_db');
+var db = require('../lib/db');
 var lang = require('../lib/lang');
 var eris = require('../lib/client');
 

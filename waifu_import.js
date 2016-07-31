@@ -1,4 +1,4 @@
-var db = require('./db/sql_db');
+var db = require('db');
 var fs = require('fs');
 var utils = require('./lib/utils');
 var shortid = require('shortid');

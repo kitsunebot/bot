@@ -56,7 +56,8 @@ module.exports = {
         },
         stats: {
             default: 'Here are my current stats:\n```Uptime: started &{uptime}\nGuilds: &{guild_count}\nChannels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```',
-            error: 'Value couldn\'t be retrieved. We\'re working on it!'
+            error: 'Value couldn\'t be retrieved. We\'re working on it!',
+            guild:'Here are my current stats:\n```Channels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```'
         },
         twitch: {
             default: 'Usage: `!fb watcher add [channel]` to add a watcher, `!fb wather remove [channel]` to remove a watcher.\nCurrent watchers for this channel: &{watchers}',

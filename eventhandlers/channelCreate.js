@@ -1,4 +1,4 @@
-var db = require('../db/sql_db');
+var db = require('../lib/db');
 
 module.exports = {
     event: 'channelCreate',
@@ -11,8 +11,8 @@ module.exports = {
                 description: channel.topic,
                 type: channel.type
             }
-        }).then((ch)=> {
-            ch.setGuild(channel.guild.id)
+        }).spread((ch)=> {
+            return ch.setGuild(channel.guild.id)
         });
     })
 };

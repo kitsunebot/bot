@@ -1,6 +1,6 @@
 var story = require('storyboard').mainStory;
 
-var db = require('../db/sql_db');
+var db = require('../lib/db');
 var cache = require('../lib/cache');
 
 module.exports = {

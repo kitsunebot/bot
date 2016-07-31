@@ -2,7 +2,7 @@ var story = require('storyboard').mainStory;
 var Promise = require('bluebird');
 
 var eris = require('../lib/client');
-var db = require('../db/sql_db');
+var db = require('../lib/db');
 var cache = require('../lib/cache');
 
 module.exports = {

@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 
 var eris = require('./lib/client');
-var pubsub = require('./db/redis_pubsub');
+var pubsub = require('./lib/db');
 var lang = require('./lib/lang');
 
 storyboard.addListener(require('storyboard/lib/listeners/console').default);

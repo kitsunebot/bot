@@ -1,4 +1,4 @@
-var db = require('../db/sql_db');
+var db = require('../lib/db');
 var eris = require('../lib/client');
 var lang = require('../lib/lang');
 

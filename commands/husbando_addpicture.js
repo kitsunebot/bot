@@ -1,7 +1,7 @@
 var Promise = require('bluebird');
 var validator = require('validator');
 
-var db = require('../db/sql_db');
+var db = require('../lib/db');
 var lang = require('../lib/lang');
 var utils = require('../lib/utils');
 var cch = require('../lib/cache');

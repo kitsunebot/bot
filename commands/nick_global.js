@@ -1,7 +1,7 @@
 var eris = require('../lib/client');
 var lang = require('../lib/lang');
 var cache = require('../lib/cache');
-var pubsub = require('../db/redis_pubsub');
+var pubsub = require('../lib/db');
 
 module.exports = {
     label: 'global',

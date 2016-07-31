@@ -26,7 +26,8 @@ module.exports = {
     options: {
         caseInsensitive: true,
         deleteCommand: true,
-        serverOnly: true
+        serverOnly: true,
+        aliases:['twitchwatcher']
     },
     subcommands: [require('./twitchwatcher_add'), require('./twitchwatcher_remove')]
 };
