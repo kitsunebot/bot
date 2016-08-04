@@ -3,7 +3,6 @@ var moment = require('moment');
 
 var eris = require('../lib/client');
 var db = require('../lib/db');
-var pubsub = require('../lib/db');
 var lang = require('../lib/lang');
 var cache = require('../lib/cache');
 
@@ -52,12 +51,6 @@ class Guild {
                     });
                 })]).then(()=> {
                     cb(null)
-                });
-
-                pubsub.on('guildUpdate', (data)=> {
-                    if (data.gid === that.id) {
-                        that.updateValues(data.updates);
-                    }
                 });
             } else cb(new Error('guild not found'));
         });
@@ -189,6 +182,10 @@ class Guild {
 
     accessed() {
         this.lastAccessed = moment();
+    }
+
+    updateFromPubSub(data){
+        this.updateValues(data.updates);
     }
 
 }
