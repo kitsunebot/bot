@@ -6,7 +6,7 @@ module.exports = {
     enabled: true,
     isSubcommand: false,
     generator: (msg, args)=> {
-        db.models.Pictures.find({where: {type: 'wtf'}, order: 'RAND()'}).then(picture=> {
+        db.models.Picture.find({where: {type: 'wtf'}, order: 'RAND()'}).then(picture=> {
             eris.createMessage(msg.channel.id, picture.link);
         });
     },
