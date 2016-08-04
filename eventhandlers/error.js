@@ -2,8 +2,8 @@ var story = require('storyboard').mainStory;
 
 module.exports = {
     event: 'error',
-    enabled:true,
-    handler: (msg, shard)=>{
-        story.error('eris','[' + shard + ']' + msg)
+    enabled: true,
+    handler: (err, shard)=> {
+        story.error('eris', '[' + shard + ']' + err, {attach: err});
     }
 };

@@ -8,7 +8,7 @@ module.exports = {
     event: 'guildCreate',
     enabled: true,
     handler: (guild) => {
-        story.debug('guildCreate', guild.name + '[' + guild.id + ']');
+        story.debug('guildCreate', '[' + guild.shard.id + ']' + guild.name + '[' + guild.id + ']');
         db.models.Guild.findOrCreate({
             where: {gid: guild.id},
             defaults: {
@@ -33,7 +33,7 @@ module.exports = {
                     name: guild.name,
                     region: guild.region,
                     avability: true,
-                    shard_id:guild.shard.id
+                    shard_id: guild.shard.id
                 })
             }
         }).then((dbguild)=> {
