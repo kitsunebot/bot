@@ -7,7 +7,7 @@ var fcache = require('../lib/cache');
 
 var chatfilters = [];
 
-var strings = {};
+var keys = {};
 
 loadChatfilters();
 
@@ -24,7 +24,7 @@ function loadChatfilters() {
                         var filter = require(path.resolve(__dirname, 'chatfilters', file));
                         if (filter.enabled) {
                             chatfilters.push(filter);
-                            strings[filter.type] = filter.strings;
+                            keys[filter.type] = filter.keys;
                             story.debug('ChatFilters', 'Loaded chatfilter ' + filter.name);
                         } else story.debug('ChatFilters', 'Skipping ' + filter.name + ' since it\'s disabled.');
                     } catch (e) {
@@ -43,12 +43,12 @@ module.exports = {
         var filt = fcache.getChannelFilters(msg.channel.id);
         return Promise.all(chatfilters.filter((filter)=> {
             filt.includes(filter.name)
-        }).map(filter=>filter(msg)))
+        }).map(filter=>filter.check(msg)))
     },
     resolveMsg: (type) => {
-        return strings[type];
+        return keys[type];
     },
     _: {
-        strings: strings
+        keys
     }
 };
