@@ -4,6 +4,6 @@ module.exports = {
     event: 'messageDelete',
     enabled: true,
     handler: (msg)=> {
-        db.models.Message.update({deleted: true}, {where: {mid: msg.id}});
+        if (msg) db.models.Message.update({deleted: true}, {where: {mid: msg.id}});
     }
 };
