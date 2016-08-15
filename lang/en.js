@@ -1,7 +1,7 @@
 module.exports = {
     lang: 'en',
     strings: {
-        help: 'This bot was created by Fuechschen#5218. Use !fb commands for my commands.',
+        help: 'This bot was created by &{mention}. Use !fb commands for my commands.',
         not_implemented: 'This feature isn\'t available yet.',
         error: 'The command ended in an unknown error. If it persists, please open an issue on github: https://github.com/Fuechschen/discordbot/issues',
         no_permission: 'You don\'t have permission to do this. [Needed: &{required} | Current: &{have}]',

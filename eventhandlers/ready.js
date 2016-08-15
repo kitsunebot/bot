@@ -39,7 +39,7 @@ module.exports = {
                     }).spread((user)=> {
                         return guild.setOwner(user);
                     }).then(()=> {
-                        cache.getGuild(eguild.id);
+                        cache.loadGuild(eguild.id);
                         return Promise.resolve(guild);
                     });
                 }).then((guild)=> {

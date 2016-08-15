@@ -53,7 +53,7 @@ module.exports = {
                 });
             }));
         }).then(()=> {
-            return cache.getGuild(guild.id);
+            return cache.loadGuild(guild.id);
         }).then(()=> {
             return Promise.all(guild.members.map((member)=> {
                 return db.models.User.upsert({

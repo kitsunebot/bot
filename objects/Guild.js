@@ -4,7 +4,8 @@ var moment = require('moment');
 var eris = require('../lib/client');
 var db = require('../lib/db');
 var lang = require('../lib/lang');
-var cache = require('../lib/cache');
+var GuildFeature = require('../objects/GuildFeature');
+var ChatFilter = require('../objects/ChatFilter');
 
 class Guild {
     constructor(gid, cb) {
@@ -14,7 +15,6 @@ class Guild {
         var that = this;
         that.id = gid;
         that.avability = !this.erisGuild.unavailable;
-        that.lastAccessed = moment();
         db.models.Guild.find({where: {gid: gid}}).then(function (guild) {
             if (guild !== null && guild !== undefined) {
                 that.name = guild.name;
@@ -28,8 +28,8 @@ class Guild {
                     enabled: guild.customtext_enabled,
                     prefix: guild.customtext_prefix
                 };
-                require('../lib/cache').setGuildLanguage(that.id, that.language);
-                Promise.all([that.calculatePrefixes(Promise.resolve(guild)).then((pr)=> {
+                that.features = [];
+                Promise.join(that.calculatePrefixes(Promise.resolve(guild)).then((pr)=> {
                     eris.registerGuildPrefix(that.id, pr);
                     return Promise.resolve()
                 }), guild.getGuildRoles().then((roles)=> {
@@ -49,7 +49,13 @@ class Guild {
                         });
                         return Promise.resolve();
                     });
-                })]).then(()=> {
+                }), guild.getGuildFeatures({where: {enabled: true}}).then((features)=> {
+                    features.map(feature=> {
+                        return that.features.push(new GuildFeature(feature, that));
+                    });
+                }), guild.getChatFilter().then(filter=> {
+                    if (filter)that.chatfilter = new ChatFilter(filter, that);
+                })).then(()=> {
                     cb(null)
                 });
             } else cb(new Error('guild not found'));
@@ -57,8 +63,11 @@ class Guild {
     }
 
     getLangString(key) {
-        this.accessed();
         return lang.resolve(this.language, key);
+    }
+
+    getLanguage() {
+        return this.language;
     }
 
     setLanguage(lang) {
@@ -68,7 +77,6 @@ class Guild {
     }
 
     addPrefix(prefix) {
-        this.accessed();
         var that = this;
         return db.models.Prefix.findOrCreate({where: {prefix: prefix}, defaults: {prefix: prefix}}).spread((prefix)=> {
             return prefix.addGuild(that.id).then(()=> {
@@ -79,7 +87,6 @@ class Guild {
     }
 
     removePrefix(prefix) {
-        this.accessed();
         var that = this;
         return db.models.Prefix.find({where: {prefix: prefix}}).then((prefix)=> {
             if (prefix.allowDisable) return prefix.removeGuild(that.id).then(()=> {
@@ -95,19 +102,16 @@ class Guild {
     }
 
     getDbInstance() {
-        this.accessed();
         return db.models.Guild.find({where: {gid: this.id}});
     }
 
     updateDbInstance(updates) {
-        this.accessed();
         return this.getDbInstance().then((guild)=> {
             return guild.update(updates);
         })
     }
 
     updateValues(updates) {
-        this.accessed();
         if (updates !== undefined) {
             for (var i in updates) {
                 if (typeof updates[i] !== 'object' || Array.isArray(updates[i])) {
@@ -180,11 +184,7 @@ class Guild {
         });
     }
 
-    accessed() {
-        this.lastAccessed = moment();
-    }
-
-    updateFromPubSub(data){
+    updateFromPubSub(data) {
         this.updateValues(data.updates);
     }
 
