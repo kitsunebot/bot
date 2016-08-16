@@ -8,7 +8,7 @@ module.exports = {
     enabled: true,
     generator: (msg)=> {
         db.models.User.update({recieve_broadcasts:true},{where:{uid:msg.author.id}}).then(()=>{
-            eris.createMessage(lang.computeResponse(msg,'broadcast.enable'));
+            eris.createMessage(msg.channel.id,lang.computeResponse(msg,'broadcast.enable'));
         })
     },
     options: {
