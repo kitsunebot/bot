@@ -39,6 +39,10 @@ module.exports = {
                     }).spread((user)=> {
                         return guild.setOwner(user);
                     }).then(()=> {
+                        return Promise.all(eguild.members.map((member=> {
+                            return guild.addUser(member.id);
+                        })));
+                    }).then(()=> {
                         cache.loadGuild(eguild.id);
                         return Promise.resolve(guild);
                     });

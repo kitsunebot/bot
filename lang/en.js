@@ -4,10 +4,11 @@ module.exports = {
         help: 'This bot was created by &{mention}. Use !fb commands for my commands.',
         not_implemented: 'This feature isn\'t available yet.',
         error: 'The command ended in an unknown error. If it persists, please open an issue on github: https://github.com/Fuechschen/discordbot/issues',
+        syntax_error:'Something went wrong. Please check command syntax. (https://foxbot.fuechschen.org/commands)',
         no_permission: 'You don\'t have permission to do this. [Needed: &{required} | Current: &{have}]',
         username: '[&{username}]',
-        commands:{
-            default:'You can find all my commands here: https://foxbot.fuechschen.org/commands'
+        commands: {
+            default: 'You can find all my commands here: https://foxbot.fuechschen.org/commands'
         },
         waifu: {
             default: 'Your waifu is &{name} (&{origin})\n&{pic_link}',
@@ -60,7 +61,7 @@ module.exports = {
         stats: {
             default: 'Here are my current stats:\n```Uptime: started &{uptime}\nGuilds: &{guild_count}\nChannels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```',
             error: 'Value couldn\'t be retrieved. We\'re working on it!',
-            guild:'Here are my current stats:\n```Channels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```'
+            guild: 'Here are my current stats:\n```Channels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```'
         },
         twitch: {
             default: 'Usage: `!fb watcher add [channel]` to add a watcher, `!fb wather remove [channel]` to remove a watcher.\nCurrent watchers for this channel: &{watchers}',
@@ -77,9 +78,17 @@ module.exports = {
             remove: 'Prefix was removed.',
             no_remove: 'This prefix can\'t be disabled'
         },
-        chatlog:{
+        chatlog: {
             default: 'To create a chatlog, please use `!fb chatlog create`.',
             create: 'A chatlog has been created! You can view it here: https://foxbot.fuechschen.org/chatlogs/&{cl_id}'
+        },
+        broadcast: {
+            send:'Broadcast is being prepared and will be sent in the next few seconds.',
+            create: 'Broadcast has been created. Type `!fb broadcast confirm &{confirm}` to send it to all users in this guild.',
+            wrong_user:'You can\'t confirm the broadcast of another user.',
+            msg:'You received a broadcast by &{sender} from &{sender_guild}. If you don\'t want to receive broadcasts, type `!fb broadcast disable`\n```&{msg}```',
+            disable:'Broadcasts have been disabled. You won\'t receive any more.',
+            enable:'Broadcasts have been enabled. You will receive them again.'
         }
     }
 };

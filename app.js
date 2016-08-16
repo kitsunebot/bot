@@ -114,13 +114,9 @@ pubsub.on('restart', (timeout)=> {
 });
 
 pubsub.on('checkGuilds', ()=> {
-    for (var e in eris.guilds) {
-        db.models.Guild.update({online: true}, {where: {gid: eris.guilds[e].id}});
-    }
+    eris.guilds.map(guild=>db.models.Guild.update({online: true}, {where: {gid: guild.id}}));
 });
 
 pubsub.on('checkUsers', ()=> {
-    for (var e in eris.users) {
-        db.models.Guild.update({online: true}, {where: {gid: eris.users[e].id}});
-    }
+    eris.users.map(user=>db.models.User.update({online: true}, {where: {uid: user.id}}));
 });
