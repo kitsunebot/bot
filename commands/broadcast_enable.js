@@ -6,10 +6,10 @@ module.exports = {
     label: 'enable',
     isSubcommand: true,
     enabled: true,
-    generator: (msg)=> {
-        db.models.User.update({recieve_broadcasts:true},{where:{uid:msg.author.id}}).then(()=>{
-            eris.createMessage(msg.channel.id,lang.computeResponse(msg,'broadcast.enable'));
-        })
+    generator: (msg,args)=> {
+        db.models.User.update({recieve_broadcasts: true}, {where: {uid: msg.author.id}}).then(()=> {
+            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'broadcast.enable'));
+        });
     },
     options: {
         deleteCommand: true,
