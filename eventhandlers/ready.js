@@ -73,7 +73,7 @@ module.exports = {
             story.info('SQL', 'Database initialized');
             return db.redis.get('fixedStatus');
         }).then((st)=> {
-            if (st === 1) {
+            if (st === '1') {
                 return db.redis.get('fixedStatus:status').then((status)=> {
                     eris.editGame({name: status});
                 });
