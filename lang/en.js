@@ -67,7 +67,10 @@ module.exports = {
             default: 'Usage: `!fb watcher add [channel]` to add a watcher, `!fb wather remove [channel]` to remove a watcher.\nCurrent watchers for this channel: &{watchers}',
             default_format: '`&{ch_name}`',
             default_separator: ',',
-            announce: '&{ch_name} just went online on twitch: \nTitle: &{str_title}\nGame: &{str_game}\nLink: &{ch_link}'
+            announce: '&{ch_name} just went online on twitch: \nTitle: &{str_title}\nGame: &{str_game}\nLink: &{ch_link}',
+            add:'Watcher added. Online-Status of &{channel} will now be reported to this channel.',
+            watched:'That channel is already watched.',
+            not_exists:'That channel doesn\'t exist.'
         },
         proxer: {
             announce: '&{anime_title} Episode &{nr} is now available on &{link}\n&{mentions}'
