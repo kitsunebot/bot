@@ -10,6 +10,7 @@ module.exports = {
     enabled: true,
     handler: ()=> {
         story.info('Shards are ready to operate.');
+        eris.editGame({name:'Initializing...'});
         Promise.all(eris.users.map((user)=> {
             return db.models.User.upsert({uid: user.id, username: user.username, discriminator: user.discriminator});
         })).then(()=> {
