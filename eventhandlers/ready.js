@@ -71,7 +71,13 @@ module.exports = {
             }));
         }).then(()=> {
             story.info('SQL', 'Database initialized');
-            eris.editGame({name: 'DEBUG MODE'});
+            return db.redis.get('fixedStatus');
+        }).then((st)=> {
+            if (st === 1) {
+                return db.redis.get('fixedStatus:status').then((status)=> {
+                    eris.editGame({name: status});
+                });
+            } else return Promise.resolve();
         }).catch((err)=> {
             story.error('SQL', 'Error while initializing SQL DB', {attach: err});
         })

@@ -120,3 +120,12 @@ pubsub.on('checkGuilds', ()=> {
 pubsub.on('checkUsers', ()=> {
     eris.users.map(user=>db.models.User.update({online: true}, {where: {uid: user.id}}));
 });
+
+pubsub.on('statusUpdate', (update)=> {
+    if (update.mode === 'manual') eris.editGame({name: update.status});
+    else {
+        db.models.StatusMessage.find({order: 'RAND()'}).then(msg=> {
+            eris.editGame({name: msg.message});
+        })
+    }
+});
