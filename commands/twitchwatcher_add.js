@@ -11,13 +11,13 @@ module.exports = {
     enabled: true,
     isSubcommand: true,
     generator: (msg, args)=> {
-        request.get('https://api.twitch.tv/kraken/channels/' + split[2], function (err, resp) {
+        request.get('https://api.twitch.tv/kraken/channels/' + args[0], function (err, resp) {
             if (!err) {
                 if ([304, 200].indexOf(resp.statusCode) !== -1) {
                     db.models.TwitchChannel.findOrCreate({
-                        where: {channel: split[2]}, defaults: {
-                            channel: split[0],
-                            api_url: 'https://api.twitch.tv/kraken/streams/' + split[2]
+                        where: {channel: args[0]}, defaults: {
+                            channel: args[0],
+                            api_url: 'https://api.twitch.tv/kraken/streams/' + args[0]
                         }
                     }).spread(function (channel) {
                         channel.getTwitchWatchers({where: {server_channel: msg.channel.id}}).then(function (watchers) {
