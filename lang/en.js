@@ -4,7 +4,7 @@ module.exports = {
         help: 'This bot was created by &{mention}. Use !fb commands for my commands.',
         not_implemented: 'This feature isn\'t available yet.',
         error: 'The command ended in an unknown error. If it persists, please open an issue on github: https://github.com/Fuechschen/discordbot/issues',
-        syntax_error:'Something went wrong. Please check command syntax. (https://foxbot.fuechschen.org/commands)',
+        syntax_error: 'Something went wrong. Please check command syntax. (https://foxbot.fuechschen.org/commands)',
         no_permission: 'You don\'t have permission to do this. [Needed: &{required} | Current: &{have}]',
         username: '[&{username}]',
         commands: {
@@ -68,9 +68,9 @@ module.exports = {
             default_format: '`&{ch_name}`',
             default_separator: ',',
             announce: '&{ch_name} just went online on twitch: \nTitle: &{str_title}\nGame: &{str_game}\nLink: &{ch_link}',
-            add:'Watcher added. Online-Status of &{channel} will now be reported to this channel.',
-            watched:'That channel is already watched.',
-            not_exists:'That channel doesn\'t exist.'
+            add: 'Watcher added. Online-Status of &{channel} will now be reported to this channel.',
+            watched: 'That channel is already watched.',
+            not_exists: 'That channel doesn\'t exist.'
         },
         proxer: {
             announce: '&{anime_title} Episode &{nr} is now available on &{link}\n&{mentions}'
@@ -86,12 +86,18 @@ module.exports = {
             create: 'A chatlog has been created! You can view it here: https://foxbot.fuechschen.org/chatlogs/&{cl_id}'
         },
         broadcast: {
-            send:'Broadcast is being prepared and will be sent in the next few seconds.',
+            send: 'Broadcast is being prepared and will be sent in the next few seconds.',
             create: 'Broadcast has been created. Type `!fb broadcast confirm &{confirm}` to send it to all users in this guild.',
-            wrong_user:'You can\'t confirm the broadcast of another user.',
-            msg:'You received a broadcast by &{sender} from &{sender_guild}. If you don\'t want to receive broadcasts, type `!fb broadcast disable`\n```&{msg}```',
-            disable:'Broadcasts have been disabled. You won\'t receive any more.',
-            enable:'Broadcasts have been enabled. You will receive them again.'
+            wrong_user: 'You can\'t confirm the broadcast of another user.',
+            msg: 'You received a broadcast by &{sender} from &{sender_guild}. If you don\'t want to receive broadcasts, type `!fb broadcast disable`\n```&{msg}```',
+            disable: 'Broadcasts have been disabled. You won\'t receive any more.',
+            enable: 'Broadcasts have been enabled. You will receive them again.'
+        },
+        github: {
+            watch: '**&{sender} has starred &{repo_name}**',
+            push: '**New commits for &{repo_name}:**\n&{commits}',
+            commit: '    `&{commit_id}` *&{committer}*: **&{message}**',
+            _created:'Your feed has been created. Point a webhook to `https://foxbot.fuechschen.org/api/v1/github/&{fid}` and enable he events you want to be displayed.'
         }
     }
 };

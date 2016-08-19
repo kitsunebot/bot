@@ -78,7 +78,10 @@ module.exports = {
                 return db.redis.get('fixedStatus:status').then((status)=> {
                     eris.editGame({name: status});
                 });
-            } else return Promise.resolve();
+            } else {
+                db.sendSelf('statusUpdate');
+                return Promise.resolve();
+            }
         }).catch((err)=> {
             story.error('SQL', 'Error while initializing SQL DB', {attach: err});
         })

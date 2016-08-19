@@ -129,3 +129,22 @@ pubsub.on('statusUpdate', (update)=> {
         })
     }
 });
+
+pubsub.on('githubUpdate', (github)=> {
+    if (eris.channelGuildMap[github.channel] !== undefined) {
+        switch (github.event) {
+            case 'watch':
+                eris.createMessage(github.channel, lang.computeLangString(github.channel, 'github.watch', false, {
+                    repo_name: github.payload.repository.full_name,
+                    sender: github.payload.sender.login
+                }));
+                break;
+            case 'push':
+                eris.createMessage(github.channel, lang.computeLangString(github.channel, 'github.push', false, {
+                    repo_name: github.payload.repository.full_name,
+                    commits: github.payload.commits.map(commit=>lang.computeLangString(github.channel, 'github.commit', false, {message: commit.message,committer:commit.committer.name,commit_id:commit.id.slice(0,7)})).join('\n')
+                }));
+                break;
+        }
+    }
+});
