@@ -7,6 +7,7 @@ module.exports = {
         syntax_error: 'Something went wrong. Please check command syntax. (https://foxbot.fuechschen.org/commands)',
         no_permission: 'You don\'t have permission to do this. [Needed: &{required} | Current: &{have}]',
         username: '[&{username}]',
+        ping: 'Pong!',
         commands: {
             default: 'You can find all my commands here: https://foxbot.fuechschen.org/commands'
         },
