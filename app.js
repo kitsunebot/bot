@@ -142,7 +142,7 @@ pubsub.on('githubUpdate', (github)=> {
                 repo_name: github.payload.repository.full_name,
                 commits: github.payload.commits.map(commit=>lang.computeLangString(eris.channelGuildMap[github.channel], 'github.commit', false, {
                     message: commit.message,
-                    committer: commit.committer.name,
+                    committer: commit.author.name,
                     commit_id: commit.id.slice(0, 7)
                 })).join('\n')
             }));
