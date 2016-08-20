@@ -10,7 +10,7 @@ module.exports = {
     enabled: true,
     handler: ()=> {
         story.info('Shards are ready to operate.');
-        eris.editGame({name:'Initializing...'});
+        eris.editGame({name: 'Initializing...'});
         Promise.all(eris.users.map((user)=> {
             return db.models.User.upsert({uid: user.id, username: user.username, discriminator: user.discriminator});
         })).then(()=> {
@@ -20,14 +20,18 @@ module.exports = {
                     defaults: {gid: eguild.id, name: eguild.name, region: eguild.region, shard_id: eguild.shard.id}
                 }).spread((guild, created) => {
                     if (!created) {
-                        return guild.update({name: eguild.name, region: eguild.region, shard_id: eguild.shard.id})
-                    } else {
-                        return db.models.Prefix.findAll({where: {$or: [{prefix: '!fb'}, {prefix: '!fb '}]}}).then((prefixes)=> {
-                            return Promise.all(prefixes.map((prefix)=> {
-                                return prefix.addGuild(guild.uid)
-                            })).then(()=> {
-                                return Promise.resolve(guild);
+                        return guild.update({
+                            name: eguild.name,
+                            region: eguild.region,
+                            shard_id: eguild.shard.id
+                        }).then(()=> {
+                            return guild.addPrefix('!fb ').then(()=> {
+                                return guild
                             });
+                        })
+                    } else {
+                        return guild.addPrefix('!fb ').then(()=> {
+                            return guild
                         });
                     }
                 }).then((guild)=> {

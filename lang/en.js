@@ -98,6 +98,7 @@ module.exports = {
             watch: '**&{sender} has starred &{repo_name}**',
             push: '**New commits for &{repo_name}:**\n&{commits}',
             commit: '    `&{commit_id}` *&{committer}*: **&{message}**',
+            _help:'Take a look at the command reference: https://foxbot.fuechschen.org/commands/github',
             _created:'Your feed has been created. Point a webhook to `https://foxbot.fuechschen.org/api/v1/github/&{fid}` and enable he events you want to be displayed.'
         }
     }

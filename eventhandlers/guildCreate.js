@@ -20,13 +20,7 @@ module.exports = {
             }
         }).spread((dbguild, created)=> {
             if (created) {
-                return db.models.Prefix.findAll({where: {$or: [{prefix: '!fb'}, {prefix: '!fb '}]}}).then((prefixes)=> {
-                    return Promise.all(prefixes.map((prefix)=> {
-                        return prefix.addGuild(dbguild.uid)
-                    })).then(()=> {
-                        return Promise.resolve(dbguild);
-                    });
-                });
+                return dbguild.addPrefix('!fb ');
             } else {
                 return dbguild.update({
                     gid: guild.id,
@@ -34,7 +28,7 @@ module.exports = {
                     region: guild.region,
                     avability: true,
                     shard_id: guild.shard.id
-                })
+                });
             }
         }).then((dbguild)=> {
             return dbguild.setOwner(guild.ownerID);
