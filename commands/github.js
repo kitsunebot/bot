@@ -11,5 +11,5 @@ module.exports = {
         deleteCommand: true,
         caseInsensitive: true
     },
-    subcommands: [require('./github_create')]
+    subcommands: [require('./github_create'), require('./github_remove')]
 };
