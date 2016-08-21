@@ -11,10 +11,12 @@ module.exports = {
         var guild = fcache.getGuild(msg.channel.guild.id);
         if (guild.getRole(msg.author.id) > 2) {
             db.models.Channel.find({where: {cid: msg.channel.id}}).then(ch=> {
-                return ch.getGitHubFeed().then(feed=>{
-                   return feed.destroy();
-                }).then(()=>{
-                    return eris.createMessage(msg.channel.id,lang.computeResponse(msg,'github._removed'));
+                return ch.getGitHubFeed().then(feed=> {
+                    return feed.destroy();
+                }).then(()=> {
+                    eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'github._removed'));
+                }).catch(()=> {
+                    eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'github._no_hook'));
                 });
             })
         } else return lang.computeResponse(msg, 'no_permission', {required: 3, have: guild.getRole(msg.author.id)});
