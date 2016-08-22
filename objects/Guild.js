@@ -79,7 +79,6 @@ class Guild {
 
     setLanguage(lang) {
         this.language = lang;
-        require('../lib/cache').setGuildLanguage(this.id, this.language);
         return this.updateDbInstance({language: lang});
     }
 
@@ -174,7 +173,6 @@ class Guild {
                     enabled: guild.customtext_enabled,
                     prefix: guild.customtext_prefix
                 };
-                require('../lib/cache').setGuildLanguage(that.id, that.language);
                 Promise.all([that.calculatePrefixes(Promise.resolve(guild)).then((pr)=> {
                     eris.registerGuildPrefix(that.id, pr);
                     return Promise.resolve()
