@@ -97,21 +97,21 @@ pubsub.on('nicknameChange', (nick)=> {
 });
 
 /*pubsub.on('restart', (timeout)=> {
-    timeout = timeout || 0;
-    setTimeout(()=> {
-        if (process.env.autorestart === 'true') process.exit(1);
-        else {
-            try {
-                var pm2 = require('pm2');
-                pm2.connect((err)=> {
-                    if (!err)pm2.restart(process.enc.pm_id)
-                });
-            } catch (e) {
-                pubsub.sendEvent('restartFail', e.message);
-            }
-        }
-    }, timeout)
-});*/
+ timeout = timeout || 0;
+ setTimeout(()=> {
+ if (process.env.autorestart === 'true') process.exit(1);
+ else {
+ try {
+ var pm2 = require('pm2');
+ pm2.connect((err)=> {
+ if (!err)pm2.restart(process.enc.pm_id)
+ });
+ } catch (e) {
+ pubsub.sendEvent('restartFail', e.message);
+ }
+ }
+ }, timeout)
+ });*/
 
 pubsub.on('checkGuilds', ()=> {
     eris.guilds.map(guild=>db.models.Guild.update({online: true}, {where: {gid: guild.id}}));
@@ -146,6 +146,16 @@ pubsub.on('githubUpdate', (github)=> {
                     commit_id: commit.id.slice(0, 7)
                 })).join('\n')
             }));
+        } else if (github.event === 'pull_request') {
+            if (['opened', 'closed', 'reopened'].includes(github.payload.action)) {
+                eris.createMessage(github.channel, lang.computeLangString(eris.channelGuildMap[github.channel], `github.pull.${github.payload.action}${github.payload.action === 'closed' ? github.payload.pull_request.merged ? 'merged' : 'closed' : ''}`, false, {
+                    repo: github.payload.repository.full_name,
+                    pull_req: github.payload.number,
+                    title: github.pull_request.title,
+                    sender: github.payload.sender.login,
+                    link: github.payload.pull_request.html_url
+                }))
+            }
         }
     }
 });

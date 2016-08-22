@@ -102,7 +102,15 @@ module.exports = {
             _created: 'Your feed has been created. Point a webhook to `https://foxbot.fuechschen.org/api/v1/github/&{fid}` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
             _already: 'This channel already has a github webkhook: `https://foxbot.fuechschen.org/api/v1/github/&{fid}`',
             _removed: 'Feed for this channel has been removed. Don\'t forget to remove the webhook on GitHub.',
-            _no_hook: 'There was no feed found for this channel.'
+            _no_hook: 'There was no feed found for this channel.',
+            pull: {
+                opened: '**&{sender} opened pull request #&{pull_req} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                reopened: '**&{sender} reopened pull request #&{pull_req} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                closed: {
+                    closed: '**&{sender} closed pull request #&{pull_req} on &{repo}@GitHub:**\n*&{title}*',
+                    merged: '**&{sender} merged pull request #&{pull_req} on &{repo}@GitHub:**\n*&{title}*',
+                }
+            }
         }
     }
 };

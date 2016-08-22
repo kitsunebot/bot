@@ -24,6 +24,12 @@ class Guild {
                 that.mod_log = guild.mod_log;
                 that.mute_role = guild.mute_role;
                 that.roles = {};
+                that.settings = {
+                    automod: guild.automod,
+                    modlog: guild.mod_log,
+                    mute_role: guild.mute_role,
+                    logging: guild.logging
+                };
                 that.customCommands = {
                     enabled: guild.customtext_enabled,
                     prefix: guild.customtext_prefix
@@ -106,9 +112,13 @@ class Guild {
         return db.models.Guild.find({where: {gid: this.id}});
     }
 
-    getChatfilter(){
-        if(this.chatfilter!==null)return this.chatfilter;
-        else return [{check:()=>Promise.resolve()}];
+    getChatfilter() {
+        if (this.chatfilter !== null)return this.chatfilter;
+        else return [{check: ()=>Promise.resolve()}];
+    }
+
+    getSetting(setting) {
+        return this.settings[setting];
     }
 
     updateDbInstance(updates) {
