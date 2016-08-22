@@ -114,7 +114,7 @@ module.exports = {
         },
         gitlab: {
             watch: '**&{sender} has starred &{repo_name}@&{vcsurl}**',
-            push: '**New commits for &{repo_name}@&{vcsurl}:**\n&{commits}',
+            push: '**New commits for &{repo_name}@&{vcsurl}:&{ref} :**\n&{commits}',
             commit: '    `&{commit_id}` *&{committer}*: **&{message}**',
             _help: 'Take a look at the command reference: https://foxbot.fuechschen.org/commands/gitlab',
             _created: 'Your feed has been created. Point a webhook to `https://foxbot.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
