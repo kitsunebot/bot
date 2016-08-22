@@ -28,6 +28,7 @@ class Guild {
                     enabled: guild.customtext_enabled,
                     prefix: guild.customtext_prefix
                 };
+                that.chatfilter = null;
                 that.features = [];
                 Promise.join(that.calculatePrefixes(Promise.resolve(guild)).then((pr)=> {
                     eris.registerGuildPrefix(that.id, pr);
@@ -103,6 +104,11 @@ class Guild {
 
     getDbInstance() {
         return db.models.Guild.find({where: {gid: this.id}});
+    }
+
+    getChatfilter(){
+        if(this.chatfilter!==null)return this.chatfilter;
+        else return [{check:()=>Promise.resolve()}];
     }
 
     updateDbInstance(updates) {

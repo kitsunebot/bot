@@ -96,7 +96,7 @@ pubsub.on('nicknameChange', (nick)=> {
     });
 });
 
-pubsub.on('restart', (timeout)=> {
+/*pubsub.on('restart', (timeout)=> {
     timeout = timeout || 0;
     setTimeout(()=> {
         if (process.env.autorestart === 'true') process.exit(1);
@@ -111,7 +111,7 @@ pubsub.on('restart', (timeout)=> {
             }
         }
     }, timeout)
-});
+});*/
 
 pubsub.on('checkGuilds', ()=> {
     eris.guilds.map(guild=>db.models.Guild.update({online: true}, {where: {gid: guild.id}}));
