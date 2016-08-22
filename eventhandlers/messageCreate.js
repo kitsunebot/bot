@@ -2,6 +2,7 @@ var story = require('storyboard').mainStory;
 var moment = require('moment');
 
 var db = require('../lib/db');
+var fcache = require('../lib/cache');
 
 module.exports = {
     event: 'messageCreate',
