@@ -14,7 +14,7 @@ module.exports = {
         var guild = fcache.getGuild(msg.channel.guild.id);
         if (guild.getRole(msg.author.id) > 1) {
             db.models.Channel.find({where: {cid: msg.channel.id}}).then(ch=> {
-                return ch.getGithubFeed().then(feed=> {
+                return ch.getVCSFeed().then(feed=> {
                     if (feed !== null && feed !== undefined) {
                         return Promise.resolve([feed, true]);
                     } else {

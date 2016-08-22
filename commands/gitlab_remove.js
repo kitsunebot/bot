@@ -11,7 +11,7 @@ module.exports = {
         var guild = fcache.getGuild(msg.channel.guild.id);
         if (guild.getRole(msg.author.id) > 2) {
             db.models.Channel.find({where: {cid: msg.channel.id}}).then(ch=> {
-                return ch.getGitHubFeed().then(feed=> {
+                return ch.getVCSFeed().then(feed=> {
                     return feed.destroy();
                 }).then(()=> {
                     eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'gitlab._removed'));
