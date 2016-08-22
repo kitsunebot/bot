@@ -118,7 +118,7 @@ module.exports = {
             commit: '    `&{commit_id}` *&{committer}*: **&{message}**',
             _help: 'Take a look at the command reference: https://foxbot.fuechschen.org/commands/gitlab',
             _created: 'Your feed has been created. Point a webhook to `https://foxbot.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
-            _already: 'This channel already has a github webkhook: `https://foxbot.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab`',
+            _already: 'This channel already has a gitlab webkhook: `https://foxbot.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab`',
             _removed: 'Feed for this channel has been removed. Don\'t forget to remove the webhooks on GitHub or Gitlab.',
             _no_hook: 'There was no feed found for this channel.',
             pull: {
