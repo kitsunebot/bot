@@ -20,7 +20,9 @@ module.exports = {
             }
         }).spread((dbguild, created)=> {
             if (created) {
-                return dbguild.addPrefix('!fb ');
+                return dbguild.addPrefix('!fb ').then(()=> {
+                    return Promise.resolve(dbguild)
+                });
             } else {
                 return dbguild.update({
                     gid: guild.id,
