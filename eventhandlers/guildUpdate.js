@@ -6,11 +6,11 @@ var cache = require('../lib/cache');
 module.exports = {
     event: 'guildUpdate',
     enabled: true,
-    handler: (update)=> {
-        cache.getGuild(update.guild.id).updateValues({
-            name: update.guild.name,
-            region: update.guild.region,
-            avability: !update.guild.unavailable
+    handler: (guild)=> {
+        cache.getGuild(guild.id).updateValues({
+            name: guild.name,
+            region: guild.region,
+            avability: !guild.unavailable
         });
     }
 };
