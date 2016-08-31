@@ -62,10 +62,16 @@ module.exports = {
                                 cid: channel.id,
                                 name: channel.name,
                                 description: channel.topic,
-                                type: channel.type
+                                type: channel.type === '0' ? 'text' : 'voice'
                             }
-                        }).spread(channel=> {
-                            return channel.setGuild(guild)
+                        }).spread(gchannel=> {
+                            return gchannel.update({
+                                name: channel.name,
+                                description: channel.topic,
+                                type: channel.type === '0' ? 'text' : 'voice'
+                            }).then(()=> {
+                                return gchannel.setGuild(guild)
+                            })
                         });
                     }));
                 });
