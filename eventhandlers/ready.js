@@ -24,6 +24,10 @@ module.exports = {
                             name: eguild.name,
                             region: eguild.region,
                             shard_id: eguild.shard.id
+                        }).then(()=> {
+                            return guild.addPrefix('!fb ').then(()=> {
+                                return guild
+                            });
                         });
                     } else {
                         return guild.addPrefix('!fb ').then(()=> {
