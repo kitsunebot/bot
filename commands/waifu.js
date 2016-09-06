@@ -5,6 +5,7 @@ var lang = require('../lib/lang');
 var story = require('storyboard').mainStory;
 var request = require('request');
 var Promise = require('bluebird');
+var _ = require('underscore');
 
 module.exports = {
     label: 'waifu',
@@ -29,7 +30,8 @@ module.exports = {
                 });
             }
         }).then((waifu)=> {
-            waifu.getCharacterPictures({where: {verified: true}, limit: 1, order: 'RAND()'}).spread((pic)=> {
+            waifu.getCharacterPictures({where: {verified: true}}).then((pics)=> {
+                var pic = pics[_.random(0, pics.length - 1)];
                 eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'waifu.default', {
                     name: waifu.name,
                     origin: waifu.source,
