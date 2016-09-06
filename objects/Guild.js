@@ -23,6 +23,7 @@ class Guild {
                 that.automod = guild.automod;
                 that.mod_log = guild.mod_log;
                 that.mute_role = guild.mute_role;
+                that.initialized = guild.initialized;
                 that.roles = {};
                 that.settings = {
                     automod: guild.automod,

@@ -129,6 +129,16 @@ module.exports = {
                     merged: '**&{sender} merged pull request #&{pull_req} on &{repo}@&{vcsurl}:**\n*&{title}*',
                 }
             }
+        },
+        roles: {
+            init: 'Roles have been created.',
+            failed: 'I currently do not have the needed permission to create roles, please grant them here for this guild: https://discordapp.com/oauth2/authorize?access_type=online&client_id=168751105558183936&scope=bot&permissions=268435488',
+            already:'Roles have already been initialized on this guild.',
+            regular: 'Foxbot Regular',
+            vip: 'Foxbot VIP',
+            moderator: 'Foxbot Moderator',
+            manager: 'Foxbot Manager',
+            owner: 'Foxbot Serverowner'
         }
     }
 };
