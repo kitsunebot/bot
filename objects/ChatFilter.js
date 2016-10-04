@@ -25,7 +25,7 @@ class ChatFilter {
     }
 
     check(msg) {
-        return Promise.all(this.filters.map(filter=>filter.check(msg)));
+        return Promise.all(this.filters.map(filter=>Chatfilter.check(msg)));
     }
 }
 

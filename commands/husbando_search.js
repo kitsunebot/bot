@@ -2,7 +2,6 @@ var S = require('string');
 
 var db = require('../lib/db');
 var lang = require('../lib/lang');
-var eris = require('../lib/client');
 
 module.exports = {
     label: 'search',
@@ -15,7 +14,7 @@ module.exports = {
                 name: {$like: '%' + S(args.join(' ').trim()).replaceAll('*', '%').s + '%'}
             }
         }).then((husbandos)=> {
-            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'husbando.search.default', {
+            msg.channel.createMessage(lang.computeResponse(msg, 'husbando.search.default', {
                 husbandos: husbandos.map(husbando=> {
                     return lang.computeResponse(msg, 'husbando.search.format', {
                         husbando: lang.computeResponse(msg, 'husbando.format', {
@@ -23,7 +22,7 @@ module.exports = {
                             origin: husbando.source
                         }, true),
                         id: husbando.id
-                    },true)
+                    }, true)
                 })
             }))
         });

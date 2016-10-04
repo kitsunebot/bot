@@ -1,7 +1,6 @@
 var db = require('../lib/db');
 var lang = require('../lib/lang');
 var config = require('../config');
-var eris = require('../lib/client');
 var fcache = require('../lib/cache');
 
 var request = require('request');
@@ -26,14 +25,14 @@ module.exports = {
                                     channel.addTwitchWatcher(watcher);
                                     fcache.getGuild(msg.channel.guild.id).getDbInstance(function (server) {
                                         server.addTwitchWatcher(watcher);
-                                        eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'twitch.add', {channel: channel.channel}));
+                                        msg.channel.createMessage(lang.computeResponse(msg, 'twitch.add', {channel: channel.channel}));
                                     });
                                 });
-                            } else eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'twitch.watched'));
+                            } else msg.channel.createMessage( lang.computeResponse(msg, 'twitch.watched'));
                         });
                     });
-                } else eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'twitch.not_exists'));
-            } else eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'error'));
+                } else msg.channel.createMessage(lang.computeResponse(msg, 'twitch.not_exists'));
+            } else msg.channel.createMessage(lang.computeResponse(msg, 'error'));
         });
     },
     options: {

@@ -27,7 +27,7 @@ module.exports = {
                         });
                     }));
                 }).then(()=> {
-                    return eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'chatlog.create', {cl_id: cl.id}));
+                    return msg.channel.createMessage(lang.computeResponse(msg, 'chatlog.create', {cl_id: cl.id}));
                 });
             });
         });

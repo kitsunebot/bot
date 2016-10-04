@@ -1,6 +1,5 @@
 var db = require('../lib/db');
 var lang = require('../lib/lang');
-var eris = require('../lib/client');
 
 module.exports = {
     label: 'id',
@@ -11,9 +10,9 @@ module.exports = {
             return user.getWaifu();
         }).then((waifu)=> {
             if (waifu !== null && waifu !== undefined) {
-                eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'waifu.id.default', {id: waifu.id}));
+                msg.channel.createMessage( lang.computeResponse(msg, 'waifu.id.default', {id: waifu.id}));
             } else {
-                eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'waifu.id.no_waifu'));
+                msg.channel.createMessage(lang.computeResponse(msg, 'waifu.id.no_waifu'));
             }
         });
     },

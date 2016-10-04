@@ -1,9 +1,5 @@
 var db = require('../lib/db');
-var eris = require('../lib/client');
 var lang = require('../lib/lang');
-
-var story = require('storyboard').mainStory;
-var request = require('request');
 
 module.exports = {
     label: 'husbando',
@@ -29,7 +25,7 @@ module.exports = {
             }
         }).then((husbando)=> {
             husbando.getCharacterPictures({where: {verified: true}, limit: 1, order: 'RAND()'}).spread((pic)=> {
-                eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'husbando.default', {
+                msg.channel.createMessage(lang.computeResponse(msg, 'husbando.default', {
                     name: husbando.name,
                     origin: husbando.source,
                     pic_link: pic.link
@@ -42,5 +38,5 @@ module.exports = {
         caseInsensitive: true,
         deleteCommand: true
     },
-    subcommands: [require('./husbando_list'), require('./husbando_set'), require('./husbando_search'), require('./husbando_addpicture'),require('./husbando_id')]
+    subcommands: [require('./husbando_list'), require('./husbando_set'), require('./husbando_search'), require('./husbando_addpicture'), require('./husbando_id')]
 };

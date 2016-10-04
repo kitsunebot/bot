@@ -1,6 +1,5 @@
 var db = require('../lib/db');
 var lang = require('../lib/lang');
-var eris = require('../lib/client');
 
 module.exports = {
     label: 'id',
@@ -11,9 +10,9 @@ module.exports = {
             return user.getHusbando();
         }).then((husbando)=> {
             if (husbando !== null && husbando !== undefined) {
-                eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'husbando.id.default', {id: husbando.id}));
+                msg.channel.createMessage( lang.computeResponse(msg, 'husbando.id.default', {id: husbando.id}));
             } else {
-                eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'husbando.id.no_husbando'));
+                msg.channel.createMessage( lang.computeResponse(msg, 'husbando.id.no_husbando'));
             }
         });
     },

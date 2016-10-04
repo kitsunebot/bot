@@ -48,7 +48,7 @@ module.exports = {
                 manager_role: manager.id,
                 initialized: true
             }, {where: {gid: msg.channel.guild.id}});
-            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'roles.init'))
+            msg.channel.createMessage(lang.computeResponse(msg, 'roles.init'))
         })
     },
     options: {

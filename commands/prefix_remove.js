@@ -12,9 +12,9 @@ module.exports = {
         if (guild.getRole(msg.author.id) > 2) {
             guild.removePrefix(args.join(' ').trim()).then((isRemoved)=> {
                 if (isRemoved) eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'prefix.remove'));
-                else eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'prefix.no_remove'));
+                else msg.channel.createMessage(lang.computeResponse(msg, 'prefix.no_remove'));
             });
-        } else eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'no_permission', {
+        } else msg.channel.createMessage(lang.computeResponse(msg, 'no_permission', {
             required: 3,
             have: guild.getRole(msg.author.id)
         }));

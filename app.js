@@ -123,10 +123,10 @@ pubsub.on('checkUsers', ()=> {
 });
 
 pubsub.on('statusUpdate', (update)=> {
-    if (update.mode === 'manual') eris.editGame({name: update.status});
+    if (update.mode === 'manual') eris.editStatus(null, {name: update.status});
     else {
         db.models.StatusMessage.find({order: 'RAND()'}).then(msg=> {
-            eris.editGame({name: msg.message});
+            eris.editStatus(null,{name: msg.message});
         })
     }
 });

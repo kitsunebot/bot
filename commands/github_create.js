@@ -1,7 +1,6 @@
 var db = require('../lib/db');
 var lang = require('../lib/lang');
 var fcache = require('../lib/cache');
-var eris = require('../lib/client');
 
 var shortid = require('shortid');
 var Promise = require('bluebird');
@@ -24,7 +23,7 @@ module.exports = {
                     }
                 });
             }).spread((feed, isNew)=> {
-                return eris.createMessage(msg.channel.id, lang.computeResponse(msg, `github._${!isNew ? 'created' : 'already'}`, {fid: feed.id}));
+                return msg.channel.createMessage(lang.computeResponse(msg, `github._${!isNew ? 'created' : 'already'}`, {fid: feed.id}));
             })
         } else return lang.computeResponse(msg, 'no_permission', {required: 2, have: guild.getRole(msg.author.id)});
     },

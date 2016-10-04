@@ -18,7 +18,7 @@ module.exports = {
             }
         }).then(function (count) {
             console.log(count);
-            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'stats.guild', {
+            msg.channel.createMessage(lang.computeResponse(msg, 'stats.guild', {
                 mpm: count,
                 channel_count: eris.guilds.get(msg.channel.guild.id).channels.size || lang.computeResponse(msg, 'stats.error', {}, true),
                 user_count: eris.guilds.get(msg.channel.guild.id).members.map((u=> {

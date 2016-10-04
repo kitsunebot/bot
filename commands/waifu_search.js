@@ -2,7 +2,6 @@ var S = require('string');
 
 var db = require('../lib/db');
 var lang = require('../lib/lang');
-var eris = require('../lib/client');
 
 module.exports = {
     label: 'search',
@@ -15,7 +14,7 @@ module.exports = {
                 name: {$like: '%' + S(args.join(' ').trim()).replaceAll('*', '%').s + '%'}
             }
         }).then((waifus)=> {
-            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'waifu.search.default', {
+            msg.channel.createMessage(lang.computeResponse(msg, 'waifu.search.default', {
                 waifus: waifus.map(waifu=> {
                     return lang.computeResponse(msg, 'waifu.search.format', {
                         waifu: lang.computeResponse(msg, 'waifu.format', {

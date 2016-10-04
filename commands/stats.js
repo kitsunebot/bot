@@ -12,7 +12,7 @@ module.exports = {
     isSubcommand: false,
     generator: (msg, args)=> {
         db.models.Message.count({where: {created_at: {$gt: moment().subtract(1, 'minutes').toDate()}}}).then(function (count) {
-            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'stats.default', {
+            msg.channel.createMessage(lang.computeResponse(msg, 'stats.default', {
                 uptime: started.fromNow() || lang.computeResponse(msg, 'stats.error', {}, true),
                 mpm: count || lang.computeResponse(msg, 'stats.error', {}, true),
                 channel_count: eris.privateChannels.map((c)=> {

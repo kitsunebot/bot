@@ -2,7 +2,6 @@ var shortid = require('shortid');
 
 var db = require('../lib/db');
 var lang = require('../lib/lang');
-var eris = require('../lib/client');
 
 module.exports = {
     label: 'set',
@@ -17,13 +16,13 @@ module.exports = {
             if (husbando !== undefined && husbando !== null) {
                 db.models.User.find({where: {uid: msg.author.id}}).then((user)=> {
                     user.setHusbando(husbando).then(()=> {
-                        eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'husbando.set.default', {
+                        msg.channel.createMessage(lang.computeResponse(msg, 'husbando.set.default', {
                             w_name: husbando.name,
                             w_id: husbando.id
                         }));
                     });
                 });
-            } else eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'husbando.set.not_found', {query: arg}));
+            } else msg.channel.createMessage(lang.computeResponse(msg, 'husbando.set.not_found', {query: arg}));
         })
     },
     options: {

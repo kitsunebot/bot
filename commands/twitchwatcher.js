@@ -1,6 +1,5 @@
 var lang = require('../lib/lang');
 var cache = require('../lib/cache');
-var eris = require('../lib/client');
 
 module.exports = {
     label: 'watcher',
@@ -15,7 +14,7 @@ module.exports = {
                 }));
             });
         }).then((watchers)=> {
-            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'twitch.default', {
+            msg.channel.createMessage(lang.computeResponse(msg, 'twitch.default', {
                 watchers: watchers.map((watcher)=> {
                     return lang.computeLangString(msg.channel.guild.id, 'twitch.default_format', false, {ch_name: watcher.channel})
                 }).join(lang.computeLangString(msg.channel.guild.id, 'twitch.default_separator', false))

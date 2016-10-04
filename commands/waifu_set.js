@@ -2,7 +2,6 @@ var shortid = require('shortid');
 
 var db = require('../lib/db');
 var lang = require('../lib/lang');
-var eris = require('../lib/client');
 
 module.exports = {
     label: 'set',
@@ -17,13 +16,13 @@ module.exports = {
             if (waifu !== undefined && waifu !== null) {
                 db.models.User.find({where: {uid: msg.author.id}}).then((user)=> {
                     user.setWaifu(waifu).then(()=> {
-                        eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'waifu.set.default', {
+                        msg.channel.createMessage(lang.computeResponse(msg, 'waifu.set.default', {
                             w_name: waifu.name,
                             w_id: waifu.id
                         }));
                     });
                 });
-            } else eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'waifu.set.not_found', {query: arg}));
+            } else msg.channel.createMessage(lang.computeResponse(msg, 'waifu.set.not_found', {query: arg}));
         })
     },
     options: {

@@ -5,7 +5,7 @@ var pubsub = require('../lib/db');
 
 module.exports = {
     label: 'global',
-    enabled: true,
+    enabled: false,
     isSubcommand: true,
     generator: (msg, args)=> {
         cache.getGlobalUserPerm(msg.author.id).then((perm)=> {
@@ -18,9 +18,9 @@ module.exports = {
                         eris.editNickname(g.id, nick)
                     }, index * 10000);
                 });
-                eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'nick.global'));
+                msg.channel.createMessage(lang.computeResponse(msg, 'nick.global'));
                 pubsub.sendEvent('nicknameChange',nick);
-            } else eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'no_permission', {
+            } else msg.channel.createMessage(lang.computeResponse(msg, 'no_permission', {
                 required: 7,
                 have: perm || 0
             }));

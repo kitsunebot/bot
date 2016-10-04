@@ -20,7 +20,7 @@ module.exports = {
                     return msg.id
                 }));
             });
-        } else eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'no_permission', {
+        } else msg.channel.createMessage(lang.computeResponse(msg, 'no_permission', {
             required: 3,
             have: guild.getRole(msg.author.id) || 0
         }));

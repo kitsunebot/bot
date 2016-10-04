@@ -3,7 +3,6 @@ var _ = require('underscore');
 
 var db = require('../lib/db');
 var lang = require('../lib/lang');
-var eris = require('../lib/client');
 
 module.exports = {
     label: 'list',
@@ -47,9 +46,9 @@ module.exports = {
 
 
             function send(list, appends) {
-                eris.createMessage(msg.channel.id, list);
+                msg.channel.createMessage(list);
                 appends.forEach((append)=> {
-                    eris.createMessage(msg.channel.id, append);
+                    msg.channel.createMessage( append);
                 });
             }
         });

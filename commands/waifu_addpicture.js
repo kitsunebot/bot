@@ -5,7 +5,6 @@ var db = require('../lib/db');
 var lang = require('../lib/lang');
 var utils = require('../lib/utils');
 var cch = require('../lib/cache');
-var eris = require('../lib/client');
 
 module.exports = {
     label: 'addpicture',
@@ -38,7 +37,7 @@ module.exports = {
                 return utils.uploadFile(args[args.length - 1]).then((url)=> {
                     return cch.getGlobalUserPerm(msg.author.id).then((perm)=> {
                         return waifu.createCharacterPicture({link: url, verified: (perm > 5)}).then(()=> {
-                            eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'waifu.createPicture.default'));
+                            msg.channel.createMessage(lang.computeResponse(msg, 'waifu.createPicture.default'));
                         });
                     });
                 });

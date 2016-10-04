@@ -1,7 +1,6 @@
 var db = require('../lib/db');
 var lang = require('../lib/lang');
 var fcache = require('../lib/cache');
-var eris = require('../lib/client');
 
 module.exports = {
     label: 'remove',
@@ -14,9 +13,9 @@ module.exports = {
                 return ch.getVCSFeed().then(feed=> {
                     return feed.destroy();
                 }).then(()=> {
-                    eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'gitlab._removed'));
+                    msg.channel.createMessage( lang.computeResponse(msg, 'gitlab._removed'));
                 }).catch(()=> {
-                    eris.createMessage(msg.channel.id, lang.computeResponse(msg, 'gitlab._no_hook'));
+                    msg.channel.createMessage( lang.computeResponse(msg, 'gitlab._no_hook'));
                 });
             })
         } else return lang.computeResponse(msg, 'no_permission', {required: 3, have: guild.getRole(msg.author.id)});
