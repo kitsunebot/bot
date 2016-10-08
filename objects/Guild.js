@@ -27,7 +27,7 @@ class Guild {
                 that.roles = {};
                 that.settings = {
                     automod: guild.automod,
-                    modlog: guild.mod_log,
+                    modlog: guild.modlog,
                     mute_role: guild.mute_role,
                     logging: guild.logging
                 };
