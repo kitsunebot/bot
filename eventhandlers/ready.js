@@ -10,7 +10,7 @@ module.exports = {
     enabled: true,
     handler: ()=> {
         story.info('Shards are ready to operate.');
-        eris.editStatus(null, {name: 'Initializing...'});
+        eris.editStatus('online', {name: 'Initializing...'});
         Promise.all(eris.users.map((user)=> {
             return db.models.User.upsert({uid: user.id, username: user.username, discriminator: user.discriminator});
         })).then(()=> {
@@ -87,7 +87,7 @@ module.exports = {
         }).then((st)=> {
             if (st === '1') {
                 return db.redis.get('fixedStatus:status').then((status)=> {
-                    eris.editStatus(null, {name: status});
+                    eris.editStatus('online', {name: status});
                 });
             } else {
                 db.sendSelf('statusUpdate');

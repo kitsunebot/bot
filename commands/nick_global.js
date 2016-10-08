@@ -5,7 +5,7 @@ var pubsub = require('../lib/db');
 
 module.exports = {
     label: 'global',
-    enabled: false,
+    enabled: true,
     isSubcommand: true,
     generator: (msg, args)=> {
         cache.getGlobalUserPerm(msg.author.id).then((perm)=> {
