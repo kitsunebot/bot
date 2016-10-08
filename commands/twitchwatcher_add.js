@@ -10,7 +10,7 @@ module.exports = {
     enabled: true,
     isSubcommand: true,
     generator: (msg, args)=> {
-        request.get('https://api.twitch.tv/kraken/channels/' + args[0], function (err, resp) {
+        request.get('https://api.twitch.tv/kraken/channels/' + args[0], (err, resp)=> {
             if (!err) {
                 if ([304, 200].indexOf(resp.statusCode) !== -1) {
                     db.models.TwitchChannel.findOrCreate({
@@ -18,17 +18,17 @@ module.exports = {
                             channel: args[0],
                             api_url: 'https://api.twitch.tv/kraken/streams/' + args[0]
                         }
-                    }).spread(function (channel) {
-                        channel.getTwitchWatchers({where: {server_channel: msg.channel.id}}).then(function (watchers) {
+                    }).spread((channel)=> {
+                        channel.getTwitchWatchers({where: {server_channel: msg.channel.id}}).then((watchers)=> {
                             if (watchers.length === 0) {
-                                db.models.TwitchWatcher.create({server_channel: msg.channel.id}).then(function (watcher) {
+                                db.models.TwitchWatcher.create({server_channel: msg.channel.id}).then((watcher) => {
                                     channel.addTwitchWatcher(watcher);
-                                    fcache.getGuild(msg.channel.guild.id).getDbInstance(function (server) {
+                                    fcache.getGuild(msg.channel.guild.id).getDbInstance((server)=> {
                                         server.addTwitchWatcher(watcher);
                                         msg.channel.createMessage(lang.computeResponse(msg, 'twitch.add', {channel: channel.channel}));
                                     });
                                 });
-                            } else msg.channel.createMessage( lang.computeResponse(msg, 'twitch.watched'));
+                            } else msg.channel.createMessage(lang.computeResponse(msg, 'twitch.watched'));
                         });
                     });
                 } else msg.channel.createMessage(lang.computeResponse(msg, 'twitch.not_exists'));

@@ -16,7 +16,7 @@ module.exports = {
                     gid: msg.channel.guild.id
                 }
             }
-        }).then(function (count) {
+        }).then( (count)=> {
             console.log(count);
             msg.channel.createMessage(lang.computeResponse(msg, 'stats.guild', {
                 mpm: count,

@@ -15,7 +15,7 @@ class Guild {
         var that = this;
         that.id = gid;
         that.avability = !this.erisGuild.unavailable;
-        db.models.Guild.find({where: {gid: gid}}).then(function (guild) {
+        db.models.Guild.find({where: {gid: gid}}).then((guild)=> {
             if (guild !== null && guild !== undefined) {
                 that.name = guild.name;
                 that.prefixes = [];
@@ -43,7 +43,7 @@ class Guild {
                 }), guild.getGuildRoles().then((roles)=> {
                     return Promise.all(roles.map((role)=> {
                         return role.getUser();
-                    })).then(function (users) {
+                    })).then((users)=> {
                         users.forEach((user, index)=> {
                             that.roles[user.uid] = roles[index].level;
                         });
@@ -162,7 +162,7 @@ class Guild {
 
     updateFromDb() {
         var that = this;
-        return db.models.Guild.find({where: {gid: that.id}}).then(function (guild) {
+        return db.models.Guild.find({where: {gid: that.id}}).then((guild)=> {
             if (guild !== null && guild !== undefined) {
                 that.name = guild.name;
                 that.language = guild.language;
@@ -180,7 +180,7 @@ class Guild {
                 }), guild.getGuildRoles().then((roles)=> {
                     return Promise.all(roles.map((role)=> {
                         return role.getUser();
-                    })).then(function (users) {
+                    })).then((users)=> {
                         users.forEach((user, index)=> {
                             that.roles[user.uid] = roles[index].level;
                         });

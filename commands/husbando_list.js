@@ -9,7 +9,7 @@ module.exports = {
     enabled: true,
     isSubcommand: true,
     generator: (msg, args)=> {
-        db.models.Character.findAll({where: {type: 'husbando'}}).then(function (husbandos) {
+        db.models.Character.findAll({where: {type: 'husbando'}}).then((husbandos) => {
             husbandos = husbandos.map((husbando)=> {
                 return lang.computeResponse(msg, 'husbando.list.format', {
                     name: husbando.name,
@@ -19,7 +19,7 @@ module.exports = {
             });
 
             var separator = lang.computeResponse(msg, 'husbando.list.separator', {}, true);
-            var out = [lang.computeResponse(msg,'husbando.list.default',{})];
+            var out = [lang.computeResponse(msg, 'husbando.list.default', {})];
             compute(0, 0);
 
             function compute(windex, sendindex) {
@@ -48,7 +48,7 @@ module.exports = {
             function send(list, appends) {
                 msg.channel.createMessage(list);
                 appends.forEach((append)=> {
-                    msg.channel.createMessage( append);
+                    msg.channel.createMessage(append);
                 });
             }
         });

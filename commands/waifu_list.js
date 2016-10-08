@@ -9,7 +9,7 @@ module.exports = {
     enabled: true,
     isSubcommand: true,
     generator: (msg, args)=> {
-        db.models.Character.findAll({where: {type: 'waifu'}}).then(function (waifus) {
+        db.models.Character.findAll({where: {type: 'waifu'}}).then((waifus) => {
             waifus = waifus.map((waifu)=> {
                 return lang.computeResponse(msg, 'waifu.list.format', {
                     name: waifu.name,
@@ -19,7 +19,7 @@ module.exports = {
             });
 
             var separator = lang.computeResponse(msg, 'waifu.list.separator', {}, true);
-            var out = [lang.computeResponse(msg,'waifu.list.default',{})];
+            var out = [lang.computeResponse(msg, 'waifu.list.default', {})];
             compute(0, 0);
 
             function compute(windex, sendindex) {
@@ -48,7 +48,7 @@ module.exports = {
             function send(list, appends) {
                 msg.channel.createMessage(list);
                 appends.forEach((append)=> {
-                    msg.channel.createMessage( append);
+                    msg.channel.createMessage(append);
                 });
             }
         });
