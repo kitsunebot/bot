@@ -87,7 +87,7 @@ module.exports = {
         }).then((st)=> {
             if (st === '1') {
                 return db.redis.get('fixedStatus:status').then((status)=> {
-                    eris.editStatus('online', {name: status});
+                    return eris.editStatus('online', {name: status});
                 });
             } else {
                 db.sendSelf('statusUpdate');

@@ -1,4 +1,5 @@
 var eris = require('../lib/client');
+var lang = require('../lib/lang');
 
 module.exports = {
     event: 'githubUpdate',
