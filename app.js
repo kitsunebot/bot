@@ -76,3 +76,21 @@ fs.readdir('./pubsubEvents', (err, files)=> {
         });
     }
 });
+
+fs.readdir('./crons',(err,files)=>{
+    if (err) {
+        story.fatal('Crons could not be loaded.', {attach: err});
+    } else {
+        files.forEach((file)=> {
+            try {
+                var f = require('./crons/' + file);
+                if (f.enabled) {
+                    f.job.start();
+                    story.debug('Started CronJob ' + f.name);
+                }
+            } catch (e) {
+                story.warn('Error while loading cron ' + file, {attach: e})
+            }
+        });
+    }
+});
