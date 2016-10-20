@@ -19,39 +19,29 @@
  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
 class Collection extends Map {
     constructor(baseObject, limit) {
         super();
         this.baseObject = baseObject;
         this.limit = limit;
-        if(limit) {
-            this.ids = [];
-        }
+        if (limit) this.ids = [];
     }
 
     add(obj, extra) {
-        if(this.limit === 0) {
-            return (obj instanceof this.baseObject) ? obj : new this.baseObject(obj, extra);
-        }
-        if(!obj.id && obj.id !== 0) {
-            throw new Error("Missing object id");
-        }
+        if (this.limit === 0) return (obj instanceof this.baseObject) ? obj : new this.baseObject(obj, extra);
+        if (!obj.id && obj.id !== 0) throw new Error("Missing object id");
         var existing = this.get(obj.id);
-        if(existing) {
-            return existing;
-        }
-        if(!(obj instanceof this.baseObject)) {
-            obj = new this.baseObject(obj, extra);
-        }
+        if (existing) return existing;
+        if (!(obj instanceof this.baseObject)) obj = new this.baseObject(obj, extra);
 
         this.set(obj.id, obj);
 
-        if(this.limit) {
+        if (this.limit) {
             this.ids.push(obj.id);
-            if(this.ids.length > this.limit) {
-                for(var key of this.ids.splice(0, this.ids.length - this.limit)) {
+            if (this.ids.length > this.limit) {
+                for (var key of this.ids.splice(0, this.ids.length - this.limit)) {
                     this.delete(key);
                 }
             }
@@ -60,49 +50,39 @@ class Collection extends Map {
     }
 
     find(func) {
-        for(var item of this) {
-            if(func(item[1])) {
-                return item[1];
-            }
+        for (var item of this) {
+            if (func(item[1])) return item[1];
         }
         return null;
     }
 
     filter(func) {
         var arr = [];
-        for(var item of this) {
-            if(func(item[1])) {
-                arr.push(item[1]);
-            }
+        for (var item of this) {
+            if (func(item[1])) arr.push(item[1]);
         }
         return arr;
     }
 
     map(func) {
         var arr = [];
-        for(var item of this) {
+        for (var item of this) {
             arr.push(func(item[1]));
         }
         return arr;
     }
 
     update(obj, extra) {
-        if(!obj.id && obj.id !== 0) {
-            throw new Error("Missing object id");
-        }
+        if (!obj.id && obj.id !== 0) throw new Error("Missing object id");
         var item = this.get(obj.id);
-        if(!item) {
-            return this.add(obj, extra);
-        }
+        if (!item) return this.add(obj, extra);
         item.update(obj, extra);
         return item;
     }
 
     remove(obj) {
         var item = this.get(obj.id);
-        if(!item) {
-            return null;
-        }
+        if (!item) return null;
         this.delete(obj.id);
         return item;
     }

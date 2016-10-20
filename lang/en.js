@@ -4,12 +4,12 @@ module.exports = {
         help: 'This bot was created by &{mention}. Use !fb commands for my commands.',
         not_implemented: 'This feature isn\'t available yet.',
         error: 'The command ended in an unknown error. If it persists, please open an issue on github: https://github.com/Fuechschen/discordbot/issues',
-        syntax_error: 'Something went wrong. Please check command syntax. (https://foxbot.fuechschen.org/commands)',
+        syntax_error: 'Something went wrong. Please check command syntax. (https://kitsune.fuechschen.org/commands)',
         no_permission: 'You don\'t have permission to do this. [Needed: &{required} | Current: &{have}]',
         username: '[&{username}]',
         ping: 'Pong!',
         commands: {
-            default: 'You can find all my commands here: https://foxbot.fuechschen.org/commands'
+            default: 'You can find all my commands here: https://kitsune.fuechschen.org/commands'
         },
         waifu: {
             default: 'Your waifu is &{name} (&{origin})\n&{pic_link}',
@@ -18,7 +18,7 @@ module.exports = {
                 default: 'Picture created. It will be displayed until it was verified by one of my managers.'
             },
             list: {
-                default: 'Here are all stored waifus. Add yours with `!fb waifu add (name) | (source) | (picture link)`. \nYou can find a full list under https://foxbot.fuechschen.org/charaters/waifus'
+                default: 'Here are all stored waifus. Add yours with `!fb waifu add (name) | (source) | (picture link)`. \nYou can find a full list under https://kitsune.fuechschen.org/charaters/waifus'
             },
             set: {
                 not_found: 'I haven\'t found any entry for `&{query}`',
@@ -40,7 +40,7 @@ module.exports = {
                 default: 'Picture created. It will be displayed until it was verified by one of my managers.'
             },
             list: {
-                default: 'Here are all stored husbandos. Add yours with `!fb husbando add (name) | (source) | (picture link)`. \nYou can find a full list under https://foxbot.fuechschen.org/charaters/husbandos'
+                default: 'Here are all stored husbandos. Add yours with `!fb husbando add (name) | (source) | (picture link)`. \nYou can find a full list under https://kitsune.fuechschen.org/charaters/husbandos'
             },
             set: {
                 not_found: 'I haven\'t found any entry for `&{query}`',
@@ -84,7 +84,7 @@ module.exports = {
         },
         chatlog: {
             default: 'To create a chatlog, please use `!fb chatlog create`.',
-            create: 'A chatlog has been created! You can view it here: https://foxbot.fuechschen.org/chatlogs/&{cl_id}'
+            create: 'A chatlog has been created! You can view it here: https://kitsune.fuechschen.org/chatlogs/&{cl_id}'
         },
         broadcast: {
             send: 'Broadcast is being prepared and will be sent in the next few seconds.',
@@ -98,9 +98,9 @@ module.exports = {
             watch: '**&{sender} has starred &{repo_name}@GitHub**',
             push: '**New commits for &{repo_name}:&{ref}@GitHub:**\n&{commits}',
             commit: '    `&{commit_id}` *&{committer}*: **&{message}**',
-            _help: 'Take a look at the command reference: https://foxbot.fuechschen.org/commands/github',
-            _created: 'Your feed has been created. Point a webhook to `https://foxbot.fuechschen.org/api/v1/vcsfeed/&{fid}?type=github` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
-            _already: 'This channel already has a github webkhook: `https://foxbot.fuechschen.org/api/v1/vcsfeed/&{fid}?type=github`',
+            _help: 'Take a look at the command reference: https://kitsune.fuechschen.org/commands/github',
+            _created: 'Your feed has been created. Point a webhook to `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=github` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
+            _already: 'This channel already has a github webkhook: `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=github`',
             _removed: 'Feed for this channel has been removed. Don\'t forget to remove the webhook on GitHub or Gitlab.',
             _no_hook: 'There was no feed found for this channel.',
             pull: {
@@ -116,9 +116,9 @@ module.exports = {
             watch: '**&{sender} has starred &{repo_name}@&{vcsurl}**',
             push: '**New commits for &{repo_name}:&{ref}@&{vcsurl} :**\n&{commits}',
             commit: '    `&{commit_id}` *&{committer}*: **&{message}**',
-            _help: 'Take a look at the command reference: https://foxbot.fuechschen.org/commands/gitlab',
-            _created: 'Your feed has been created. Point a webhook to `https://foxbot.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
-            _already: 'This channel already has a gitlab webkhook: `https://foxbot.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab`',
+            _help: 'Take a look at the command reference: https://kitsune.fuechschen.org/commands/gitlab',
+            _created: 'Your feed has been created. Point a webhook to `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
+            _already: 'This channel already has a gitlab webkhook: `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab`',
             _removed: 'Feed for this channel has been removed. Don\'t forget to remove the webhooks on GitHub or Gitlab.',
             _no_hook: 'There was no feed found for this channel.',
             pull: {
@@ -133,12 +133,21 @@ module.exports = {
         roles: {
             init: 'Roles have been created.',
             failed: 'I currently do not have the needed permission to create roles, please grant them here for this guild: https://discordapp.com/oauth2/authorize?access_type=online&client_id=168751105558183936&scope=bot&permissions=268435488',
-            already:'Roles have already been initialized on this guild.',
-            regular: 'Foxbot Regular',
-            vip: 'Foxbot VIP',
-            moderator: 'Foxbot Moderator',
-            manager: 'Foxbot Manager',
-            owner: 'Foxbot Serverowner'
+            already: 'Roles have already been initialized on this guild.',
+            regular: 'Kitsune Regular',
+            vip: 'Kitsune VIP',
+            moderator: 'Kitsune Moderator',
+            manager: 'Kitsune Manager',
+            owner: 'Kitsune Serverowner'
+        },
+        eval: {
+            default: 'Starting eval for ```js \n&{code}```',
+            result:'Eval returned:\n```&{output}```',
+            console: {
+                log: 'Your eval logged:\n```&{log}```',
+                error: 'Your eval logged to error:\n```&{log}```'
+            },
+            exec_error:'Your eval threw an error:\n```&{err}```'
         }
     }
 };
