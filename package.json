@@ -8,7 +8,6 @@
     "chalk": "^1.1.1",
     "cron": "^1.1.0",
     "db": "github:kitsunebot/database",
-    "discord.js": "^6.1.0",
     "eris": "github:abalabahaha/eris#dev",
     "express": "^4.13.4",
     "flat": "^2.0.0",

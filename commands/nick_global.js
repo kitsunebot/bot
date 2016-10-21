@@ -21,7 +21,7 @@ module.exports = {
             pubsub.sendEvent('nicknameChange', nick);
         } else msg.channel.createMessage(lang.computeResponse(msg, 'no_permission', {
             required: 7,
-            have: perm || 0
+            have: fcache.getGlobalUserPerm(msg.author.id) || 0
         }));
         return false;
     },
