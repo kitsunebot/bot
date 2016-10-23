@@ -32,8 +32,11 @@ module.exports = {
                     shard_id: guild.shard.id
                 });
             }
+        }).then((guild)=> {
+            cache.loadGuild(guild.id);
+            return guild;
         }).then((dbguild)=> {
-            return dbguild.setOwner(guild.ownerID);
+            return dbguild.setOwner(guild.ownerID).then(()=>Promise.resolve(dbguild));
         }).then((dbguild)=> {
             return Promise.all(guild.channels.map(channel=> {
                 return db.models.Channel.findOrCreate({
@@ -48,8 +51,6 @@ module.exports = {
                     return channel.setGuild(dbguild)
                 });
             }));
-        }).then(()=> {
-            return cache.loadGuild(guild.id);
         }).then(()=> {
             return Promise.all(guild.members.map((member)=> {
                 return db.models.User.upsert({
