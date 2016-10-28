@@ -110,6 +110,13 @@ module.exports = {
                     closed: '**&{sender} closed pull request #&{pull_req} on &{repo}@GitHub:**\n*&{title}*',
                     merged: '**&{sender} merged pull request #&{pull_req} on &{repo}@GitHub:**\n*&{title}*',
                 }
+            },
+            issue: {
+                opened: '**&{sender} opened issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                reopened: '**&{sender} reopened issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                closed: '**&{sender} closed issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                edited: '**&{sender} edited issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                comment:'**&{sender} commented on issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
             }
         },
         gitlab: {
@@ -142,12 +149,12 @@ module.exports = {
         },
         eval: {
             default: 'Starting eval for ```js \n&{code}```',
-            result:'Eval returned:\n```&{output}```',
+            result: 'Eval returned:\n```&{output}```',
             console: {
                 log: 'Your eval logged:\n```&{log}```',
                 error: 'Your eval logged to error:\n```&{log}```'
             },
-            exec_error:'Your eval threw an error:\n```&{err}```'
+            exec_error: 'Your eval threw an error:\n```&{err}```'
         }
     }
 };
