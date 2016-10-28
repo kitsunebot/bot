@@ -62,7 +62,9 @@ module.exports = {
         stats: {
             default: 'Here are my current stats:\n```Uptime: started &{uptime}\nGuilds: &{guild_count}\nChannels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```',
             error: 'Value couldn\'t be retrieved. We\'re working on it!',
-            guild: 'Here are my current stats:\n```Channels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```'
+            guild: 'Here are my current stats:\n```Channels: &{channel_count}\nCached Users: &{user_count}\nMessages per minute: &{mpm}```',
+            shards: 'Shard Status for this instance:\n```&{status}```',
+            shard: 'Shard &{id}: &{status} | Guilds: &{guildCount}'
         },
         twitch: {
             default: 'Usage: `!fb watcher add [channel]` to add a watcher, `!fb wather remove [channel]` to remove a watcher.\nCurrent watchers for this channel: &{watchers}',
@@ -70,6 +72,7 @@ module.exports = {
             default_separator: ',',
             announce: '&{ch_name} just went online on twitch: \nTitle: &{str_title}\nGame: &{str_game}\nLink: &{ch_link}',
             add: 'Watcher added. Online-Status of &{channel} will now be reported to this channel.',
+            remove: 'Wather removed. Updates won\'t be reported anymore.',
             watched: 'That channel is already watched.',
             not_exists: 'That channel doesn\'t exist.'
         },

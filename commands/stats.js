@@ -37,5 +37,5 @@ module.exports = {
         caseInsensitive: true,
         deleteCommand: true
     },
-    subcommands: [require('./stats_server')]
+    subcommands: [require('./stats_server'), require('./stats_shard')]
 };
