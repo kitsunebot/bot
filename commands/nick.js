@@ -22,7 +22,7 @@ module.exports = {
     options: {
         caseInsensitive: true,
         deleteCommand: true,
-        serverOnly: true
+        guildOnly: true
     },
     subcommands: [require('./nick_global')]
 };

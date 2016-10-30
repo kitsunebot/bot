@@ -71,7 +71,9 @@ module.exports = {
             announce: '&{ch_name} just went online on twitch: \nTitle: &{str_title}\nGame: &{str_game}\nLink: &{ch_link}',
             add: 'Watcher added. Online-Status of &{channel} will now be reported to this channel.',
             watched: 'That channel is already watched.',
-            not_exists: 'That channel doesn\'t exist.'
+            not_exists: 'That channel doesn\'t exist.',
+            supply_channel: 'You have to supply a valid channel to use this command. Please also check your spelling.',
+            remove:'Watcher removed. You won\'t receive any further notifications from this channel.'
         },
         proxer: {
             announce: '&{anime_title} Episode &{nr} is now available on &{link}\n&{mentions}'
@@ -142,12 +144,12 @@ module.exports = {
         },
         eval: {
             default: 'Starting eval for ```js \n&{code}```',
-            result:'Eval returned:\n```&{output}```',
+            result: 'Eval returned:\n```&{output}```',
             console: {
                 log: 'Your eval logged:\n```&{log}```',
                 error: 'Your eval logged to error:\n```&{log}```'
             },
-            exec_error:'Your eval threw an error:\n```&{err}```'
+            exec_error: 'Your eval threw an error:\n```&{err}```'
         }
     }
 };

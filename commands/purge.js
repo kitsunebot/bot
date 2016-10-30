@@ -29,6 +29,6 @@ module.exports = {
     options: {
         caseInsensitive: true,
         deleteCommand: true,
-        serverOnly: true
+        guildOnly: true
     }
 };

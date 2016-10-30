@@ -10,6 +10,7 @@ module.exports = {
     enabled: true,
     isSubcommand: true,
     generator: (msg, args)=> {
+        if (args.length === 0 || args.length > 1)return lang.computeResponse(msg, 'twitch.supply_channel');
         request.get('https://api.twitch.tv/kraken/channels/' + args[0], (err, resp)=> {
             if (!err) {
                 if ([304, 200].indexOf(resp.statusCode) !== -1) {
@@ -38,6 +39,6 @@ module.exports = {
     options: {
         caseInsensitive: true,
         deleteCommand: true,
-        serverOnly: true
+        guildOnly: true
     }
 };
