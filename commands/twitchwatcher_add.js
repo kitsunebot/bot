@@ -20,7 +20,7 @@ module.exports = {
                             api_url: 'https://api.twitch.tv/kraken/streams/' + args[0]
                         }
                     }).spread((channel)=> {
-                        channel.getTwitchWatchers({where: {server_channel: msg.channel.id}}).then((watchers)=> {
+                        return channel.getTwitchWatchers({where: {server_channel: msg.channel.id}}).then((watchers)=> {
                             if (watchers.length === 0) {
                                 db.models.TwitchWatcher.create({server_channel: msg.channel.id}).then((watcher) => {
                                     channel.addTwitchWatcher(watcher);
