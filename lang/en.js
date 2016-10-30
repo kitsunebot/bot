@@ -72,7 +72,6 @@ module.exports = {
             default_separator: ',',
             announce: '&{ch_name} just went online on twitch: \nTitle: &{str_title}\nGame: &{str_game}\nLink: &{ch_link}',
             add: 'Watcher added. Online-Status of &{channel} will now be reported to this channel.',
-            remove: 'Wather removed. Updates won\'t be reported anymore.',
             watched: 'That channel is already watched.',
             not_exists: 'That channel doesn\'t exist.',
             supply_channel: 'You have to supply a valid channel to use this command. Please also check your spelling.',
@@ -106,8 +105,6 @@ module.exports = {
             _help: 'Take a look at the command reference: https://kitsune.fuechschen.org/commands/github',
             _created: 'Your feed has been created. Point a webhook to `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=github` and enable the events you want to be displayed. You can use this link for as many repositories as you want.',
             _already: 'This channel already has a github webkhook: `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=github`',
-            _created: 'Your feed has been created. Point a webhook to `https://kitsune.fuechschen.org/api/v1/vcsfeeds/&{fid}?type=github` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
-            _already: 'This channel already has a github webkhook: `https://kitsune.fuechschen.org/api/v1/vcsfeeds/&{fid}?type=github`',
             _removed: 'Feed for this channel has been removed. Don\'t forget to remove the webhook on GitHub or Gitlab.',
             _no_hook: 'There was no feed found for this channel.',
             pull: {
@@ -133,8 +130,6 @@ module.exports = {
             _help: 'Take a look at the command reference: https://kitsune.fuechschen.org/commands/gitlab',
             _created: 'Your feed has been created. Point a webhook to `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab` and enable the events you want to be displayed. You can use this link for as many repositories (even on diffrent gitlab servsers) as you want.',
             _already: 'This channel already has a gitlab webkhook: `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab`',
-            _created: 'Your feed has been created. Point a webhook to `https://kitsune.fuechschen.org/api/v1/vcsfeeds/&{fid}?type=gitlab` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
-            _already: 'This channel already has a gitlab webkhook: `https://kitsune.fuechschen.org/api/v1/vcsfeeds/&{fid}?type=gitlab`',
             _removed: 'Feed for this channel has been removed. Don\'t forget to remove the webhooks on GitHub or Gitlab.',
             _no_hook: 'There was no feed found for this channel.',
             pull: {
