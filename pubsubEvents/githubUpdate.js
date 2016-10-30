@@ -26,9 +26,29 @@ module.exports = {
                     eris.createMessage(github.channel, lang.computeLangString(eris.channelGuildMap[github.channel], `github.pull.${github.payload.action}${github.payload.action === 'closed' ? github.payload.pull_request.merged ? 'merged' : 'closed' : ''}`, false, {
                         repo: github.payload.repository.full_name,
                         pull_req: github.payload.number,
-                        title: github.pull_request.title,
+                        title: github.payload.pull_request.title,
                         sender: github.payload.sender.login,
                         link: github.payload.pull_request.html_url
+                    }))
+                }
+            } else if (github.event === 'issues') {
+                if (['opened', 'edited', 'closed', 'reopened'].includes(github.payload.action)) {
+                    eris.createMessage(github.channel, lang.computeLangString(eris.channelGuildMap[github.channel], `github.issue.${github.payload.action}`, false, {
+                        repo: github.payload.repository.full_name,
+                        issue: github.payload.issue.number,
+                        title: github.payload.issue.title,
+                        sender: github.payload.sender.login,
+                        link: github.payload.issue.html_url
+                    }))
+                }
+            } else if (github.event === 'issue_comment') {
+                if (github.payload.action === 'created') {
+                    eris.createMessage(github.channel, lang.computeLangString(eris.channelGuildMap[github.channel], `github.issue.comment`, false, {
+                        repo: github.payload.repository.full_name,
+                        issue: github.payload.issue.number,
+                        title: github.payload.issue.title,
+                        sender: github.payload.sender.login,
+                        link: github.payload.comment.html_url
                     }))
                 }
             }
