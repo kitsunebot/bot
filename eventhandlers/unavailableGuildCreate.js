@@ -1,6 +1,7 @@
 var story = require('storyboard').mainStory;
 
 var db = require('../lib/db');
+var fcache = require('../lib/cache');
 
 module.exports = {
     event: 'unavailableGuildCreate',
@@ -15,14 +16,16 @@ module.exports = {
                 region: guild.region,
                 avability: false
             }
-        }).spread((dbguild,created)=> {
-            if(created){
-                return db.models.Prefix.findAll({where:{$or:[{prefix:'!fb'},{prefix:'!fb '}]}}).then((prefixes)=>{
-                    return Promise.all(prefixes.map((prefix)=>{return prefix.addGuild(dbguild.uid)})).then(()=>{
+        }).spread((dbguild, created)=> {
+            if (created) {
+                return db.models.Prefix.findAll({where: {$or: [{prefix: '!fb'}, {prefix: '!fb '}]}}).then((prefixes)=> {
+                    return Promise.all(prefixes.map((prefix)=> {
+                        return prefix.addGuild(dbguild.uid)
+                    })).then(()=> {
                         return Promise.resolve(dbguild);
                     });
                 });
-            }else {
+            } else {
                 return dbguild.update({
                     gid: guild.id,
                     name: guild.name,
@@ -32,6 +35,6 @@ module.exports = {
             }
         }).then((dbguild)=> {
             return dbguild.setOwner(guild.ownerID);
-        });
+        }).then(()=>fcache.loadGuild(guild.id));
     }
 };
