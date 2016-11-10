@@ -1,7 +1,7 @@
 var db = require('../lib/db');
 var utils = require('../lib/utils');
-var cch = require("../lib/cache.js");
-var lang = require("../lib/lang.js");
+var fcache = require('../lib/cache.js');
+var lang = require('../lib/lang.js');
 
 module.exports = {
     label: 'catgirl',
@@ -14,11 +14,12 @@ module.exports = {
         } else {
             db.models.Character.find({where: {id: 'SkyVBlzWg'}}).then((waifu)=> {
                 return utils.uploadFile(args[args.length - 1]).then((url)=> {
-                    return cch.getGlobalUserPerm(msg.author.id).then((perm)=> {
-                        //noinspection JSUnresolvedFunction
-                        return waifu.createCharacterPicture({link: url, verified: (perm > 5)}).then(()=> {
-                            msg.channel.createMessage(lang.computeResponse(msg, 'catgirl.createPicture.default'));
-                        });
+                    //noinspection JSUnresolvedFunction
+                    return waifu.createCharacterPicture({
+                        link: url,
+                        verified: (fcache.getGlobalUserPerm(msg.author.id) > 5)
+                    }).then(()=> {
+                        msg.channel.createMessage(lang.computeResponse(msg, 'catgirl.createPicture.default'));
                     });
                 });
             }).catch((err)=> {

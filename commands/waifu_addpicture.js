@@ -35,10 +35,11 @@ module.exports = {
                 }
             }).then((waifu)=> {
                 return utils.uploadFile(args[args.length - 1]).then((url)=> {
-                    return cch.getGlobalUserPerm(msg.author.id).then((perm)=> {
-                        return waifu.createCharacterPicture({link: url, verified: (perm > 5)}).then(()=> {
-                            msg.channel.createMessage(lang.computeResponse(msg, 'waifu.createPicture.default'));
-                        });
+                    return waifu.createCharacterPicture({
+                        link: url,
+                        verified: (fcache.getGlobalUserPerm(msg.author.id) > 5)
+                    }).then(()=> {
+                        msg.channel.createMessage(lang.computeResponse(msg, 'waifu.createPicture.default'));
                     });
                 });
             }).catch((err)=> {

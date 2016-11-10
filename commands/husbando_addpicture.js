@@ -32,10 +32,11 @@ module.exports = {
                 }
             }).then((husbando)=> {
                 return utils.uploadFile(args[args.length - 1]).then((url)=> {
-                    return cch.getGlobalUserPerm(msg.author.id).then((perm)=> {
-                        return husbando.createCharacterPicture({link: url, verified: (perm > 5)}).then(()=> {
-                            msg.channel.createMessage(lang.computeResponse(msg, 'husbando.createPicture.default'));
-                        });
+                    return husbando.createCharacterPicture({
+                        link: url,
+                        verified: (fcache.getGlobalUserPerm(msg.author.id) > 5)
+                    }).then(()=> {
+                        msg.channel.createMessage(lang.computeResponse(msg, 'husbando.createPicture.default'));
                     });
                 });
             }).catch((err)=> {
