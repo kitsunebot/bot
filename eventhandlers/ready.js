@@ -45,6 +45,7 @@ module.exports = {
                         return guild.setOwner(user);
                     }).then(()=> {
                         return Promise.all(eguild.members.map((member=> {
+                            if (!member || !member.id)return story.warn('ready', 'Strange member found.', {attach: member});
                             return guild.addUser(member.id);
                         })));
                     }).then(()=> {
