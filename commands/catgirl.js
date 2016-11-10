@@ -3,7 +3,7 @@ var db = require('../lib/db');
 module.exports = {
     label: 'catgirl',
     enabled: true,
-    isSubcommand: false,
+    isSubcommand: true,
     generator: (msg)=> {
         db.models.CharacterPicture.find({
             order: 'RAND()', include: [
@@ -15,5 +15,6 @@ module.exports = {
         deleteCommand: false,
         caseInsensitive: true,
         alias: ['neko']
-    }
+    },
+    subcommands: [require('./catgirl_add')]
 };

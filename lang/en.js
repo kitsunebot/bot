@@ -15,7 +15,7 @@ module.exports = {
             default: 'Your waifu is &{name} (&{origin})\n&{pic_link}',
             format: '&{name} (&{origin})',
             createPicture: {
-                default: 'Picture created. It will be displayed until it was verified by one of my managers.'
+                default: 'Picture created. It will be displayed as soon as it was verified by one of my managers.'
             },
             list: {
                 default: 'Here are all stored waifus. Add yours with `!fb waifu add (name) | (source) | (picture link)`. \nYou can find a full list under https://kitsune.fuechschen.org/charaters/waifus'
@@ -37,7 +37,7 @@ module.exports = {
             default: 'Your husbando is &{name} (&{origin})\n&{pic_link}',
             format: '&{name} (&{origin})',
             createPicture: {
-                default: 'Picture created. It will be displayed until it was verified by one of my managers.'
+                default: 'Picture created. It will be displayed as soon as it was verified by one of my managers.'
             },
             list: {
                 default: 'Here are all stored husbandos. Add yours with `!fb husbando add (name) | (source) | (picture link)`. \nYou can find a full list under https://kitsune.fuechschen.org/charaters/husbandos'
@@ -75,7 +75,7 @@ module.exports = {
             watched: 'That channel is already watched.',
             not_exists: 'That channel doesn\'t exist.',
             supply_channel: 'You have to supply a valid channel to use this command. Please also check your spelling.',
-            remove:'Watcher removed. You won\'t receive any further notifications from this channel.'
+            remove: 'Watcher removed. You won\'t receive any further notifications from this channel.'
         },
         proxer: {
             announce: '&{anime_title} Episode &{nr} is now available on &{link}\n&{mentions}'
@@ -120,7 +120,7 @@ module.exports = {
                 reopened: '**&{sender} reopened issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
                 closed: '**&{sender} closed issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
                 edited: '**&{sender} edited issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
-                comment:'**&{sender} commented on issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                comment: '**&{sender} commented on issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
             }
         },
         gitlab: {
@@ -159,6 +159,9 @@ module.exports = {
                 error: 'Your eval logged to error:\n```&{log}```'
             },
             exec_error: 'Your eval threw an error:\n```&{err}```'
+        },
+        catgirl: {
+            default: 'Picture created. It will be displayed as soon as it was verified by one of my managers.'
         }
     }
 };
