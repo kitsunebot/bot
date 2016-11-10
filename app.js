@@ -18,7 +18,7 @@ fs.readdir('./eventhandlers', (err, files)=> {
             try {
                 var f = require('./eventhandlers/' + file);
                 if (f.enabled) {
-                    eris.on(f.event, f.handler);
+                    eris[f.once ? 'once' : 'on'](f.event, f.handler);
                     story.debug('Loaded handler for ' + f.event);
                 }
             } catch (e) {
@@ -77,7 +77,7 @@ fs.readdir('./pubsubEvents', (err, files)=> {
     }
 });
 
-fs.readdir('./crons',(err,files)=>{
+fs.readdir('./crons', (err, files)=> {
     if (err) {
         story.fatal('Crons could not be loaded.', {attach: err});
     } else {

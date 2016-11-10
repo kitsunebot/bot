@@ -4,13 +4,12 @@ var fcache = require('../lib/cache.js');
 var lang = require('../lib/lang.js');
 
 module.exports = {
-    label: 'catgirl',
+    label: 'add',
     enabled: true,
-    isSubcommand: false,
+    isSubcommand: true,
     generator: (msg, args)=> {
         if (args.length === 0 || args.length > 2) {
             //todo send args err
-            console.log(1);
         } else {
             db.models.Character.find({where: {id: 'SkyVBlzWg'}}).then((waifu)=> {
                 return utils.uploadFile(args[args.length - 1]).then((url)=> {
