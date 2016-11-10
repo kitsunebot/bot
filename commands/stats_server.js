@@ -31,6 +31,6 @@ module.exports = {
         deleteCommand: true,
         caseInsensitive: true,
         aliases: ['server'],
-        serverOnly: true
+        guildOnly: true
     }
 };

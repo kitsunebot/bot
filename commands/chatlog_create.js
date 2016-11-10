@@ -35,6 +35,6 @@ module.exports = {
     options: {
         deleteCommand: true,
         caseInsensitive: true,
-        serverOnly: true
+        guildOnly: true
     }
 };

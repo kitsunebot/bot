@@ -16,7 +16,7 @@ module.exports = {
     options: {
         caseInsensitive: true,
         deleteCommand: true,
-        serverOnly: true
+        guildOnly: true
     },
     subcommands: [require('./prefix_add'), require('./prefix_remove')]
 };

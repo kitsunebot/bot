@@ -72,9 +72,10 @@ module.exports = {
             default_separator: ',',
             announce: '&{ch_name} just went online on twitch: \nTitle: &{str_title}\nGame: &{str_game}\nLink: &{ch_link}',
             add: 'Watcher added. Online-Status of &{channel} will now be reported to this channel.',
-            remove: 'Wather removed. Updates won\'t be reported anymore.',
             watched: 'That channel is already watched.',
-            not_exists: 'That channel doesn\'t exist.'
+            not_exists: 'That channel doesn\'t exist.',
+            supply_channel: 'You have to supply a valid channel to use this command. Please also check your spelling.',
+            remove:'Watcher removed. You won\'t receive any further notifications from this channel.'
         },
         proxer: {
             announce: '&{anime_title} Episode &{nr} is now available on &{link}\n&{mentions}'
@@ -102,8 +103,8 @@ module.exports = {
             push: '**New commits for &{repo_name}:&{ref}@GitHub:**\n&{commits}',
             commit: '    `&{commit_id}` *&{committer}*: **&{message}**',
             _help: 'Take a look at the command reference: https://kitsune.fuechschen.org/commands/github',
-            _created: 'Your feed has been created. Point a webhook to `https://kitsune.fuechschen.org/api/v1/vcsfeeds/&{fid}?type=github` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
-            _already: 'This channel already has a github webkhook: `https://kitsune.fuechschen.org/api/v1/vcsfeeds/&{fid}?type=github`',
+            _created: 'Your feed has been created. Point a webhook to `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=github` and enable the events you want to be displayed. You can use this link for as many repositories as you want.',
+            _already: 'This channel already has a github webkhook: `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=github`',
             _removed: 'Feed for this channel has been removed. Don\'t forget to remove the webhook on GitHub or Gitlab.',
             _no_hook: 'There was no feed found for this channel.',
             pull: {
@@ -113,6 +114,13 @@ module.exports = {
                     closed: '**&{sender} closed pull request #&{pull_req} on &{repo}@GitHub:**\n*&{title}*',
                     merged: '**&{sender} merged pull request #&{pull_req} on &{repo}@GitHub:**\n*&{title}*',
                 }
+            },
+            issue: {
+                opened: '**&{sender} opened issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                reopened: '**&{sender} reopened issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                closed: '**&{sender} closed issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                edited: '**&{sender} edited issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
+                comment:'**&{sender} commented on issue #&{issue} on &{repo}@GitHub:**\n*&{title}*\n&{link}',
             }
         },
         gitlab: {
@@ -120,8 +128,8 @@ module.exports = {
             push: '**New commits for &{repo_name}:&{ref}@&{vcsurl} :**\n&{commits}',
             commit: '    `&{commit_id}` *&{committer}*: **&{message}**',
             _help: 'Take a look at the command reference: https://kitsune.fuechschen.org/commands/gitlab',
-            _created: 'Your feed has been created. Point a webhook to `https://kitsune.fuechschen.org/api/v1/vcsfeeds/&{fid}?type=gitlab` and enable the events you want to be displayed. You can use this link for as many webhooks as you want.',
-            _already: 'This channel already has a gitlab webkhook: `https://kitsune.fuechschen.org/api/v1/vcsfeeds/&{fid}?type=gitlab`',
+            _created: 'Your feed has been created. Point a webhook to `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab` and enable the events you want to be displayed. You can use this link for as many repositories (even on diffrent gitlab servsers) as you want.',
+            _already: 'This channel already has a gitlab webkhook: `https://kitsune.fuechschen.org/api/v1/vcsfeed/&{fid}?type=gitlab`',
             _removed: 'Feed for this channel has been removed. Don\'t forget to remove the webhooks on GitHub or Gitlab.',
             _no_hook: 'There was no feed found for this channel.',
             pull: {

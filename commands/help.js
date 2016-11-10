@@ -6,11 +6,11 @@ module.exports = {
     enabled: true,
     generator: (msg, args)=> {
         return lang.computeResponse(msg, 'help', {
-            mention: (msg.channel.guild ? (msg.channel.guild.members.find(member=> {
-                return member.id === config.owner.id
-            }) ? msg.channel.guild.members.find(member=> {
-                return member.id === config.owner.id
-            }).mention : config.owner.name) : config.owner.name)
+            mention: function () {
+                var m = msg.channel.guild.members.find(m=>m.id === config.owner.id);
+                if (m)return m.mention;
+                else return config.owner.name;
+            }()
         });
     },
     options: {
