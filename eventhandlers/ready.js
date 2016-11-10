@@ -44,8 +44,7 @@ module.exports = {
                     }).spread((user)=> {
                         return guild.setOwner(user);
                     }).then(()=> {
-                        return Promise.all(eguild.members.map((member=> {
-                            if (!member || !member.id)return story.warn('ready', 'Strange member found.', {attach: member});
+                        Promise.all(eguild.members.map((member=> {
                             return guild.addUser(member.id);
                         })));
                     }).then(()=> {
