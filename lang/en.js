@@ -161,7 +161,9 @@ module.exports = {
             exec_error: 'Your eval threw an error:\n```&{err}```'
         },
         catgirl: {
-            default: 'Picture created. It will be displayed as soon as it was verified by one of my managers.'
+            createPicture: {
+                default: 'Picture created. It will be displayed as soon as it was verified by one of my managers.'
+            }
         }
     }
 };
