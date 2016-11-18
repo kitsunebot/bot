@@ -45,7 +45,16 @@ module.exports = {
                         return guild.setOwner(user);
                     }).then(()=> {
                         return Promise.all(eguild.members.map((member=> {
-                            return guild.addUser(member.id);
+                            return db.models.User.findOrCreate({
+                                where: {uid: member.id},
+                                defaults: {
+                                    uid: member.user.id,
+                                    username: member.user.username,
+                                    discriminator: member.user.discriminator
+                                }
+                            }).spread(user=> {
+                                return guild.addUser(user);
+                            });
                         })));
                     }).then(()=> {
                         cache.loadGuild(eguild.id);

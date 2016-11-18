@@ -34,7 +34,7 @@ module.exports = {
                 return utils.uploadFile(args[args.length - 1]).then((url)=> {
                     return husbando.createCharacterPicture({
                         link: url,
-                        verified: (cch.getGlobalUserPerm(msg.author.id) > 5)
+                        verified: (fcache.getGlobalUserPerm(msg.author.id) > 5)
                     }).then(()=> {
                         msg.channel.createMessage(lang.computeResponse(msg, 'husbando.createPicture.default'));
                     });
