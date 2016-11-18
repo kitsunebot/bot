@@ -1,4 +1,4 @@
-var lang = require('../lib/lang');
+let lang = require('../lib/lang');
 
 module.exports = {
     label: 'ping',

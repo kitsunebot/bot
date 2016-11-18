@@ -1,8 +1,8 @@
-var db = require('../lib/db');
-var lang = require('../lib/lang');
-var fcache = require('../lib/cache');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
+let fcache = require('../lib/cache');
 
-var shortid = require('shortid');
+let shortid = require('shortid');
 
 module.exports = {
     label: 'broadcast',
@@ -10,9 +10,9 @@ module.exports = {
     isSubcommand: false,
     generator: (msg, args)=> {
         if (msg.channel.guild) {
-            var guild = fcache.getGuild(msg.channel.guild.id);
+            let guild = fcache.getGuild(msg.channel.guild.id);
             if (guild.getRole(msg.author.id) > 2) {
-                var confirm = shortid.generate();
+                let confirm = shortid.generate();
                 db.redis.hset(`broadcast:${confirm}`, 'guild_id', msg.channel.guild.id).then(()=> {
                     return db.redis.expire(`broadcast:${confirm}`, 600);
                 }).then(()=> {

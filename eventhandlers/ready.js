@@ -1,9 +1,9 @@
-var story = require('storyboard').mainStory;
-var Promise = require('bluebird');
+let story = require('storyboard').mainStory;
+let Promise = require('bluebird');
 
-var eris = require('../lib/client');
-var db = require('../lib/db');
-var cache = require('../lib/cache');
+let eris = require('../lib/client');
+let db = require('../lib/db');
+let cache = require('../lib/cache');
 
 module.exports = {
     event: 'ready',
@@ -35,7 +35,7 @@ module.exports = {
                         });
                     }
                 }).then((guild)=> {
-                    var owner = eris.users.find((user)=> {
+                    let owner = eris.users.find((user)=> {
                         return user.id === eguild.ownerID
                     });
                     return db.models.User.findOrCreate({
@@ -52,7 +52,7 @@ module.exports = {
                         return Promise.resolve(guild);
                     });
                 }).then((guild)=> {
-                    var perm = eguild.members.find((member)=> {
+                    let perm = eguild.members.find((member)=> {
                         return member.user.id === eris.user.id
                     }).permission;
                     return guild.update({

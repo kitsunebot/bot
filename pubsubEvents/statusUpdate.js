@@ -1,5 +1,5 @@
-var eris = require('../lib/client');
-var db = require('../lib/db');
+let eris = require('../lib/client');
+let db = require('../lib/db');
 
 module.exports = {
     event: 'statusUpdate',

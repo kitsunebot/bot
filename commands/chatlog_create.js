@@ -1,16 +1,16 @@
-var lang = require('../lib/lang');
-var db = require('../lib/db');
-var eris = require('../lib/client');
+let lang = require('../lib/lang');
+let db = require('../lib/db');
+let eris = require('../lib/client');
 
-var Promise = require('bluebird');
-var shortid = require('shortid');
+let Promise = require('bluebird');
+let shortid = require('shortid');
 
 module.exports = {
     label: 'create',
     enabled: true,
     isSubcommand: true,
     generator: (msg, args)=> {
-        var c = (!isNaN(parseInt(args[0])) ? parseInt(args[0]) : 5);
+        let c = (!isNaN(parseInt(args[0])) ? parseInt(args[0]) : 5);
         eris.getMessages(msg.channel.id, c + 1, msg.channel.lastMessageID).then(messages=> {
             db.models.ChatLog.create({id: shortid.generate()}).then(cl=> {
                 return Promise.join(cl.setGuild(msg.channel.guild.id), cl.setUser(msg.author.id), cl.setChannel(msg.channel.id)).then(()=> {

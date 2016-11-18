@@ -32,7 +32,7 @@ class Collection extends Map {
     add(obj, extra) {
         if (this.limit === 0) return (obj instanceof this.baseObject) ? obj : new this.baseObject(obj, extra);
         if (!obj.id && obj.id !== 0) throw new Error("Missing object id");
-        var existing = this.get(obj.id);
+        let existing = this.get(obj.id);
         if (existing) return existing;
         if (!(obj instanceof this.baseObject)) obj = new this.baseObject(obj, extra);
 
@@ -41,7 +41,7 @@ class Collection extends Map {
         if (this.limit) {
             this.ids.push(obj.id);
             if (this.ids.length > this.limit) {
-                for (var key of this.ids.splice(0, this.ids.length - this.limit)) {
+                for (let key of this.ids.splice(0, this.ids.length - this.limit)) {
                     this.delete(key);
                 }
             }
@@ -50,23 +50,23 @@ class Collection extends Map {
     }
 
     find(func) {
-        for (var item of this) {
+        for (let item of this) {
             if (func(item[1])) return item[1];
         }
         return null;
     }
 
     filter(func) {
-        var arr = [];
-        for (var item of this) {
+        let arr = [];
+        for (let item of this) {
             if (func(item[1])) arr.push(item[1]);
         }
         return arr;
     }
 
     map(func) {
-        var arr = [];
-        for (var item of this) {
+        let arr = [];
+        for (let item of this) {
             arr.push(func(item[1]));
         }
         return arr;
@@ -74,14 +74,14 @@ class Collection extends Map {
 
     update(obj, extra) {
         if (!obj.id && obj.id !== 0) throw new Error("Missing object id");
-        var item = this.get(obj.id);
+        let item = this.get(obj.id);
         if (!item) return this.add(obj, extra);
         item.update(obj, extra);
         return item;
     }
 
     remove(obj) {
-        var item = this.get(obj.id);
+        let item = this.get(obj.id);
         if (!item) return null;
         this.delete(obj.id);
         return item;

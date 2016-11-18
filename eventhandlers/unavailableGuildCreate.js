@@ -1,7 +1,7 @@
-var story = require('storyboard').mainStory;
+let story = require('storyboard').mainStory;
 
-var db = require('../lib/db');
-var fcache = require('../lib/cache');
+let db = require('../lib/db');
+let fcache = require('../lib/cache');
 
 module.exports = {
     event: 'unavailableGuildCreate',

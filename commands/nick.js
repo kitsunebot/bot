@@ -1,15 +1,15 @@
-var eris = require('../lib/client');
-var lang = require('../lib/lang');
-var cache = require('../lib/cache');
+let eris = require('../lib/client');
+let lang = require('../lib/lang');
+let cache = require('../lib/cache');
 
 module.exports = {
     label: 'nick',
     enabled: true,
     isSubcommand: false,
     generator: (msg, args)=> {
-        var guild = cache.getGuild(msg.channel.guild.id);
+        let guild = cache.getGuild(msg.channel.guild.id);
         if (guild.getRole(msg.author.id) > 2) {
-            var nick = (args.join(' ').trim() !== 'reset' ? args.join(' ').trim() : eris.user.username);
+            let nick = (args.join(' ').trim() !== 'reset' ? args.join(' ').trim() : eris.user.username);
             eris.editNickname(msg.channel.guild.id, nick).then(()=> {
                 msg.channel.createMessage(lang.computeResponse(msg, 'nick.default'));
             });

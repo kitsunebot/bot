@@ -1,12 +1,12 @@
-var lang = require('../lib/lang');
-var cache = require('../lib/cache');
+let lang = require('../lib/lang');
+let cache = require('../lib/cache');
 
 module.exports = {
     label: 'watcher',
     enabled: true,
     isSubcommand: false,
     generator: (msg, args)=> {
-        var guild = cache.getGuild(msg.channel.guild.id);
+        let guild = cache.getGuild(msg.channel.guild.id);
         guild.getDbInstance().then((guild)=> {
             return guild.getTwitchWatchers({where: {server_channel: msg.channel.id}}).then((watchers)=> {
                 return Promise.all(watchers.map((watcher)=> {

@@ -1,5 +1,5 @@
-var eris = require('../lib/client');
-var lang = require('../lib/lang');
+let eris = require('../lib/client');
+let lang = require('../lib/lang');
 
 module.exports = {
     event: 'proxerAnnounce',

@@ -1,13 +1,13 @@
-var config = require('./config.js');
-var storyboard = require('storyboard');
-var fs = require('fs');
-var path = require('path');
+let config = require('./config.js');
+let storyboard = require('storyboard');
+let fs = require('fs');
+let path = require('path');
 
-var eris = require('./lib/client');
-var pubsub = require('./lib/db');
+let eris = require('./lib/client');
+let pubsub = require('./lib/db');
 
 storyboard.addListener(require('storyboard/lib/listeners/console').default);
-var story = storyboard.mainStory;
+let story = storyboard.mainStory;
 
 fs.readdir('./eventhandlers', (err, files)=> {
     if (err) {
@@ -16,7 +16,7 @@ fs.readdir('./eventhandlers', (err, files)=> {
     } else {
         files.forEach((file)=> {
             try {
-                var f = require('./eventhandlers/' + file);
+                let f = require('./eventhandlers/' + file);
                 if (f.enabled) {
                     eris.on(f.event, f.handler);
                     story.debug('Loaded handler for ' + f.event);
@@ -35,16 +35,16 @@ fs.readdir('./commands', (err, files)=> {
     } else {
         files.forEach((file)=> {
             try {
-                var c = require('./commands/' + file);
+                let c = require('./commands/' + file);
                 if (c.enabled && !c.isSubcommand) {
-                    var cmd = eris.registerCommand(c.label, c.generator, c.options);
+                    let cmd = eris.registerCommand(c.label, c.generator, c.options);
                     registerSubcommands(c, cmd);
 
                     function registerSubcommands(cmd, parent) {
                         cmd.subcommands = cmd.subcommands || [];
                         cmd.subcommands.forEach((subcmd)=> {
                             if (subcmd.enabled) {
-                                var c = parent.registerSubcommand(subcmd.label, subcmd.generator, subcmd.options);
+                                let c = parent.registerSubcommand(subcmd.label, subcmd.generator, subcmd.options);
                                 registerSubcommands(subcmd, c);
                             }
                         });
@@ -65,7 +65,7 @@ fs.readdir('./pubsubEvents', (err, files)=> {
     } else {
         files.forEach((file)=> {
             try {
-                var f = require('./pubsubEvents/' + file);
+                let f = require('./pubsubEvents/' + file);
                 if (f.enabled) {
                     pubsub.on(f.event, f.handler);
                     story.debug('Loaded pubsub-handler for ' + f.event);
@@ -83,7 +83,7 @@ fs.readdir('./crons',(err,files)=>{
     } else {
         files.forEach((file)=> {
             try {
-                var f = require('./crons/' + file);
+                let f = require('./crons/' + file);
                 if (f.enabled) {
                     f.job.start();
                     story.debug('Started CronJob ' + f.name);

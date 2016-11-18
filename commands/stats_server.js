@@ -1,8 +1,8 @@
-var db = require('../lib/db');
-var lang = require('../lib/lang');
-var eris = require('../lib/client');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
+let eris = require('../lib/client');
 
-var moment = require('moment');
+let moment = require('moment');
 
 module.exports = {
     label: 'guild',

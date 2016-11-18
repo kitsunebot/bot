@@ -1,4 +1,4 @@
-var story = require('storyboard').mainStory;
+let story = require('storyboard').mainStory;
 
 module.exports = {
     event: 'debug',

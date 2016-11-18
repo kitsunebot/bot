@@ -1,9 +1,9 @@
-var db = require('../lib/db');
-var lang = require('../lib/lang');
-var config = require('../config');
-var fcache = require('../lib/cache');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
+let config = require('../config');
+let fcache = require('../lib/cache');
 
-var request = require('request');
+let request = require('request');
 
 module.exports = {
     label: 'add',

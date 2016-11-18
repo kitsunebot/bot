@@ -1,10 +1,10 @@
-var moment = require('moment');
+let moment = require('moment');
 
-var lang = require('../lib/lang');
-var db = require('../lib/db');
-var eris = require('../lib/client');
+let lang = require('../lib/lang');
+let db = require('../lib/db');
+let eris = require('../lib/client');
 
-var started = moment();
+let started = moment();
 
 module.exports = {
     label: 'stats',
@@ -18,8 +18,8 @@ module.exports = {
                 channel_count: eris.privateChannels.map((c)=> {
                     return c
                 }).length + function () {
-                    var i = 0;
-                    for (var o in eris.channelGuildMap) {
+                    let i = 0;
+                    for (let o in eris.channelGuildMap) {
                         if (eris.channelGuildMap[o])i = i + 1
                     }
                     return i;

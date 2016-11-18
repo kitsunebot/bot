@@ -1,4 +1,4 @@
-var eris = require('../lib/client');
+let eris = require('../lib/client');
 
 module.exports = {
     event: 'nicknameChange',

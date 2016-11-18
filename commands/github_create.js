@@ -1,16 +1,16 @@
-var db = require('../lib/db');
-var lang = require('../lib/lang');
-var fcache = require('../lib/cache');
+let db = require('../lib/db'),
+    lang = require('../lib/lang'),
+    fcache = require('../lib/cache');
 
-var shortid = require('shortid');
-var Promise = require('bluebird');
+let shortid = require('shortid'),
+    Promise = require('bluebird');
 
 module.exports = {
     label: 'create',
     enabled: true,
     isSubcommand: true,
     generator: (msg, args)=> {
-        var guild = fcache.getGuild(msg.channel.guild.id);
+        let guild = fcache.getGuild(msg.channel.guild.id);
         if (guild.getRole(msg.author.id) > 1) {
             db.models.Channel.find({where: {cid: msg.channel.id}}).then(ch=> {
                 return ch.getVCSFeed().then(feed=> {

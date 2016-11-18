@@ -1,4 +1,4 @@
-var emitter = require('../lib/db');
+let emitter = require('../lib/db');
 
 module.exports = {
     event: 'restart',
@@ -9,7 +9,7 @@ module.exports = {
             if (process.env.autorestart === 'true') process.exit(1);
             else {
                 try {
-                    var pm2 = require('pm2');
+                    let pm2 = require('pm2');
                     pm2.connect((err)=> {
                         if (!err)pm2.restart(process.env.pm_id)
                     });

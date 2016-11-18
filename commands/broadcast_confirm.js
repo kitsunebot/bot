@@ -1,7 +1,7 @@
-var db = require('../lib/db');
-var lang = require('../lib/lang');
-var eris = require('../lib/client');
-var fcache = require('../lib/cache');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
+let eris = require('../lib/client');
+let fcache = require('../lib/cache');
 
 module.exports = {
     label: 'confirm',

@@ -1,21 +1,19 @@
-var Promise = require('bluebird');
-var moment = require('moment');
+let Promise = require('bluebird');
 
-var eris = require('../lib/client');
-var db = require('../lib/db');
-var lang = require('../lib/lang');
-var GuildFeature = require('../objects/GuildFeature');
-var ChatFilter = require('../objects/ChatFilter');
+let eris = require('../lib/client');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
+let ChatFilter = require('../objects/ChatFilter');
 
 class Guild {
     constructor(gid, cb) {
-        this.erisGuild = eris.guilds.find((g)=> {
+        this.erisGuild = eris.guilds.find((g) => {
             return g.id === gid
         });
-        var that = this;
+        let that = this;
         that.id = gid;
         that.avability = !this.erisGuild.unavailable;
-        db.models.Guild.find({where: {gid: gid}}).then((guild)=> {
+        db.models.Guild.find({where: {gid: gid}}).then((guild) => {
             if (guild !== null && guild !== undefined) {
                 that.name = guild.name;
                 that.prefixes = [];
@@ -36,34 +34,30 @@ class Guild {
                     prefix: guild.customtext_prefix
                 };
                 that.chatfilter = null;
-                that.features = [];
-                Promise.join(that.calculatePrefixes(Promise.resolve(guild)).then((pr)=> {
-                    eris.registerGuildPrefix(that.id, pr);
-                    return Promise.resolve()
-                }), guild.getGuildRoles().then((roles)=> {
-                    return Promise.all(roles.map((role)=> {
-                        return role.getUser();
-                    })).then((users)=> {
-                        users.forEach((user, index)=> {
-                            that.roles[user.uid] = roles[index].level;
+                Promise.join(that.calculatePrefixes(Promise.resolve(guild)).then((pr) => {
+                        eris.registerGuildPrefix(that.id, pr);
+                        return Promise.resolve()
+                    }), guild.getGuildRoles().then((roles) => {
+                        return Promise.all(roles.map((role) => {
+                            return role.getUser();
+                        })).then((users) => {
+                            users.forEach((user, index) => {
+                                that.roles[user.uid] = roles[index].level;
+                            });
+                            return guild.getOwner();
+                        }).then((owner) => {
+                            that.roles[owner.uid] = 6;
+                            return db.models.User.findAll({where: {custom_role: {$gt: 0}}});
+                        }).then(users => {
+                            users.forEach((user) => {
+                                if (that.roles[user.uid] < user.custom_role || that.roles[user.uid] === undefined) that.roles[user.uid] = user.custom_role;
+                            });
+                            return Promise.resolve();
                         });
-                        return guild.getOwner();
-                    }).then((owner)=> {
-                        that.roles[owner.uid] = 6;
-                        return db.models.User.findAll({where: {custom_role: {$gt: 0}}});
-                    }).then(users=> {
-                        users.forEach((user)=> {
-                            if (that.roles[user.uid] < user.custom_role || that.roles[user.uid] === undefined) that.roles[user.uid] = user.custom_role;
-                        });
-                        return Promise.resolve();
-                    });
-                }), guild.getGuildFeatures({where: {enabled: true}}).then((features)=> {
-                    features.map(feature=> {
-                        return that.features.push(new GuildFeature(feature, that));
-                    });
-                }), guild.getChatFilter().then(filter=> {
-                    if (filter)that.chatfilter = new ChatFilter(filter, that);
-                })).then(()=> {
+                    }),
+                    guild.getChatfilters().then(filters => {
+                        this.chatfilter = new Chatfilter(filters, this);
+                    })).then(() => {
                     cb(null)
                 });
             } else cb(new Error('guild not found'));
@@ -84,9 +78,9 @@ class Guild {
     }
 
     addPrefix(prefix) {
-        var that = this;
-        return db.models.Prefix.findOrCreate({where: {prefix: prefix}, defaults: {prefix: prefix}}).spread((prefix)=> {
-            return prefix.addGuild(that.id).then(()=> {
+        let that = this;
+        return db.models.Prefix.findOrCreate({where: {prefix: prefix}, defaults: {prefix: prefix}}).spread((prefix) => {
+            return prefix.addGuild(that.id).then(() => {
                 that.updateFromDb();
                 return Promise.resolve();
             });
@@ -94,9 +88,9 @@ class Guild {
     }
 
     removePrefix(prefix) {
-        var that = this;
-        return db.models.Prefix.find({where: {prefix: prefix}}).then((prefix)=> {
-            if (prefix.allowDisable) return prefix.removeGuild(that.id).then(()=> {
+        let that = this;
+        return db.models.Prefix.find({where: {prefix: prefix}}).then((prefix) => {
+            if (prefix.allowDisable) return prefix.removeGuild(that.id).then(() => {
                 that.updateFromDb();
                 return Promise.resolve(true);
             });
@@ -114,7 +108,7 @@ class Guild {
 
     getChatfilter() {
         if (this.chatfilter !== null)return this.chatfilter;
-        else return [{check: ()=>Promise.resolve()}];
+        else return [{check: () => Promise.resolve()}];
     }
 
     getSetting(setting) {
@@ -122,19 +116,21 @@ class Guild {
     }
 
     updateDbInstance(updates) {
-        return this.getDbInstance().then((guild)=> {
+        return this.getDbInstance().then((guild) => {
             return guild.update(updates);
         })
     }
 
     updateValues(updates) {
         if (updates !== undefined) {
-            for (var i in updates) {
-                if (typeof updates[i] !== 'object' || Array.isArray(updates[i])) {
-                    this[i] = updates[i];
-                } else {
-                    for (var o in updates[i]) {
-                        this[i][o] = updates[i][o];
+            for (let i in updates) {
+                if (updates.hasOwnProperty(i)) {
+                    if (typeof updates[i] !== 'object' || Array.isArray(updates[i])) {
+                        this[i] = updates[i];
+                    } else {
+                        for (let o in updates[i]) {
+                            if (updates[i].hasOwnProperty(o)) this[i][o] = updates[i][o];
+                        }
                     }
                 }
             }
@@ -143,12 +139,12 @@ class Guild {
     }
 
     calculatePrefixes(guild, register) {
-        var that = this;
+        let that = this;
         guild = guild || this.getDbInstance();
-        return guild.then((guild)=> {
+        return guild.then((guild) => {
             return guild.getPrefixes();
-        }).then((prefixes)=> {
-            that.prefixes = prefixes.map((prefix)=> {
+        }).then((prefixes) => {
+            that.prefixes = prefixes.map((prefix) => {
                 return prefix.prefix
             });
             if (register) eris.registerGuildPrefix(that.id, that.prefixes);
@@ -161,8 +157,8 @@ class Guild {
     }
 
     updateFromDb() {
-        var that = this;
-        return db.models.Guild.find({where: {gid: that.id}}).then((guild)=> {
+        let that = this;
+        return db.models.Guild.find({where: {gid: that.id}}).then((guild) => {
             if (guild !== null && guild !== undefined) {
                 that.name = guild.name;
                 that.language = guild.language;
@@ -174,22 +170,22 @@ class Guild {
                     enabled: guild.customtext_enabled,
                     prefix: guild.customtext_prefix
                 };
-                Promise.all([that.calculatePrefixes(Promise.resolve(guild)).then((pr)=> {
+                Promise.all([that.calculatePrefixes(Promise.resolve(guild)).then((pr) => {
                     eris.registerGuildPrefix(that.id, pr);
                     return Promise.resolve()
-                }), guild.getGuildRoles().then((roles)=> {
-                    return Promise.all(roles.map((role)=> {
+                }), guild.getGuildRoles().then((roles) => {
+                    return Promise.all(roles.map((role) => {
                         return role.getUser();
-                    })).then((users)=> {
-                        users.forEach((user, index)=> {
+                    })).then((users) => {
+                        users.forEach((user, index) => {
                             that.roles[user.uid] = roles[index].level;
                         });
                         return guild.getOwner();
-                    }).then((owner)=> {
+                    }).then((owner) => {
                         that.roles[owner.uid] = 6;
                         return db.models.User.findAll({where: {custom_role: {$gt: 0}}});
-                    }).then(users=> {
-                        users.forEach((user)=> {
+                    }).then(users => {
+                        users.forEach((user) => {
                             if (that.roles[user.uid] < user.custom_role || that.roles[user.uid] === undefined) that.roles[user.uid] = user.custom_role;
                         });
                         return Promise.resolve();

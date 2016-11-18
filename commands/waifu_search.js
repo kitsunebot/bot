@@ -1,7 +1,7 @@
-var S = require('string');
+let S = require('string');
 
-var db = require('../lib/db');
-var lang = require('../lib/lang');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
 
 module.exports = {
     label: 'search',

@@ -1,7 +1,7 @@
-var eris = require('../lib/client');
-var lang = require('../lib/lang');
-var fcache = require('../lib/cache');
-var pubsub = require('../lib/db');
+let eris = require('../lib/client');
+let lang = require('../lib/lang');
+let fcache = require('../lib/cache');
+let pubsub = require('../lib/db');
 
 module.exports = {
     label: 'global',
@@ -9,7 +9,7 @@ module.exports = {
     isSubcommand: true,
     generator: (msg, args)=> {
         if (fcache.getGlobalUserPerm(msg.author.id) > 6) {
-            var nick = (args.join(' ').trim() !== 'reset' ? args.join(' ').trim() : eris.user.username);
+            let nick = (args.join(' ').trim() !== 'reset' ? args.join(' ').trim() : eris.user.username);
             eris.guilds.map((g)=> {
                 return g
             }).forEach((g, index)=> {

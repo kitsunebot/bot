@@ -1,6 +1,6 @@
-var eris = require('../lib/client');
-var lang = require('../lib/lang');
-var URL = require('url');
+let eris = require('../lib/client');
+let lang = require('../lib/lang');
+let URL = require('url');
 
 module.exports = {
     event: 'gitlabUpdate',

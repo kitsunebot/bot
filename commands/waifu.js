@@ -1,9 +1,9 @@
-var db = require('../lib/db');
-var lang = require('../lib/lang');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
 
-var request = require('request');
-var Promise = require('bluebird');
-var _ = require('underscore');
+let request = require('request');
+let Promise = require('bluebird');
+let _ = require('underscore');
 
 module.exports = {
     label: 'waifu',
@@ -29,7 +29,7 @@ module.exports = {
             }
         }).then((waifu)=> {
             waifu.getCharacterPictures({where: {verified: true}}).then((pics)=> {
-                var pic = pics[_.random(0, pics.length - 1)];
+                let pic = pics[_.random(0, pics.length - 1)];
                 msg.channel.createMessage(lang.computeResponse(msg, 'waifu.default', {
                     name: waifu.name,
                     origin: waifu.source,

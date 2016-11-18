@@ -1,9 +1,9 @@
-var Promise = require('bluebird');
+let Promise = require('bluebird');
 
-var eris = require('../lib/client');
-var lang = require('../lib/lang');
-var fcache = require('../lib/cache');
-var db = require('../lib/db');
+let eris = require('../lib/client');
+let lang = require('../lib/lang');
+let fcache = require('../lib/cache');
+let db = require('../lib/db');
 
 module.exports = {
     label: 'initroles',
@@ -14,7 +14,7 @@ module.exports = {
             required: 5,
             have: '!5'
         });
-        var perm = msg.channel.guild.members.find((member)=> {
+        let perm = msg.channel.guild.members.find((member)=> {
             return member.user.id === eris.user.id
         }).permission;
         if (!perm.has('manageRoles'))return lang.computeResponse(msg, 'roles.failed');

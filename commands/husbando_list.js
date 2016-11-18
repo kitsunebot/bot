@@ -1,8 +1,8 @@
-var S = require('string');
-var _ = require('underscore');
+let S = require('string');
+let _ = require('underscore');
 
-var db = require('../lib/db');
-var lang = require('../lib/lang');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
 
 module.exports = {
     label: 'list',
@@ -18,12 +18,12 @@ module.exports = {
                 }, true)
             });
 
-            var separator = lang.computeResponse(msg, 'husbando.list.separator', {}, true);
-            var out = [lang.computeResponse(msg, 'husbando.list.default', {})];
+            let separator = lang.computeResponse(msg, 'husbando.list.separator', {}, true);
+            let out = [lang.computeResponse(msg, 'husbando.list.default', {})];
             compute(0, 0);
 
             function compute(windex, sendindex) {
-                var r = out[sendindex] + husbandos[windex] + separator;
+                let r = out[sendindex] + husbandos[windex] + separator;
                 if (r.length < 1997) {
                     out[sendindex] = r;
                     next();
@@ -38,7 +38,7 @@ module.exports = {
                 function next() {
                     if (windex - 1 === husbandos.length) {
                         out[sendindex] = out[sendindex] + lang.computeResponse(msg, 'husbando.list.list_end', {}, true);
-                        var s = _.rest(out);
+                        let s = _.rest(out);
                         send(out[0], s);
                     } else compute(windex + 1, sendindex);
                 }

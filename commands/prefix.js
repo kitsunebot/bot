@@ -1,6 +1,6 @@
-var cache = require('../lib/cache');
-var eris = require('../lib/client');
-var lang = require('../lib/lang');
+let cache = require('../lib/cache');
+let eris = require('../lib/client');
+let lang = require('../lib/lang');
 
 module.exports = {
     label: 'prefix',

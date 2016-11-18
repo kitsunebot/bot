@@ -1,6 +1,6 @@
-var CronJob = require('cron').CronJob;
-var eris = require('../lib/client');
-var db = require('../lib/db');
+let CronJob = require('cron').CronJob;
+let eris = require('../lib/client');
+let db = require('../lib/db');
 
 module.exports = {
     enabled: true,

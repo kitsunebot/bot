@@ -1,4 +1,4 @@
-var db = require('../lib/db');
+let db = require('../lib/db');
 
 module.exports = {
     event: 'messageDelete',

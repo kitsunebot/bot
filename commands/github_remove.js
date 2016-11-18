@@ -1,13 +1,13 @@
-var db = require('../lib/db');
-var lang = require('../lib/lang');
-var fcache = require('../lib/cache');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
+let fcache = require('../lib/cache');
 
 module.exports = {
     label: 'remove',
     enabled: true,
     isSubcommand: true,
     generator: (msg, args)=> {
-        var guild = fcache.getGuild(msg.channel.guild.id);
+        let guild = fcache.getGuild(msg.channel.guild.id);
         if (guild.getRole(msg.author.id) > 2) {
             db.models.Channel.find({where: {cid: msg.channel.id}}).then(ch=> {
                 return ch.getVCSFeed().then(feed=> {

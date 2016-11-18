@@ -1,4 +1,4 @@
-var Promise = require('bluebird');
+let Promise = require('bluebird');
 
 class Chatfilter{
     constructor(){

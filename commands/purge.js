@@ -1,19 +1,19 @@
-var eris = require('../lib/client');
-var lang = require('../lib/lang');
-var cache = require('../lib/cache');
+let eris = require('../lib/client');
+let lang = require('../lib/lang');
+let cache = require('../lib/cache');
 
-var _ = require('underscore');
+let _ = require('underscore');
 
 module.exports = {
     label: 'purge',
     enabled: true,
     isSubcommand: false,
     generator: (msg, args)=> {
-        var guild = cache.getGuild(msg.channel.guild.id)
+        let guild = cache.getGuild(msg.channel.guild.id)
         if (guild.getRole(msg.author.id) > 2) {
-            var count = (!isNaN(parseInt(args[0])) ? parseInt(args[0]) : 10);
+            let count = (!isNaN(parseInt(args[0])) ? parseInt(args[0]) : 10);
             eris.getMessages(msg.channel.id, count + 5, msg.channel.lastMessageID).then((messages)=> {
-                var toDelete = _.first(messages.map((msg)=> {
+                let toDelete = _.first(messages.map((msg)=> {
                     return msg
                 }), count);
                 eris.deleteMessages(msg.channel.id, toDelete.map((msg)=> {

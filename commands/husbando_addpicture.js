@@ -1,10 +1,10 @@
-var Promise = require('bluebird');
-var validator = require('validator');
+let Promise = require('bluebird');
+let validator = require('validator');
 
-var db = require('../lib/db');
-var lang = require('../lib/lang');
-var utils = require('../lib/utils');
-var cch = require('../lib/cache');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
+let utils = require('../lib/utils');
+let cch = require('../lib/cache');
 
 module.exports = {
     label: 'addpicture',
@@ -32,10 +32,11 @@ module.exports = {
                 }
             }).then((husbando)=> {
                 return utils.uploadFile(args[args.length - 1]).then((url)=> {
-                    return cch.getGlobalUserPerm(msg.author.id).then((perm)=> {
-                        return husbando.createCharacterPicture({link: url, verified: (perm > 5)}).then(()=> {
-                            msg.channel.createMessage(lang.computeResponse(msg, 'husbando.createPicture.default'));
-                        });
+                    return husbando.createCharacterPicture({
+                        link: url,
+                        verified: (cch.getGlobalUserPerm(msg.author.id) > 5)
+                    }).then(()=> {
+                        msg.channel.createMessage(lang.computeResponse(msg, 'husbando.createPicture.default'));
                     });
                 });
             }).catch((err)=> {

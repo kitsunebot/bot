@@ -1,15 +1,15 @@
-var shortid = require('shortid');
+let shortid = require('shortid');
 
-var db = require('../lib/db');
-var lang = require('../lib/lang');
+let db = require('../lib/db');
+let lang = require('../lib/lang');
 
 module.exports = {
     label: 'set',
     isSubcommand: true,
     enabled: true,
     generator: (msg, args)=> {
-        var arg = args.join(' ').trim();
-        var query = {type: 'waifu'};
+        let arg = args.join(' ').trim();
+        let query = {type: 'waifu'};
         if (shortid.isValid(arg)) query.id = arg;
         else query.name = arg;
         db.models.Character.find({where: query}).then((waifu)=> {

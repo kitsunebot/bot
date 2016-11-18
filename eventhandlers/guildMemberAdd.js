@@ -1,7 +1,7 @@
-var story = require('storyboard').mainStory;
-var Promise = require('bluebird');
+let story = require('storyboard').mainStory;
+let Promise = require('bluebird');
 
-var db = require('../lib/db');
+let db = require('../lib/db');
 
 module.exports = {
     event: 'guildMemberAdd',
