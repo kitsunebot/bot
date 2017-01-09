@@ -10,7 +10,7 @@ let redis = Redis.createClient(config.db.redis);
 
 class Spam extends Chatfilter {
     constructor(config, guild) {
-        super();
+        super(config, guild);
         this.config = config;
         this.limiter = Limiter({
             interval: config.interval || 60000,

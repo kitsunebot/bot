@@ -3,7 +3,7 @@ let Promise = require('bluebird');
 let eris = require('../lib/client');
 let db = require('../lib/db');
 let lang = require('../lib/lang');
-let ChatFilter = require('../objects/ChatFilter');
+let Chatfilter = require('./Chatfilter');
 
 class Guild {
     constructor(gid, cb) {
@@ -55,7 +55,7 @@ class Guild {
                             return Promise.resolve();
                         });
                     }),
-                    guild.getChatfilters().then(filters => {
+                    guild.getChatfilter().then(filters => {
                         this.chatfilter = new Chatfilter(filters, this);
                     })).then(() => {
                     cb(null)
